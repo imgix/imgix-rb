@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Sam Soffes']
   spec.email         = ['sam@soff.es']
   spec.description   = 'Easily sign imgix URLs.'
-  spec.summary       = spec.description
-  spec.homepage      = 'https://github.com/soffes/imgix'
+  spec.summary       = 'Unofficial Ruby Gem for easily signing imgix URLs.'
+  spec.homepage      = 'https://github.com/soffes/imgix-rb'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
