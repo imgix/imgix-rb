@@ -1,6 +1,7 @@
 # Imgix
 
-Ruby Gem for signing [imgix](http://imgix.com) URLs.
+Unofficial Ruby Gem for signing [imgix](http://imgix.com) URLs.
+
 
 ## Installation
 
@@ -16,18 +17,26 @@ Or install it yourself as:
 
     $ gem install imgix
 
+
 ## Usage
 
+Simply initialize a client with a host and your token. You can optionally generate secure URLs.
+
+Now call `sign_path` on your client to get a signed URL.
+
 ``` ruby
-client = Imgix::Client.new(host: 'your-subdomain.imgix.net', token: 'your-token', secure: true)
+client = Imgix::Client.new(:host => 'your-subdomain.imgix.net', :token => 'your-token', :secure => true)
 client.sign_path('/images/demo.png?w=200')
-#=> http://foo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e
+#=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
 ```
+
+## Supported Ruby Versions
+
+Imgix is tested under 1.8.7, 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
+
+[![Build Status](https://travis-ci.org/soffes/imgix.png?branch=master)](https://travis-ci.org/soffes/imgix)
+
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+See the [contributing guide](Contributing.markdown).
