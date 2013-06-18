@@ -34,7 +34,7 @@ client.sign_path('/images/demo.png?w=200')
 
 Imgix is tested under 1.8.7, 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
 
-[![Build Status](https://travis-ci.org/soffes/imgix.png?branch=master)](https://travis-ci.org/soffes/imgix)
+[![Build Status](https://travis-ci.org/soffes/imgix-rb.png?branch=master)](https://travis-ci.org/soffes/imgix-rb)
 
 
 ## Contributing
