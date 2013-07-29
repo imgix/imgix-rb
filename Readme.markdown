@@ -26,6 +26,15 @@ Now call `sign_path` on your client to get a signed URL.
 
 ``` ruby
 client = Imgix::Client.new(:host => 'your-subdomain.imgix.net', :token => 'your-token', :secure => true)
+
+client.path('/images/demo.png').to_url({w: 200})
+
+# OR
+path = client.path('/images/demo.png')
+path.width = 200
+path.to_url
+
+# OR
 client.sign_path('/images/demo.png?w=200')
 #=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
 ```

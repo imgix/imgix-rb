@@ -9,6 +9,14 @@ module Imgix
       @secure = options[:secure]
     end
 
+    def path(path)
+      Path.new(prefix, @token, path)
+    end
+
+    def prefix
+      "#{@secure ? 'https' : 'http'}://#{@host}"
+    end
+
     def sign_path(path)
       uri = Addressable::URI.parse(path)
       query = (uri.query || '')
