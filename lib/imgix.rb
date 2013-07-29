@@ -1,6 +1,6 @@
-require_relative 'imgix/version'
-require_relative 'imgix/client'
-require_relative 'imgix/path'
+require 'imgix/version'
+require 'imgix/client'
+require 'imgix/path'
 
 module Imgix
 end

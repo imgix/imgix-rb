@@ -1,5 +1,9 @@
+require 'imgix/param_helpers'
+
 module Imgix
   class Path
+    include ParamHelpers
+
     ALIASES = {
       width: :w,
       height: :h,
@@ -48,19 +52,21 @@ module Imgix
       if args.length == 0
         return @options[key]
       elsif args.first.nil? && @options.has_key?(key)
-        @options.delete(key) and return
+        @options.delete(key) and return self
       end
 
       @options[key] = args.join(',')
+      return self
     end
 
     ALIASES.each do |from, to|
-      define_method from do
-        @options[to]
+      define_method from do |*args|
+        self.send(to, *args)
       end
 
-      define_method "#{from}=" do |value|
-        @options[to] = value
+      define_method "#{from}=" do |*args|
+        self.send("#{to}=", *args)
+        return self
       end
     end
 
