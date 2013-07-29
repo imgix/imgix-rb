@@ -3,7 +3,23 @@ module Imgix
     ALIASES = {
       width: :w,
       height: :h,
-      rotation: :rot
+      rotation: :rot,
+      noise_reduction: :nr,
+      sharpness: :sharp,
+      exposure: :exp,
+      vibrance: :vib,
+      saturation: :sat,
+      brightness: :bri,
+      contrast: :con,
+      highlight: :high,
+      shadow: :shad,
+      gamma: :gam,
+      pixelate: :px,
+      halftone: :htn,
+      watermark: :mark,
+      text: :txt,
+      format: :fm,
+      quality: :q
     }
 
     def initialize(prefix, token, path = '/')
@@ -35,7 +51,7 @@ module Imgix
         @options.delete(key) and return
       end
 
-      @options[key] = args.first
+      @options[key] = args.join(',')
     end
 
     ALIASES.each do |from, to|
