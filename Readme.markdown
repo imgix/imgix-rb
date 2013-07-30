@@ -48,7 +48,7 @@ path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
 
 ## Supported Ruby Versions
 
-Imgix is tested under 1.8.7, 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
+Imgix is tested under 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
 
 [![Build Status](https://travis-ci.org/soffes/imgix-rb.png?branch=master)](https://travis-ci.org/soffes/imgix-rb)
 
