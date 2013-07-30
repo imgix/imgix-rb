@@ -6,8 +6,8 @@ require 'imgix/version'
 Gem::Specification.new do |spec|
   spec.name          = 'imgix'
   spec.version       = Imgix::VERSION
-  spec.authors       = ['Sam Soffes']
-  spec.email         = ['sam@soff.es']
+  spec.authors       = ['Sam Soffes', 'Ryan LeFevre']
+  spec.email         = ['sam@soff.es', 'ryan@layervault.com']
   spec.description   = 'Easily sign imgix URLs.'
   spec.summary       = 'Unofficial Ruby Gem for easily signing imgix URLs.'
   spec.homepage      = 'https://github.com/soffes/imgix-rb'
@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 1.8.7'
+  spec.required_ruby_version = '>= 1.9.0'
   spec.add_dependency 'addressable'
 end
