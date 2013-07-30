@@ -6,7 +6,7 @@ module Imgix
     def initialize(options = {})
       @host = options[:host]
       @token = options[:token]
-      @secure = options[:secure]
+      @secure = options[:secure] || false
     end
 
     def path(path)

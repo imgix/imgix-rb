@@ -31,12 +31,14 @@ module Imgix
       @token = token
       @path = path
       @options = {}
+
+      @path = "/#{@path}" if @path[0] != '/'
     end
 
     def to_url(opts={})
       @options.merge!(opts)
       
-      url = "#{@prefix}/#{path_and_params}"
+      url = @prefix + path_and_params
       url += (@options.length > 0 ? '&' : '') + "s=#{signature}"
 
       return url
@@ -77,7 +79,7 @@ module Imgix
     end
 
     def path_and_params
-      "#{@path}?#{query}".gsub(/^(\/)/, '')
+      "#{@path}?#{query}"
     end
 
     def query
