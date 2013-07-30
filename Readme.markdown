@@ -38,6 +38,9 @@ path = client.path('/images/demo.png')
 path.width = 200
 path.to_url
 
+# OR
+client.path('/images/demo.png').width(200).height(300).to_url
+
 # Some other tricks
 path.defaults.width(300).to_url # Resets parameters
 path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
