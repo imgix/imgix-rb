@@ -5,25 +5,25 @@ module Imgix
     include ParamHelpers
 
     ALIASES = {
-      :width =>           :w,
-      :height =>          :h,
-      :rotation =>        :rot,
-      :noise_reduction => :nr,
-      :sharpness =>       :sharp,
-      :exposure =>        :exp,
-      :vibrance =>        :vib,
-      :saturation =>      :sat,
-      :brightness =>      :bri,
-      :contrast =>        :con,
-      :highlight =>       :high,
-      :shadow =>          :shad,
-      :gamma =>           :gam,
-      :pixelate =>        :px,
-      :halftone =>        :htn,
-      :watermark =>       :mark,
-      :text =>            :txt,
-      :format =>          :fm,
-      :quality =>         :q
+      width:           :w,
+      height:          :h,
+      rotation:        :rot,
+      noise_reduction: :nr,
+      sharpness:       :sharp,
+      exposure:        :exp,
+      vibrance:        :vib,
+      saturation:      :sat,
+      brightness:      :bri,
+      contrast:        :con,
+      highlight:       :high,
+      shadow:          :shad,
+      gamma:           :gam,
+      pixelate:        :px,
+      halftone:        :htn,
+      watermark:       :mark,
+      text:            :txt,
+      format:          :fm,
+      quality:         :q
     }
 
     def initialize(prefix, token, path = '/')
