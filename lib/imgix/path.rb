@@ -36,11 +36,13 @@ module Imgix
     end
 
     def to_url(opts={})
+      prev_options = @options.dup
       @options.merge!(opts)
       
       url = @prefix + path_and_params
       url += (@options.length > 0 ? '&' : '') + "s=#{signature}"
 
+      @options = prev_options
       return url
     end
 
