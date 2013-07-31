@@ -3,7 +3,7 @@ require 'test_helper'
 class UrlTest < Imgix::Test
   def test_signing_with_no_params
     path = '/images/demo.png'
-    assert_equal 'http://demo.imgix.net/images/demo.png?s=3c1d676d4daf28c044dd83e8548f834a', client.sign_path(path)
+    assert_equal 'http://demo.imgix.net/images/demo.png?&s=3c1d676d4daf28c044dd83e8548f834a', client.sign_path(path)
   end
 
   def test_signing_with_one
