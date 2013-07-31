@@ -40,7 +40,11 @@ module Imgix
       @options.merge!(opts)
       
       url = @prefix + path_and_params
-      url += (@options.length > 0 ? '&' : '') + "s=#{signature}"
+
+      # Weird bug in imgix. If there are no params, you still have
+      # to put & in front of the signature or else you will get
+      # unauthorized.
+      url += "&s=#{signature}"
 
       @options = prev_options
       return url
