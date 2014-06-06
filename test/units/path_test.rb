@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UrlTest < Imgix::Test
+class PathTest < Imgix::Test
   def test_creating_a_path
     path = client.path('/images/demo.png')
     assert_equal 'http://demo.imgix.net/images/demo.png?&s=3c1d676d4daf28c044dd83e8548f834a', path.to_url
