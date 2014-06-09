@@ -41,7 +41,11 @@ class PathTest < Imgix::Test
     assert_equal url, path.height(200).width(200).to_url
   end
 
-private
+  def test_host_is_required
+    assert_raises(ArgumentError) {Imgix::Client.new}
+  end
+
+  private
 
   def client
     @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394')

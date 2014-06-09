@@ -9,7 +9,7 @@ module Imgix
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      @hosts = Array(options[:host]) || options[:hosts]
+      @hosts = Array(options[:host]) || options[:hosts] and validate_hosts!
       @token = options[:token]
       @secure = options[:secure]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
@@ -52,6 +52,12 @@ module Imgix
     def validate_strategy!
       unless STRATEGIES.include?(@shard_strategy)
         raise ArgumentError.new("#{@shard_strategy} is not supported")
+      end
+    end
+
+    def validate_hosts!
+      unless @hosts.length > 0
+        raise ArgumentError, "The :host or option must be specified"
       end
     end
 
