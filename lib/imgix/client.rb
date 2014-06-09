@@ -9,7 +9,7 @@ module Imgix
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      @hosts = Array(options[:host])
+      @hosts = Array(options[:host]) || options[:hosts]
       @token = options[:token]
       @secure = options[:secure]
       @shard_strategy = options[:shard_strategy] and validate_strategy!

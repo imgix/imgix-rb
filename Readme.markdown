@@ -46,6 +46,24 @@ path.defaults.width(300).to_url # Resets parameters
 path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
 ```
 
+# Domain Sharded URLs
+Domain sharding enables you to spread image requests across multiple domains. This allows you to bypass the requests-per-host limits of browsers. We recommend 2-3 domain shards maximum if you are going to use domain sharding.
+
+In order to use domain sharding, you need to add multiple domains to your source. You then provide a list of these domains to a builder.
+
+
+``` ruby
+client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 'your-subdomain-2.imgix.net'])
+
+```
+By default, shards are calculated using a checksum so that the image path always resolves to the same domain. This improves caching in the browser. However, you can also specify cycle that simply cycles through the domains as you request them.
+
+
+``` ruby
+client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 'your-subdomain-2.imgix.net'], :shard_strategy => :cycle))
+
+```
+
 ## Supported Ruby Versions
 
 Imgix is tested under 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
