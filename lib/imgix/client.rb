@@ -9,7 +9,7 @@ module Imgix
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      @hosts = Array(options[:host]) || options[:hosts] and validate_hosts!
+      @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
       @token = options[:token]
       @secure = options[:secure]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
@@ -33,7 +33,7 @@ module Imgix
     def get_host(path)
       host = host_for_crc(path) if @shard_strategy == :crc
       host = host_for_cycle if @shard_strategy == :cycle
-      host
+      host.gsub("http://","").gsub("https://","")
     end
 
     def host_for_crc(path)
@@ -57,7 +57,7 @@ module Imgix
 
     def validate_hosts!
       unless @hosts.length > 0
-        raise ArgumentError, "The :host or option must be specified"
+        raise ArgumentError, "The :host or :hosts option must be specified"
       end
     end
 

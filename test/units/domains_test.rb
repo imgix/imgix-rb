@@ -3,7 +3,7 @@ require 'test_helper'
 class DomainsTest < Imgix::Test
 
   def test_deterministically_choosing_a_path
-    client = Imgix::Client.new(:host => [
+    client = Imgix::Client.new(:hosts => [
         "demos-1.imgix.net",
         "demos-2.imgix.net",
         "demos-3.imgix.net",
@@ -18,7 +18,7 @@ class DomainsTest < Imgix::Test
   end
 
   def test_cycling_choosing_domain_in_order
-    client = Imgix::Client.new(:host => [
+    client = Imgix::Client.new(:hosts => [
         "demos-1.imgix.net",
         "demos-2.imgix.net",
         "demos-3.imgix.net",
@@ -34,6 +34,16 @@ class DomainsTest < Imgix::Test
 
     path = client.path('/bridge.png')
     assert_equal 'http://demos-3.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+
+    path = client.path('/bridge.png')
+    assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+
+  end
+
+  def test_strips_out_protocol
+    client = Imgix::Client.new(:host =>
+        "http://demos-1.imgix.net",
+        :token => '10adc394')
 
     path = client.path('/bridge.png')
     assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
