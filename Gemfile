@@ -6,3 +6,7 @@ gemspec
 gem 'rake'
 gem 'minitest'
 gem 'addressable'
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+end
