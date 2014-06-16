@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UrlTest < Imgix::Test
+class PathTest < Imgix::Test
   def test_creating_a_path
     path = client.path('/images/demo.png')
     assert_equal 'http://demo.imgix.net/images/demo.png?&s=3c1d676d4daf28c044dd83e8548f834a', path.to_url
@@ -41,7 +41,11 @@ class UrlTest < Imgix::Test
     assert_equal url, path.height(200).width(200).to_url
   end
 
-private
+  def test_host_is_required
+    assert_raises(ArgumentError) {Imgix::Client.new}
+  end
+
+  private
 
   def client
     @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394')
