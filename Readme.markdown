@@ -53,13 +53,15 @@ In order to use domain sharding, you need to add multiple domains to your source
 
 
 ``` ruby
-client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 'your-subdomain-2.imgix.net'])
+client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 
+'your-subdomain-2.imgix.net'])
 ```
 By default, shards are calculated using a checksum so that the image path always resolves to the same domain. This improves caching in the browser. However, you can also specify cycle that simply cycles through the domains as you request them.
 
 
 ``` ruby
-client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 'your-subdomain-2.imgix.net'], :shard_strategy => :cycle))
+client = Imgix::Client.new(:hosts => ['your-subdomain-1.imgix.net', 
+'your-subdomain-2.imgix.net'], :shard_strategy => :cycle))
 ```
 # Multiple Parameters
 When the imgix api requires multiple parameters you have to use the method rather than an accessor.
@@ -72,7 +74,7 @@ path.noise_reduction(50,50)
 
 ## Supported Ruby Versions
 
-Imgix is tested under 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0 (1.9 mode).
+Imgix is tested under 1.9.2, 1.9.3, 2.0.0, JRuby 1.7.2 (1.9 mode), and Rubinius 2.0.0.
 
 [![Build Status](https://travis-ci.org/soffes/imgix-rb.png?branch=master)](https://travis-ci.org/soffes/imgix-rb)
 
