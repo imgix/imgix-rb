@@ -38,16 +38,24 @@ module Imgix
     def to_url(opts={})
       prev_options = @options.dup
       @options.merge!(opts)
-      
+
       url = @prefix + path_and_params
 
       # Weird bug in imgix. If there are no params, you still have
       # to put & in front of the signature or else you will get
       # unauthorized.
-      url += "&s=#{signature}"
+      if signed?
+        url += "&s=#{signature}"
+      end
 
       @options = prev_options
       return url
+    end
+    alias_method :to_s, :to_url
+
+    def sign
+      @signed = true
+      return self
     end
 
     def defaults
@@ -80,12 +88,28 @@ module Imgix
 
     private
 
-    def signature      
-      Digest::MD5.hexdigest(@token + @path + '?' + query)
+    def signature
+      Digest::MD5.hexdigest(@token + path_and_params)
     end
 
     def path_and_params
-      "#{@path}?#{query}"
+      path = @path
+      path += '?' if need_param_symbol?
+      path += query if query?
+
+      return path
+    end
+
+    def need_param_symbol?
+      !@path.include?('?') && (query? || signed?)
+    end
+
+    def query?
+      @options.any?
+    end
+
+    def signed?
+      @signed
     end
 
     def query
