@@ -11,10 +11,10 @@ class DomainsTest < Imgix::Test
       :token => '10adc394')
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-1.imgix.net/bridge.png', path.to_url
 
     path = client.path('/flower.png')
-    assert_equal 'http://demos-2.imgix.net/flower.png?&s=7793669cc41d31fd21c26ede9709ef03', path.to_url
+    assert_equal 'http://demos-2.imgix.net/flower.png', path.to_url
   end
 
   def test_cycling_choosing_domain_in_order
@@ -27,16 +27,16 @@ class DomainsTest < Imgix::Test
       :shard_strategy => :cycle)
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-1.imgix.net/bridge.png', path.to_url
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-2.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-2.imgix.net/bridge.png', path.to_url
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-3.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-3.imgix.net/bridge.png', path.to_url
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-1.imgix.net/bridge.png', path.to_url
 
   end
 
@@ -46,7 +46,7 @@ class DomainsTest < Imgix::Test
         :token => '10adc394')
 
     path = client.path('/bridge.png')
-    assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
+    assert_equal 'http://demos-1.imgix.net/bridge.png', path.to_url
 
   end
 
