@@ -41,6 +41,13 @@ class PathTest < Imgix::Test
     assert_equal url, path.height(200).width(200).to_url
   end
 
+  def test_path_with_multi_value_param_safely_encoded
+    url = 'http://demo.imgix.net/images/demo.png?markalign=middle%2Ccenter&s=f0d0e28a739f022638f4ba6dddf9b694'
+    path = client.path('/images/demo.png')
+
+    assert_equal url, path.markalign('middle', 'center').to_url
+  end
+
   def test_host_is_required
     assert_raises(ArgumentError) {Imgix::Client.new}
   end
