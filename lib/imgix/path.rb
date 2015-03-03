@@ -1,3 +1,4 @@
+require 'cgi/util'
 require 'imgix/param_helpers'
 
 module Imgix
@@ -38,7 +39,7 @@ module Imgix
     def to_url(opts={})
       prev_options = @options.dup
       @options.merge!(opts)
-      
+
       url = @prefix + path_and_params
 
       # Weird bug in imgix. If there are no params, you still have
@@ -80,7 +81,7 @@ module Imgix
 
     private
 
-    def signature      
+    def signature
       Digest::MD5.hexdigest(@token + @path + '?' + query)
     end
 
@@ -89,7 +90,7 @@ module Imgix
     end
 
     def query
-      @options.map { |k, v| "#{k.to_s}=#{v}" }.join('&')
+      @options.map { |k, v| "#{k.to_s}=#{CGI.escape(v.to_s)}" }.join('&')
     end
   end
 end
