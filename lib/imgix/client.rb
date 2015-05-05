@@ -4,7 +4,7 @@ require 'zlib'
 
 module Imgix
   class Client
-    DEFAULTS = { secure: false, shard_strategy: :crc }
+    DEFAULTS = { secure: false, shard_strategy: :crc, token: "" }
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
