@@ -54,7 +54,7 @@ class PathTest < Imgix::Test
 
   def test_token_is_optional
     client = Imgix::Client.new(host: 'demo.imgix.net')
-    url = 'http://demo.imgix.net/images/demo.png?&s=2b08a385422bb922463b46a5f65b9944'
+    url = 'http://demo.imgix.net/images/demo.png?'
     path = client.path('/images/demo.png')
 
     assert_equal url, path.to_url
