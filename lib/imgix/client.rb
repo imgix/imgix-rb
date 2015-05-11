@@ -26,8 +26,12 @@ module Imgix
     def sign_path(path)
       uri = Addressable::URI.parse(path)
       query = (uri.query || '')
-      signature = Digest::MD5.hexdigest(@token + uri.path + '?' + query)
-      "#{@secure ? 'https' : 'http'}://#{get_host(path)}#{uri.path}?#{query}&s=#{signature}"
+      path = "#{@secure ? 'https' : 'http'}://#{get_host(path)}#{uri.path}?#{query}"
+      if @token
+        signature = Digest::MD5.hexdigest(@token + uri.path + '?' + query)
+        path += "&s=#{signature}"
+      end
+      return path
     end
 
     def get_host(path)

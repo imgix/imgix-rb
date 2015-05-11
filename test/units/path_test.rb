@@ -52,6 +52,14 @@ class PathTest < Imgix::Test
     assert_raises(ArgumentError) {Imgix::Client.new}
   end
 
+  def test_token_is_optional
+    client = Imgix::Client.new(host: 'demo.imgix.net')
+    url = 'http://demo.imgix.net/images/demo.png?'
+    path = client.path('/images/demo.png')
+
+    assert_equal url, path.to_url
+  end
+
   private
 
   def client

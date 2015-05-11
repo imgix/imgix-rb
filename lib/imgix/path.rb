@@ -42,10 +42,12 @@ module Imgix
 
       url = @prefix + path_and_params
 
-      # Weird bug in imgix. If there are no params, you still have
-      # to put & in front of the signature or else you will get
-      # unauthorized.
-      url += "&s=#{signature}"
+      if @token
+        # Weird bug in imgix. If there are no params, you still have
+        # to put & in front of the signature or else you will get
+        # unauthorized.
+        url += "&s=#{signature}"
+      end
 
       @options = prev_options
       return url
