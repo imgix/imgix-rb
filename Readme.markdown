@@ -2,7 +2,7 @@
 
 Unofficial Ruby Gem for signing [imgix](http://imgix.com) URLs. Tested under 1.9.2, 2.2.1, JRuby 1.7.19, and Rubinius 2.2.7.
 
-[![Build Status](https://travis-ci.org/soffes/imgix-rb.png?branch=master)](https://travis-ci.org/soffes/imgix-rb)
+[![Build Status](https://travis-ci.org/imgix/imgix-rb.png?branch=master)](https://travis-ci.org/imgix/imgix-rb)
 
 
 ## Installation
