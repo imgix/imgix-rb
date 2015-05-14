@@ -60,7 +60,18 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url
   end
 
-  private
+  def test_full_url
+    path = 'https://google.com/cats.gif'
+
+    assert_equal "http://demo.imgix.net/#{CGI.escape(path)}?&s=4c3ff935011f0d2251800e6a2bb68ee5", client.path(path).to_url
+  end
+
+  def test_full_url_with_a_space
+    path = 'https://my-demo-site.com/files/133467012/avatar icon.png'
+    assert_equal "http://demo.imgix.net/#{CGI.escape(path)}?&s=8943817bed50811f6ceedd8f4b84169d", client.path(path).to_url
+  end
+
+private
 
   def client
     @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394')

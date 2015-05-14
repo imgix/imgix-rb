@@ -33,6 +33,7 @@ module Imgix
       @path = path
       @options = {}
 
+      @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != '/'
     end
 
