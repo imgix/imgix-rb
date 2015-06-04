@@ -13,10 +13,13 @@ module Imgix
       @token = options[:token]
       @secure = options[:secure]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
+      @include_library_param = options.fetch(:include_library_param, true)
     end
 
     def path(path)
-      Path.new(prefix(path), @token, path)
+      p = Path.new(prefix(path), @token, path)
+      p.ixlib("rb-#{Imgix::VERSION}") if @include_library_param
+      p
     end
 
     def prefix(path)
