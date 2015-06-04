@@ -53,7 +53,7 @@ class PathTest < Imgix::Test
   end
 
   def test_token_is_optional
-    client = Imgix::Client.new(host: 'demo.imgix.net')
+    client = Imgix::Client.new(host: 'demo.imgix.net', :include_library_param => false)
     url = 'http://demo.imgix.net/images/demo.png?'
     path = client.path('/images/demo.png')
 
@@ -71,9 +71,16 @@ class PathTest < Imgix::Test
     assert_equal "http://demo.imgix.net/#{CGI.escape(path)}?&s=8943817bed50811f6ceedd8f4b84169d", client.path(path).to_url
   end
 
+  def test_include_library_param
+    client = Imgix::Client.new(host: 'demo.imgix.net') # enabled by default
+    url = client.path('/images/demo.png').to_url
+
+    assert_equal "ixlib=rb-#{Imgix::VERSION}", URI(url).query
+  end
+
 private
 
   def client
-    @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394')
+    @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394', :include_library_param => false)
   end
 end

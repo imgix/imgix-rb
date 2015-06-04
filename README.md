@@ -82,11 +82,19 @@ For example to use the [noise reduction](http://www.imgix.com/docs/urlapi/enhanc
 path.noise_reduction(50,50)
 ```
 
-
 ## URL encoding and signed ImgIX URLs
 
 Some important third parties (like Facebook) apply URL escaping to query string components, which can cause correctly signed ImgIX URLs to to be transformed into incorrectly signed ones. We URL encode the query part of the URL before signing, so you don't have to worry about this.
 
+## What is the `ixlib` param on every request?
+
+For security and diagnostic purposes, we sign all requests with the language and version of library used to generate the URL.
+
+This can be disabled by including `:`include_library_param: false` in the instantiation Hash parameter for `Imgix::Client`:
+
+```ruby
+client = Imgix::Client.new({ include_library_param: false })
+```
 
 ## Contributing
 

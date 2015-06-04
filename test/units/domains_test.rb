@@ -8,7 +8,8 @@ class DomainsTest < Imgix::Test
         "demos-2.imgix.net",
         "demos-3.imgix.net",
       ],
-      :token => '10adc394')
+      :token => '10adc394',
+      :include_library_param => false)
 
     path = client.path('/bridge.png')
     assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
@@ -24,7 +25,8 @@ class DomainsTest < Imgix::Test
         "demos-3.imgix.net",
       ],
       :token => '10adc394',
-      :shard_strategy => :cycle)
+      :shard_strategy => :cycle,
+      :include_library_param => false)
 
     path = client.path('/bridge.png')
     assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
@@ -42,7 +44,8 @@ class DomainsTest < Imgix::Test
   def test_strips_out_protocol
     client = Imgix::Client.new(:host =>
         "http://demos-1.imgix.net",
-        :token => '10adc394')
+        :token => '10adc394',
+      :include_library_param => false)
 
     path = client.path('/bridge.png')
     assert_equal 'http://demos-1.imgix.net/bridge.png?&s=13e68f249172e5f790344e85e7cdb14b', path.to_url
@@ -55,7 +58,8 @@ class DomainsTest < Imgix::Test
         "demos-3.imgix.net",
       ],
       :token => '10adc394',
-      :shard_strategy => :cycle)
+      :shard_strategy => :cycle,
+      :include_library_param => false)
 
     path = 'https://google.com/cats.gif'
     assert_equal "http://demos-1.imgix.net/#{CGI.escape(path)}?&s=4c3ff935011f0d2251800e6a2bb68ee5", client.path(path).to_url

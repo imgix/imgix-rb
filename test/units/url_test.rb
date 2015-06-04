@@ -22,6 +22,6 @@ class UrlTest < Imgix::Test
 private
 
   def client
-    @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394')
+    @client ||= Imgix::Client.new(:host => 'demo.imgix.net', :token => '10adc394', :include_library_param => false)
   end
 end
