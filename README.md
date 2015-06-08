@@ -4,7 +4,6 @@ Official Ruby Gem for signing [imgix](http://imgix.com) URLs. Tested under 1.9.2
 
 [![Build Status](https://travis-ci.org/imgix/imgix-rb.png?branch=master)](https://travis-ci.org/imgix/imgix-rb)
 
-
 ## Installation
 
 Add this line to your application's Gemfile:
