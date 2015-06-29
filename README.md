@@ -89,7 +89,7 @@ Some important third parties (like Facebook) apply URL escaping to query string 
 
 For security and diagnostic purposes, we sign all requests with the language and version of library used to generate the URL.
 
-This can be disabled by including `:`include_library_param: false` in the instantiation Hash parameter for `Imgix::Client`:
+This can be disabled by including `include_library_param: false` in the instantiation Hash parameter for `Imgix::Client`:
 
 ```ruby
 client = Imgix::Client.new({ include_library_param: false })
