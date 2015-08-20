@@ -78,6 +78,15 @@ class PathTest < Imgix::Test
     assert_equal "ixlib=rb-#{Imgix::VERSION}", URI(url).query
   end
 
+  def test_configure_library_param
+    library = "sinatra"
+    version = "1.0.0"
+    client = Imgix::Client.new(host: 'demo.imgix.net', library_param: library, library_version: version) # enabled by default
+    url = client.path('/images/demo.png').to_url
+
+    assert_equal "ixlib=#{library}-#{version}", URI(url).query
+  end
+
 private
 
   def client
