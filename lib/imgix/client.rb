@@ -4,14 +4,14 @@ require 'zlib'
 
 module Imgix
   class Client
-    DEFAULTS = { secure: false, shard_strategy: :crc }
+    DEFAULTS = { use_https: true, shard_strategy: :crc }
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
       @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
-      @token = options[:token]
-      @secure = options[:secure]
+      @secure_url_token = options[:secure_url_token]
+      @use_https = options[:use_https]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
       @include_library_param = options.fetch(:include_library_param, true)
       @library = options.fetch(:library_param, "rb")
@@ -19,13 +19,13 @@ module Imgix
     end
 
     def path(path)
-      p = Path.new(prefix(path), @token, path)
+      p = Path.new(prefix(path), @secure_url_token, path)
       p.ixlib("#{@library}-#{@version}") if @include_library_param
       p
     end
 
     def prefix(path)
-      "#{@secure ? 'https' : 'http'}://#{get_host(path)}"
+      "#{@use_https ? 'https' : 'http'}://#{get_host(path)}"
     end
 
     def get_host(path)
