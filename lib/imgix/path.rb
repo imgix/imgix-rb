@@ -1,5 +1,5 @@
 require 'cgi/util'
-require 'imgix/param_helpers'
+require_relative 'param_helpers'
 
 module Imgix
   class Path
@@ -37,17 +37,14 @@ module Imgix
       @path = "/#{@path}" if @path[0] != '/'
     end
 
-    def to_url(opts={})
+    def to_url(opts = {})
       prev_options = @options.dup
       @options.merge!(opts)
 
       url = @prefix + path_and_params
 
       if @secure_url_token
-        # Weird bug in imgix. If there are no params, you still have
-        # to put & in front of the signature or else you will get
-        # unauthorized.
-        url += "&s=#{signature}"
+        url += (has_query? ? '&' : '?') + "s=#{signature}"
       end
 
       @options = prev_options
@@ -85,15 +82,19 @@ module Imgix
     private
 
     def signature
-      Digest::MD5.hexdigest(@secure_url_token + @path + '?' + query)
+      Digest::MD5.hexdigest(@secure_url_token + path_and_params)
     end
 
     def path_and_params
-      "#{@path}?#{query}"
+      has_query? ? "#{@path}?#{query}" : @path
     end
 
     def query
       @options.map { |k, v| "#{k.to_s}=#{CGI.escape(v.to_s)}" }.join('&')
+    end
+
+    def has_query?
+      query.length > 0
     end
   end
 end

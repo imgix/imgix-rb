@@ -3,10 +3,10 @@ require 'test_helper'
 class PathTest < Imgix::Test
   def test_creating_a_path
     path = client.path('/images/demo.png')
-    assert_equal 'https://demo.imgix.net/images/demo.png?&s=3c1d676d4daf28c044dd83e8548f834a', path.to_url
+    assert_equal 'https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4', path.to_url
 
     path = client.path('images/demo.png')
-    assert_equal 'https://demo.imgix.net/images/demo.png?&s=3c1d676d4daf28c044dd83e8548f834a', path.to_url
+    assert_equal 'https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4', path.to_url
   end
 
   def test_signing_path_with_param
@@ -54,7 +54,7 @@ class PathTest < Imgix::Test
 
   def test_token_is_optional
     client = Imgix::Client.new(host: 'demo.imgix.net', include_library_param: false)
-    url = 'https://demo.imgix.net/images/demo.png?'
+    url = 'https://demo.imgix.net/images/demo.png'
     path = client.path('/images/demo.png')
 
     assert_equal url, path.to_url
@@ -62,7 +62,7 @@ class PathTest < Imgix::Test
 
   def test_https_is_optional
     client = Imgix::Client.new(host: 'demo.imgix.net', include_library_param: false, use_https: false)
-    url = 'http://demo.imgix.net/images/demo.png?'
+    url = 'http://demo.imgix.net/images/demo.png'
     path = client.path('/images/demo.png')
 
     assert_equal url, path.to_url
@@ -71,12 +71,12 @@ class PathTest < Imgix::Test
   def test_full_url
     path = 'https://google.com/cats.gif'
 
-    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?&s=4c3ff935011f0d2251800e6a2bb68ee5", client.path(path).to_url
+    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?s=e686099fbba86fc2b8141d3c1ff60605", client.path(path).to_url
   end
 
   def test_full_url_with_a_space
     path = 'https://my-demo-site.com/files/133467012/avatar icon.png'
-    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?&s=8943817bed50811f6ceedd8f4b84169d", client.path(path).to_url
+    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?s=35ca40e2e7b6bd208be2c4f7073f658e", client.path(path).to_url
   end
 
   def test_include_library_param
