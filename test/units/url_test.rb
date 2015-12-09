@@ -6,7 +6,7 @@ class UrlTest < Imgix::Test
   def test_signing_with_no_params
     path = client.path(DEMO_IMAGE_PATH)
 
-    assert_equal 'https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4tow', path.to_url
+    assert_equal 'https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4', path.to_url
   end
 
   def test_signing_with_one
