@@ -27,9 +27,9 @@ module Imgix
       quality:         :q
     }
 
-    def initialize(prefix, token, path = '/')
+    def initialize(prefix, secure_url_token, path = '/')
       @prefix = prefix
-      @token = token
+      @secure_url_token = secure_url_token
       @path = path
       @options = {}
 
@@ -43,7 +43,7 @@ module Imgix
 
       url = @prefix + path_and_params
 
-      if @token
+      if @secure_url_token
         # Weird bug in imgix. If there are no params, you still have
         # to put & in front of the signature or else you will get
         # unauthorized.
@@ -85,7 +85,7 @@ module Imgix
     private
 
     def signature
-      Digest::MD5.hexdigest(@token + @path + '?' + query)
+      Digest::MD5.hexdigest(@secure_url_token + @path + '?' + query)
     end
 
     def path_and_params

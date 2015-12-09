@@ -23,12 +23,12 @@ Or install it yourself as:
 
 ## Usage
 
-Simply initialize a client with a host and your token. You can optionally generate secure URLs.
+Simply initialize a client with a `:host` or `:hosts` and your `:secure_url_token`. By default, HTTPS URLs are generated, but you can toggle that by passing `use_https: false`.
 
 Call `Imgix::Client#path` with the resource path to get an `Imgix::Path` object back. You can then manipulate the path parameters, and call `Imgix#Path#to_url` when you're done.
 
 ``` ruby
-client = Imgix::Client.new(host: 'your-subdomain.imgix.net', token: 'your-token', secure: true)
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
 
 client.path('/images/demo.png').to_url(w: 200)
 #=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
