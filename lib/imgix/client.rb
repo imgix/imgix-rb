@@ -28,17 +28,6 @@ module Imgix
       "#{@secure ? 'https' : 'http'}://#{get_host(path)}"
     end
 
-    def sign_path(path)
-      uri = Addressable::URI.parse(path)
-      query = (uri.query || '')
-      path = "#{@secure ? 'https' : 'http'}://#{get_host(path)}#{uri.path}?#{query}"
-      if @token
-        signature = Digest::MD5.hexdigest(@token + uri.path + '?' + query)
-        path += "&s=#{signature}"
-      end
-      return path
-    end
-
     def get_host(path)
       host = host_for_crc(path) if @shard_strategy == :crc
       host = host_for_cycle if @shard_strategy == :cycle

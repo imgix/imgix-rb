@@ -25,16 +25,13 @@ Or install it yourself as:
 
 Simply initialize a client with a host and your token. You can optionally generate secure URLs.
 
-Now, if you have the URL ready to go, you can call `sign_path` to get the Imgix URL back. If you would like to manipulate the path parameters you can call `path` with the resource path to get an Imgix::Path object back.
+Call `Imgix::Client#path` with the resource path to get an `Imgix::Path` object back. You can then manipulate the path parameters, and call `Imgix#Path#to_url` when you're done.
 
 ``` ruby
 client = Imgix::Client.new(host: 'your-subdomain.imgix.net', token: 'your-token', secure: true)
 
-client.sign_path('/images/demo.png?w=200')
-#=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
-
-# OR
 client.path('/images/demo.png').to_url(w: 200)
+#=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
 
 # OR
 path = client.path('/images/demo.png')
