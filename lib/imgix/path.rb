@@ -1,5 +1,5 @@
 require 'cgi/util'
-require_relative 'param_helpers'
+require 'imgix/param_helpers'
 
 module Imgix
   class Path
