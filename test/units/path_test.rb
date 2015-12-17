@@ -48,6 +48,13 @@ class PathTest < Imgix::Test
     assert_equal url, path.markalign('middle', 'center').to_url
   end
 
+  def test_path_params_with_spaces
+    url = 'https://demo.imgix.net/images/demo.png?txt=Hello%20World&s=c4d702123e15b88495be582c133cc9ed'
+    path = client.path('/images/demo.png')
+
+    assert_equal url, path.to_url(txt: 'Hello World')
+  end
+
   def test_host_is_required
     assert_raises(ArgumentError) {Imgix::Client.new}
   end
