@@ -1,5 +1,4 @@
 require 'cgi/util'
-require 'addressable/uri'
 require 'imgix/param_helpers'
 
 module Imgix
