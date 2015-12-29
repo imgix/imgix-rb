@@ -72,7 +72,7 @@ client = Imgix::Client.new(hosts: ['your-subdomain-1.imgix.net',
 
 When the imgix api requires multiple parameters you have to use the method rather than an accessor.
 
-For example to use the [noise reduction](http://www.imgix.com/docs/urlapi/enhance#nr-nrs) options:
+For example to use the noise reduction:
 
 ``` ruby
 path.noise_reduction(50,50)
