@@ -31,7 +31,7 @@ module Imgix
     def get_host(path)
       host = host_for_crc(path) if @shard_strategy == :crc
       host = host_for_cycle if @shard_strategy == :cycle
-      host.gsub("http://","").gsub("https://","")
+      host.gsub("http://","").gsub("https://","").chomp("/")
     end
 
     def host_for_crc(path)
