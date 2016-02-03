@@ -50,6 +50,15 @@ class DomainsTest < Imgix::Test
     assert_equal 'https://demos-1.imgix.net/bridge.png?s=0233fd6de51f20f11cff6b452b7a9a05', path.to_url
   end
 
+  def test_strips_out_trailing_slash
+    client = Imgix::Client.new(host: "http://demos-1.imgix.net/",
+      secure_url_token: '10adc394',
+      include_library_param: false)
+
+    path = client.path('/bridge.png')
+    assert_equal 'https://demos-1.imgix.net/bridge.png?s=0233fd6de51f20f11cff6b452b7a9a05', path.to_url
+  end
+
   def test_with_full_paths
     client = Imgix::Client.new(hosts: [
         "demos-1.imgix.net",
