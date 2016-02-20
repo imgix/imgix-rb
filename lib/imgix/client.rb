@@ -1,5 +1,4 @@
 require 'digest'
-require 'addressable/uri'
 require 'zlib'
 
 module Imgix

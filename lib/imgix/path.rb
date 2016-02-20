@@ -90,7 +90,7 @@ module Imgix
     end
 
     def query
-      @options.map { |k, v| "#{k.to_s}=#{CGI.escape(v.to_s)}" }.join('&')
+      @options.map { |k, v| "#{k.to_s}=#{CGI.escape(v.to_s).gsub('+', '%20')}" }.join('&')
     end
 
     def has_query?
