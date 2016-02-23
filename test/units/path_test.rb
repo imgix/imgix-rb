@@ -48,6 +48,30 @@ class PathTest < Imgix::Test
     assert_equal url, path.markalign('middle', 'center').to_url
   end
 
+  def test_param_keys_are_escaped
+    ix_url = unsigned_client.path('demo.png').to_url({
+      :'hello world' => 'interesting'
+    })
+
+    assert_equal "https://demo.imgix.net/demo.png?hello+world=interesting", ix_url
+  end
+
+  def test_param_values_are_escaped
+    ix_url = unsigned_client.path('demo.png').to_url({
+      hello_world: '/foo"><script>alert("hacked")</script><'
+    })
+
+    assert_equal "https://demo.imgix.net/demo.png?hello_world=%2Ffoo%22%3E%3Cscript%3Ealert%28%22hacked%22%29%3C%2Fscript%3E%3C", ix_url
+  end
+
+  def test_base64_param_variants_are_base64_encoded
+    ix_url = unsigned_client.path('~text').to_url({
+      txt64: 'I cannøt belîév∑ it wors! 😱'
+    })
+
+    assert_equal "https://demo.imgix.net/~text?txt64=SSBjYW5uw7h0IGJlbMOuw6l24oiRIGl0IHdvcu-jv3MhIPCfmLE", ix_url
+  end
+
   def test_host_is_required
     assert_raises(ArgumentError) {Imgix::Client.new}
   end
@@ -96,8 +120,11 @@ class PathTest < Imgix::Test
   end
 
 private
-
   def client
     @client ||= Imgix::Client.new(host: 'demo.imgix.net', secure_url_token: '10adc394', include_library_param: false)
+  end
+
+  def unsigned_client
+    @client ||= Imgix::Client.new(host: 'demo.imgix.net', include_library_param: false)
   end
 end

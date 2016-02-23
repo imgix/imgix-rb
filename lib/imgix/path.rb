@@ -1,3 +1,4 @@
+require 'base64'
 require 'cgi/util'
 require 'imgix/param_helpers'
 
@@ -90,7 +91,16 @@ module Imgix
     end
 
     def query
-      @options.map { |k, v| "#{k.to_s}=#{CGI.escape(v.to_s)}" }.join('&')
+      @options.map do |key, val|
+        escaped_key = CGI.escape(key.to_s)
+
+        if escaped_key.end_with? '64'
+          base64_encoded_val = Base64.urlsafe_encode64(val.to_s).delete('=')
+          "#{escaped_key}=#{base64_encoded_val}"
+        else
+          "#{escaped_key}=#{CGI.escape(val.to_s)}"
+        end
+      end.join('&')
     end
 
     def has_query?

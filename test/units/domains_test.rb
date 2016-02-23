@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class DomainsTest < Imgix::Test
-
   def test_deterministically_choosing_a_path
     client = Imgix::Client.new(hosts: [
         "demos-1.imgix.net",
