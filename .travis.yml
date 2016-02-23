@@ -3,7 +3,6 @@ bundler_args: --without development
 before_install:
   - gem install bundler
   - rvm get head
-  - rvm use jruby-9.0.5.0 --install
 rvm:
   - 2.3.0
   - 2.2.4
