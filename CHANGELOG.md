@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - February 24, 2016
+
+* Added automatic Base64 encoding for all Base64 variant parameters.
+* Properly encoding all keys and values output by `Imgix::Path`.
+* Better URL encoding for spaces, with `ERB::Util.url_encode`.
+* Normalize trailing `/` in passed hosts.
+
 ## [1.0.0] - December 9, 2015
 ### Changed
 - Removed `Client#sign_path` to provide a consistent method and code path for generating URLs. [#16](https://github.com/imgix/imgix-rb/issues/16)
