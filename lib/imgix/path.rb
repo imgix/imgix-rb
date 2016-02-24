@@ -1,5 +1,6 @@
 require 'base64'
 require 'cgi/util'
+require 'erb'
 require 'imgix/param_helpers'
 
 module Imgix
@@ -92,13 +93,13 @@ module Imgix
 
     def query
       @options.map do |key, val|
-        escaped_key = CGI.escape(key.to_s)
+        escaped_key = ERB::Util.url_encode(key.to_s)
 
         if escaped_key.end_with? '64'
           base64_encoded_val = Base64.urlsafe_encode64(val.to_s).delete('=')
           "#{escaped_key}=#{base64_encoded_val}"
         else
-          "#{escaped_key}=#{CGI.escape(val.to_s)}"
+          "#{escaped_key}=#{ERB::Util.url_encode(val.to_s)}"
         end
       end.join('&')
     end
