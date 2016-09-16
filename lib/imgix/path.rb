@@ -26,7 +26,8 @@ module Imgix
       watermark:       :mark,
       text:            :txt,
       format:          :fm,
-      quality:         :q
+      quality:         :q,
+      frame:           :f
     }
 
     def initialize(prefix, secure_url_token, path = '/')
