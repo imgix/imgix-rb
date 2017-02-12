@@ -41,7 +41,7 @@ module Imgix
     end
 
     def host_for_cycle
-      @hosts_cycle = @hosts.cycle unless @hosts_cycle
+      @hosts_cycle ||= @hosts.cycle
       @hosts_cycle.next
     end
 
