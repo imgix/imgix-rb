@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.1] - Apr 28, 2017
+
+* Replace CGI.escape with better spec conforming Addressable methods.
+* Make url path segment tests less self-fulfilling.
+
 ## [1.1.0] - February 24, 2016
 
 * Added automatic Base64 encoding for all Base64 variant parameters.

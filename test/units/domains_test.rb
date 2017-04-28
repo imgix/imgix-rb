@@ -68,7 +68,8 @@ class DomainsTest < Imgix::Test
       shard_strategy: :cycle,
       include_library_param: false)
 
-    path = 'https://google.com/cats.gif'
-    assert_equal "https://demos-1.imgix.net/#{CGI.escape(path)}?s=e686099fbba86fc2b8141d3c1ff60605", client.path(path).to_url
+    path = 'https://www.example.com/image.png'
+    path_escaped = 'https%3A%2F%2Fwww.example.com%2Fimage.png'
+    assert_equal "https://demos-1.imgix.net/#{path_escaped}?s=537aa674cbda9339e2b296705733119d", client.path(path).to_url
   end
 end

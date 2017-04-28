@@ -93,14 +93,24 @@ class PathTest < Imgix::Test
   end
 
   def test_full_url
-    path = 'https://google.com/cats.gif'
+    path = 'https://www.example.com/image.png'
+    path_escaped = 'https%3A%2F%2Fwww.example.com%2Fimage.png'
 
-    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?s=e686099fbba86fc2b8141d3c1ff60605", client.path(path).to_url
+    assert_equal "https://demo.imgix.net/#{path_escaped}?s=537aa674cbda9339e2b296705733119d", client.path(path).to_url
   end
 
   def test_full_url_with_a_space
-    path = 'https://my-demo-site.com/files/133467012/avatar icon.png'
-    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?s=35ca40e2e7b6bd208be2c4f7073f658e", client.path(path).to_url
+    path = 'https://www.example.com/an image.png'
+    path_escaped = 'https%3A%2F%2Fwww.example.com%2Fan%20image.png'
+
+    assert_equal "https://demo.imgix.net/#{path_escaped}?s=fc819de217963996b0ab75940bf9b8aa", client.path(path).to_url
+  end
+
+  def test_full_url_with_a_tilde
+    path = 'https://www.example.com/an~image.png'
+    path_escaped = 'https%3A%2F%2Fwww.example.com%2Fan~image.png'
+
+    assert_equal "https://demo.imgix.net/#{path_escaped}?s=3070bb156fedce7d5668746f0aff7edf", client.path(path).to_url
   end
 
   def test_include_library_param

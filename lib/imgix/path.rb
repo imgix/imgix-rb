@@ -1,5 +1,5 @@
+require 'addressable/template'
 require 'base64'
-require 'cgi/util'
 require 'erb'
 require 'imgix/param_helpers'
 
@@ -35,7 +35,9 @@ module Imgix
       @path = path
       @options = {}
 
-      @path = CGI.escape(@path) if /^https?/ =~ @path
+      if /^https?/ =~ @path
+        @path = Addressable::Template.new("/{segment}").expand({"segment" => @path}).to_s
+      end
       @path = "/#{@path}" if @path[0] != '/'
     end
 
