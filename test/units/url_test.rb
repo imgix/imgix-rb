@@ -3,7 +3,6 @@ require 'test_helper'
 class UrlTest < Imgix::Test
   DEMO_IMAGE_PATH = '/images/demo.png'
   DEMO_IMAGE_WITH_SPACE_PATH = '/images/demo with space.png'
-  DEMO_URL_PATH = 'https://google.com/images/demo.png'
 
   def test_signing_with_no_params
     path = client.path(DEMO_IMAGE_PATH)
@@ -28,13 +27,6 @@ class UrlTest < Imgix::Test
     path.width = 200
     path.height = 200
     assert_equal 'https://demo.imgix.net/images/demo.png?w=200&h=200&s=00b5cde5c7b8bca8618cb911da4ac379', path.to_url
-  end
-
-  def test_signing_with_full_url
-    path = client.path(DEMO_URL_PATH)
-    path.height = 200
-    path.width = 200
-    assert_equal 'https://demo.imgix.net/https%3A%2F%2Fgoogle.com%2Fimages%2Fdemo.png?h=200&w=200&s=77421a9daeab4d762e97d1c7e4601330', path.to_url
   end
 
   def test_signing_with_image_path_with_spaces
