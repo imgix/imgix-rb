@@ -98,10 +98,9 @@ module Imgix
         escaped_key = ERB::Util.url_encode(key.to_s)
 
         if escaped_key.end_with? '64'
-          base64_encoded_val = Base64.urlsafe_encode64(val.to_s).delete('=')
-          "#{escaped_key}=#{base64_encoded_val}"
+          escaped_key << "=" << Base64.urlsafe_encode64(val.to_s).delete('=')
         else
-          "#{escaped_key}=#{ERB::Util.url_encode(val.to_s)}"
+          escaped_key << "=" << ERB::Util.url_encode(val.to_s)
         end
       end.join('&')
     end
