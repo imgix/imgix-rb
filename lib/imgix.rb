@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'imgix/version'
 require 'imgix/client'
 require 'imgix/path'

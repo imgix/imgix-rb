@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Imgix
   module ParamHelpers
     def rect(position)
