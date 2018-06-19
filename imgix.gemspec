@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Easily create and sign imgix URLs.'
   spec.summary       = 'Official Ruby Gem for easily creating and signing imgix URLs.'
   spec.homepage      = 'https://github.com/imgix/imgix-rb'
-  spec.license       = 'MIT'
+  spec.license       = 'BSD-2-Clause'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
