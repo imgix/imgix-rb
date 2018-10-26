@@ -84,12 +84,12 @@ path.noise_reduction(50,50)
 If you need to remove or update an image on imgix, you can purge it from the cache with the following method.
 
 ``` ruby
-client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', api_token: 'your-token')
 
 client.purge('/images/demo.png')
 ```
 
-Purge accepts both a path or url (pass assumes the host is correct).  secure_url_token is required.
+A valid api_token is required.
 
 ## URL encoding and signed ImgIX URLs
 

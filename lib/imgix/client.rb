@@ -13,6 +13,7 @@ module Imgix
 
       @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
       @secure_url_token = options[:secure_url_token]
+      @api_token = options[:api_token]
       @use_https = options[:use_https]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
       @include_library_param = options.fetch(:include_library_param, true)
@@ -26,12 +27,13 @@ module Imgix
       p
     end
 
-    def purge(url)
-      raise "Authentication token required" unless !!(@secure_url_token)
-      url = prefix(url)+url unless url[0..3] == "http"
+    def purge(path)
+      raise "Authentication token required" unless !!(@api_token)
+      url = prefix(path)+path
       uri = URI.parse('https://api.imgix.com/v2/image/purger')
       req = Net::HTTP::Post.new(uri.path)
-      req.basic_auth @secure_url_token, ''
+      req.initialize_http_header({"User-Agent" => "imgix #{@library}-#{@version}"})  if @include_library_param
+      req.basic_auth @api_token, ''
       req.set_form_data({'url' => url})
       sock = Net::HTTP.new(uri.host, uri.port)
       sock.use_ssl = true
