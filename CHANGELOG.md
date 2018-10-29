@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0] - October 29, 2018
+
+* Added `Client#purge` method to allow purging assets from our cache [#37](https://github.com/imgix/imgix-rb/pull/37)
+
 ## [1.1.0] - February 24, 2016
 
 * Added automatic Base64 encoding for all Base64 variant parameters.
