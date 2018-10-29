@@ -1,6 +1,8 @@
 require 'digest'
 require 'addressable/uri'
 require 'zlib'
+require 'net/http'
+require 'uri'
 
 module Imgix
   class Client
@@ -11,6 +13,7 @@ module Imgix
 
       @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
       @secure_url_token = options[:secure_url_token]
+      @api_key = options[:api_key]
       @use_https = options[:use_https]
       @shard_strategy = options[:shard_strategy] and validate_strategy!
       @include_library_param = options.fetch(:include_library_param, true)
@@ -22,6 +25,19 @@ module Imgix
       p = Path.new(prefix(path), @secure_url_token, path)
       p.ixlib("#{@library}-#{@version}") if @include_library_param
       p
+    end
+
+    def purge(path)
+      raise "Authentication token required" unless !!(@api_key)
+      url = prefix(path)+path
+      uri = URI.parse('https://api.imgix.com/v2/image/purger')
+      req = Net::HTTP::Post.new(uri.path, {"User-Agent" => "imgix #{@library}-#{@version}"})
+      req.basic_auth @api_key, ''
+      req.set_form_data({'url' => url})
+      sock = Net::HTTP.new(uri.host, uri.port)
+      sock.use_ssl = true
+      res = sock.start {|http| http.request(req) }
+      res
     end
 
     def prefix(path)

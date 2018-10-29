@@ -78,6 +78,18 @@ For example to use the noise reduction:
 path.noise_reduction(50,50)
 ```
 
+
+## Purge Cache
+
+If you need to remove or update an image on imgix, you can purge it from our cache by initializing a client with your api_key, then calling Imgix::Client#purge with the resource path.
+
+```ruby
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', api_key: 'your-key')
+client.purge('/images/demo.png')
+```
+
+To learn more about purging assets with imgix, [see our docs](https://docs.imgix.com/setup/purging-images).
+
 ## URL encoding and signed ImgIX URLs
 
 Some important third parties (like Facebook) apply URL escaping to query string components, which can cause correctly signed ImgIX URLs to to be transformed into incorrectly signed ones. We URL encode the query part of the URL before signing, so you don't have to worry about this.

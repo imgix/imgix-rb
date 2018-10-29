@@ -5,4 +5,6 @@ gemspec
 
 gem 'rake'
 gem 'minitest'
+gem 'webmock'
 gem 'addressable'
+gem 'http'
