@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.2] - November 14, 2018
+
+* Improvements to memory usage [#35](https://github.com/imgix/imgix-rb/pull/35)
+
 ## [1.2.1] - November 5, 2018
 
 * Removed unused `HTTP` dependency [#38](https://github.com/imgix/imgix-rb/pull/37)
