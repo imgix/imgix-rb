@@ -4,19 +4,14 @@ before_install:
   - gem install bundler -v '< 2'
   - RUBY_VERS="$(bc -l<<<$(ruby -v | cut -d' ' -f 2 | cut -d'.' -f 1,2))"
   - LATEST_VERS=2.3
-matrix:
-  include:
-    - rvm: 2.3.0
-      env: NEEDS_UPGRADE = true
-    - rvm: 2.2.4
-      env: NEEDS_UPGRADE = false
-    - rvm: 2.1.8
-      env: NEEDS_UPGRADE = false
-    - rvm: jruby-9.0.5.0
-      env: NEEDS_UPGRADE = false
-    - rvm: rbx-3.107
-      env: NEEDS_UPGRADE = true
+rvm:
+  - 2.3.0
+  - 2.2.4
+  - 2.1.8
+  - jruby-9.0.5.0
+  - rbx-3.107
 before_script:
   - echo $RUBY_VERS 
   - echo $LATEST_VERS
-  - if (( $(echo "$RUBY_VERS > $LATEST_VERS" | bc -l) )); then bundle update --bundler; fi
+  - if (( $(echo "$RUBY_VERS >= $LATEST_VERS" | bc -l) )); then echo $(bundle update --bundler); fi
+  - bundler --version
