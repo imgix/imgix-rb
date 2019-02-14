@@ -3,7 +3,7 @@ bundler_args: --without development
 before_install:
   - gem install bundler -v '< 2'
   - RUBY_VERS="$(bc -l<<<$(ruby -v | cut -d' ' -f 2 | cut -d'.' -f 1,2))"
-  - LATEST_VERS=2.3.0
+  - LATEST_VERS=2.3
 matrix:
   include:
     - rvm: 2.3.0
