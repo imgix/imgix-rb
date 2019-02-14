@@ -2,6 +2,8 @@ language: ruby
 bundler_args: --without development
 before_install:
   - gem install bundler -v '< 2'
+  - RUBY_VERS="$(bc -l<<<$(ruby -v | cut -d' ' -f 2 | cut -d'.' -f 1,2))"
+  - LATEST_VERS=2.3.0
 matrix:
   include:
     - rvm: 2.3.0
@@ -15,5 +17,6 @@ matrix:
     - rvm: rbx-3.107
       env: NEEDS_UPGRADE = true
 before_script:
-  - echo $NEEDS_UPGRADE  
-  - if $NEEDS_UPGRADE == true; then bundle update --bundler; fi
+  - echo $RUBY_VERS 
+  - echo $LATEST_VERS
+  - if (( $(echo "$RUBY_VERS > $LATEST_VERS" | bc -l) )); then bundle update --bundler; fi
