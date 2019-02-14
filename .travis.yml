@@ -6,8 +6,7 @@ before_install:
   - LATEST_VERS=2.3
   - echo $RUBY_VERS 
   - echo $LATEST_VERS
-  - if (( $(echo "$RUBY_VERS >= $LATEST_VERS" | bc -l) )); then echo $(bundle update --bundler); fi
-  - bundler --version
+  - bundle version
 rvm:
   - 2.3.0
   - 2.2.4
@@ -15,4 +14,7 @@ rvm:
   - jruby-9.0.5.0
   - rbx-3.107
 script:
-  - bundler --version
+  - echo "Done"
+  - if (( $(echo "$RUBY_VERS >= $LATEST_VERS" | bc -l) )); then echo $(bundle update --bundler); fi
+  - bundle --version
+  - bundle exec rake
