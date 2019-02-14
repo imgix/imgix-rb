@@ -6,14 +6,13 @@ before_install:
   - echo $RUBY_VERS 
   - echo $LATEST_VERS
   - if (( $(echo "$RUBY_VERS >= $LATEST_VERS" | bc -l) )); then echo $(gem install bundler); else echo $(gem install bundler -v '< 2'); fi
-  - bundle version
+  - bundle --version
 rvm:
   - 2.3.0
   - 2.2.4
   - 2.1.8
   - jruby-9.0.5.0
   - rbx-3.107
-script:
+before_script:
   - echo "Done"
-  - bundle --version
-  - bundle exec rake
+  - cat Gemfile.lock | grep -A 1 "BUNDLED WITH"
