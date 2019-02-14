@@ -15,5 +15,5 @@ matrix:
     - rvm: rbx-3.107
       env: NEEDS_UPGRADE = true
 before_script:
-  - if env(NEEDS_UPGRADE) = true; bundle update --bundler; fi
+  - if env(NEEDS_UPGRADE) = true; then bundle update --bundler; fi
   
