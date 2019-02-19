@@ -1,8 +1,16 @@
 language: ruby
 bundler_args: --without development
 before_install:
-  - gem install bundler
-  - rvm get head
+  # Extracts the ruby version number
+  - RUBY_VERS="$(bc -l<<<$(ruby -v | cut -d' ' -f 2 | cut -d'.' -f 1,2))"
+  # Bundler 2.0 requires at least ruby vers 2.3.0
+  - LATEST_VERS=2.3
+  # Based on a given job's ruby version, install either
+  # Bundler 2.x or 1.17
+  - if (( $(echo "$RUBY_VERS >= $LATEST_VERS" | bc -l) ));
+      then echo $(gem install bundler); 
+      else echo $(gem install bundler -v '< 2'); 
+    fi
 rvm:
   - 2.3.0
   - 2.2.4
