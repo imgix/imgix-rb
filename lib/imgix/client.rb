@@ -49,7 +49,7 @@ module Imgix
     def get_host(path)
       host = host_for_crc(path) if @shard_strategy == :crc
       host = host_for_cycle if @shard_strategy == :cycle
-      host.gsub("http://","").gsub("https://","").chomp("/")
+      host
     end
 
     def host_for_crc(path)
@@ -74,6 +74,11 @@ module Imgix
     def validate_hosts!
       unless @hosts.length > 0
         raise ArgumentError, "The :host or :hosts option must be specified"
+      end
+      @hosts.each do |host|
+        if host.match(DOMAIN_REGEX) == nil
+          raise ArgumentError, "Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\"."
+        end
       end
     end
 

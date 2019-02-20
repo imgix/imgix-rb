@@ -42,24 +42,6 @@ class DomainsTest < Imgix::Test
     assert_equal 'https://demos-1.imgix.net/bridge.png?s=0233fd6de51f20f11cff6b452b7a9a05', path.to_url
   end
 
-  def test_strips_out_protocol
-    client = Imgix::Client.new(host: "http://demos-1.imgix.net",
-      secure_url_token: '10adc394',
-      include_library_param: false)
-
-    path = client.path('/bridge.png')
-    assert_equal 'https://demos-1.imgix.net/bridge.png?s=0233fd6de51f20f11cff6b452b7a9a05', path.to_url
-  end
-
-  def test_strips_out_trailing_slash
-    client = Imgix::Client.new(host: "http://demos-1.imgix.net/",
-      secure_url_token: '10adc394',
-      include_library_param: false)
-
-    path = client.path('/bridge.png')
-    assert_equal 'https://demos-1.imgix.net/bridge.png?s=0233fd6de51f20f11cff6b452b7a9a05', path.to_url
-  end
-
   def test_with_full_paths
     client = Imgix::Client.new(hosts: [
         "demos-1.imgix.net",
@@ -72,5 +54,17 @@ class DomainsTest < Imgix::Test
 
     path = 'https://google.com/cats.gif'
     assert_equal "https://demos-1.imgix.net/#{CGI.escape(path)}?s=e686099fbba86fc2b8141d3c1ff60605", client.path(path).to_url
+  end
+
+  def test_invalid_domain_append_slash
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: ["assets.imgix.net/"])}
+  end
+
+  def test_invalid_domain_prepend_scheme
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: ["https://assets.imgix.net"])}
+  end
+
+  def test_invalid_domain_append_dash
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: ["assets.imgix.net-"])}
   end
 end
