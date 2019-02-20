@@ -75,6 +75,11 @@ module Imgix
       unless @hosts.length > 0
         raise ArgumentError, "The :host or :hosts option must be specified"
       end
+      @hosts.each do |host|
+        unless host.match(DOMAIN_REGEX) != nil
+          raise ArgumentError, "Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\"."
+        end
+      end
     end
 
   end
