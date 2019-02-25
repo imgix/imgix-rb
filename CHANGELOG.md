@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0] - February 25, 2019
+
+* Add domain validation during Client initialization [#42](https://github.com/imgix/imgix-rb/pull/42)
+* Expand Travis CI config to include bundler v2.x [#41](https://github.com/imgix/imgix-rb/pull/41)
+
 ## [1.2.2] - November 14, 2018
 
 * Improvements to memory usage [#35](https://github.com/imgix/imgix-rb/pull/35)
