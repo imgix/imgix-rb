@@ -13,6 +13,7 @@ module Imgix
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
+      deprecate_warning!(options[:host],options[:hosts])
       @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
       @secure_url_token = options[:secure_url_token]
       @api_key = options[:api_key]
@@ -59,7 +60,9 @@ module Imgix
     end
 
     def host_for_cycle
-      @hosts_cycle = @hosts.cycle unless @hosts_cycle
+      if not defined? @hosts_cycle
+        @hosts_cycle = @hosts.cycle
+      end
       @hosts_cycle.next
     end
 
@@ -82,5 +85,11 @@ module Imgix
       end
     end
 
+    def deprecate_warning!(host, hosts)
+      has_many_domains = (host.kind_of?(Array) && host.length > 1 ) || (hosts.kind_of?(Array) && hosts.length > 1)
+      if has_many_domains
+        warn "Warning: Domain sharding has been deprecated and will be removed in the next major version."
+      end
+    end
   end
 end
