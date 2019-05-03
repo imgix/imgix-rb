@@ -48,7 +48,8 @@ path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
 
 
 ## Domain Sharded URLs
-**Warning: Domain Sharding has been deprecated and will be removed in the next major release**
+**Warning: Domain Sharding has been deprecated and will be removed in the next major release**<br>
+To find out more, see our [blog post](https://blog.imgix.com/2019/05/03/deprecating-domain-sharding) explaining the decision to remove this feature.
 
 Domain sharding enables you to spread image requests across multiple domains. This allows you to bypass the requests-per-host limits of browsers. We recommend 2-3 domain shards maximum if you are going to use domain sharding.
 
