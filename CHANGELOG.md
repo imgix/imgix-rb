@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0](https://github.com/imgix/imgix-rb/compare/2.0.0...2.1.0) - May 7, 2019
+
+* Deprecate domain sharding ([#43](https://github.com/imgix/imgix-rb/pull/43)) ([#45](https://github.com/imgix/imgix-rb/pull/45))
+
 ## [2.0.0] - February 25, 2019
 
 * Add domain validation during Client initialization [#42](https://github.com/imgix/imgix-rb/pull/42)
