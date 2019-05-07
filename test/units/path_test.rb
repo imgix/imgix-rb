@@ -121,13 +121,6 @@ class PathTest < Imgix::Test
     assert_equal "ixlib=#{library}-#{version}", URI(url).query
   end
 
-  def test_invalid_path_error
-    exception = assert_raises(ArgumentError){
-      client.path('demo.png?w=300')
-    }
-    assert_equal('Paths cannot be passed in with query parameters included. Use to_url() to append parameters during URL generation.', exception.message)
-  end
-
 private
   def client
     @client ||= Imgix::Client.new(host: 'demo.imgix.net', secure_url_token: '10adc394', include_library_param: false)

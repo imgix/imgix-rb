@@ -63,27 +63,19 @@ class DomainsTest < Imgix::Test
   end
 
   def test_invalid_domain_append_slash
-    exception = assert_raises(ArgumentError){
-      Imgix::Client.new(hosts: "assets.imgix.net/")
-    }
-    assert_equal("Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\".", exception.message)
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: "assets.imgix.net/")}
   end
 
   def test_invalid_domain_prepend_scheme
-    exception = assert_raises(ArgumentError){
-      Imgix::Client.new(hosts: "https://assets.imgix.net")
-    }
-    assert_equal("Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\".", exception.message)
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: "https://assets.imgix.net")}
   end
 
   def test_invalid_domain_append_dash
-    exception = assert_raises(ArgumentError){
-      Imgix::Client.new(hosts: "assets.imgix.net-")
-    }
-    assert_equal("Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\".", exception.message)
+    assert_raises(ArgumentError) {Imgix::Client.new(hosts: "assets.imgix.net-")}
   end
 
   def test_domain_sharding_deprecation_host
+
     assert_output(nil, "Warning: Domain sharding has been deprecated and will be removed in the next major version.\n"){
       Imgix::Client.new(host: ["assets1.imgix.net", "assets2.imgix.net"])
     }

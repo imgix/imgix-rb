@@ -37,7 +37,6 @@ module Imgix
       @path = path
       @options = {}
 
-      validate_path!
       @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != '/'
     end
@@ -108,12 +107,6 @@ module Imgix
 
     def has_query?
       query.length > 0
-    end
-
-    def validate_path!
-      if @path.match(/(\?)/)
-        raise ArgumentError, "Paths cannot be passed in with query parameters included. Use to_url() to append parameters during URL generation."
-      end
     end
   end
 end
