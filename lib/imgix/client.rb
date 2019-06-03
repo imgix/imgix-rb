@@ -2,23 +2,21 @@
 
 require 'digest'
 require 'addressable/uri'
-require 'zlib'
 require 'net/http'
 require 'uri'
 
 module Imgix
   class Client
-    DEFAULTS = { use_https: true, shard_strategy: :crc }
+    DEFAULTS = { use_https: true }
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      deprecate_warning!(options[:host],options[:hosts])
-      @hosts = Array(options[:host]) + Array(options[:hosts]) and validate_hosts!
+      @host = options[:host]
+      validate_host!
       @secure_url_token = options[:secure_url_token]
       @api_key = options[:api_key]
       @use_https = options[:use_https]
-      @shard_strategy = options[:shard_strategy] and validate_strategy!
       @include_library_param = options.fetch(:include_library_param, true)
       @library = options.fetch(:library_param, "rb")
       @version = options.fetch(:library_version, Imgix::VERSION)
@@ -44,52 +42,19 @@ module Imgix
     end
 
     def prefix(path)
-      "#{@use_https ? 'https' : 'http'}://#{get_host(path)}"
-    end
-
-    def get_host(path)
-      host = host_for_crc(path) if @shard_strategy == :crc
-      host = host_for_cycle if @shard_strategy == :cycle
-      host
-    end
-
-    def host_for_crc(path)
-      crc = Zlib.crc32(path)
-      index = crc % @hosts.length - 1
-      @hosts[index]
-    end
-
-    def host_for_cycle
-      if not defined? @hosts_cycle
-        @hosts_cycle = @hosts.cycle
-      end
-      @hosts_cycle.next
+      "#{@use_https ? 'https' : 'http'}://#{@host}"
     end
 
     private
 
-    def validate_strategy!
-      unless STRATEGIES.include?(@shard_strategy)
-        raise ArgumentError.new("#{@shard_strategy} is not supported")
+    def validate_host!
+      unless @host != nil
+        raise ArgumentError, "The :host option must be specified"
+      end
+      if @host.match(DOMAIN_REGEX) == nil
+        raise ArgumentError, "Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\"."
       end
     end
-
-    def validate_hosts!
-      unless @hosts.length > 0
-        raise ArgumentError, "The :host or :hosts option must be specified"
-      end
-      @hosts.each do |host|
-        if host.match(DOMAIN_REGEX) == nil
-          raise ArgumentError, "Domains must be passed in as fully-qualified domain names and should not include a protocol or any path element, i.e. \"example.imgix.net\"."
-        end
-      end
-    end
-
-    def deprecate_warning!(host, hosts)
-      has_many_domains = (host.kind_of?(Array) && host.length > 1 ) || (hosts.kind_of?(Array) && hosts.length > 1)
-      if has_many_domains
-        warn "Warning: Domain sharding has been deprecated and will be removed in the next major version."
-      end
-    end
+    
   end
 end

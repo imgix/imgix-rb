@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Simply initialize a client with a `:host` or `:hosts` and your `:secure_url_token`. By default, HTTPS URLs are generated, but you can toggle that by passing `use_https: false`.
+Simply initialize a client with a `:host` and your `:secure_url_token`. By default, HTTPS URLs are generated, but you can toggle that by passing `use_https: false`.
 
 Call `Imgix::Client#path` with the resource path to get an `Imgix::Path` object back. You can then manipulate the path parameters, and call `Imgix#Path#to_url` when you're done.
 
@@ -44,29 +44,6 @@ client.path('/images/demo.png').width(200).height(300).to_url
 # Some other tricks
 path.defaults.width(300).to_url # Resets parameters
 path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
-```
-
-
-## Domain Sharded URLs
-**Warning: Domain Sharding has been deprecated and will be removed in the next major release**<br>
-To find out more, see our [blog post](https://blog.imgix.com/2019/05/03/deprecating-domain-sharding) explaining the decision to remove this feature.
-
-Domain sharding enables you to spread image requests across multiple domains. This allows you to bypass the requests-per-host limits of browsers. We recommend 2-3 domain shards maximum if you are going to use domain sharding.
-
-In order to use domain sharding, you need to add multiple domains to your source. You then provide a list of these domains to a builder.
-
-
-``` ruby
-client = Imgix::Client.new(hosts: ['your-subdomain-1.imgix.net',
-  'your-subdomain-2.imgix.net'])
-```
-
-By default, shards are calculated using a checksum so that the image path always resolves to the same domain. This improves caching in the browser. However, you can also specify cycle that simply cycles through the domains as you request them.
-
-
-``` ruby
-client = Imgix::Client.new(hosts: ['your-subdomain-1.imgix.net',
-  'your-subdomain-2.imgix.net'], shard_strategy: :cycle))
 ```
 
 
@@ -103,7 +80,7 @@ For security and diagnostic purposes, we sign all requests with the language and
 This can be disabled by including `include_library_param: false` in the instantiation Hash parameter for `Imgix::Client`:
 
 ```ruby
-client = Imgix::Client.new({ include_library_param: false })
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', include_library_param: false )
 ```
 
 ## Contributing
