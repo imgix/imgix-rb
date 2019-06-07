@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0](https://github.com/imgix/imgix-rb/compare/2.1.0...3.0.0) - June 7, 2019
+
+*  fix: remove deprecated domain sharding functionality ([#46](https://github.com/imgix/imgix-rb/pull/46))
+
 ## [2.1.0](https://github.com/imgix/imgix-rb/compare/2.0.0...2.1.0) - May 7, 2019
 
 * Deprecate domain sharding ([#43](https://github.com/imgix/imgix-rb/pull/43)) ([#45](https://github.com/imgix/imgix-rb/pull/45))
