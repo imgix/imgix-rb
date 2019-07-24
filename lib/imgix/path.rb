@@ -39,6 +39,7 @@ module Imgix
 
       @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != '/'
+      @target_widths = TARGET_WIDTHS.call
     end
 
     def to_url(opts = {})
@@ -83,6 +84,28 @@ module Imgix
       end
     end
 
+    def to_srcset(params = {})
+      @options.merge!(params)
+      width = @options['w'.to_sym]
+      height = @options['h'.to_sym]
+      aspect_ratio = @options['ar'.to_sym]
+
+      if aspect_ratio 
+        if !aspect_ratio.is_a?(String)
+          raise ArgumentError, "The \'ar\' parameter must be passed a String value"
+        end
+        if aspect_ratio.match(/^\d+(\.\d+)?:\d+(\.\d+)?$/) == nil
+          raise ArgumentError, "The \'ar\' parameter key must follow the format w:h"
+        end
+      end
+
+      if ((width && height) || (width && aspectRatio) || (height && aspectRatio))
+        build_dpr_srcset(@options)
+      else
+        build_srcset_pairs(@options)
+      end
+    end
+    
     private
 
     def signature
@@ -107,6 +130,29 @@ module Imgix
 
     def has_query?
       query.length > 0
+    end
+
+    def build_srcset_pairs(params = {})
+      srcset = ''
+      for width in @target_widths do
+        currentParams = params || {}
+        currentParams['w'] = width
+        srcset += "#{to_url(currentParams)} #{width}w,\n"
+      end
+
+      return srcset[0..-3]
+    end
+
+    def build_dpr_srcset(params = {})
+      srcset = ''
+      target_ratios = [1,2,3,4,5]
+      url = to_url(params)
+
+      for ratio in target_ratios do
+        srcset += "#{url} #{ratio}x,\n"
+      end
+
+      return srcset[0..-3]
     end
   end
 end
