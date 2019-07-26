@@ -198,7 +198,7 @@ module SrcsetTest
     class SrcsetGivenAspectRatioAndHeight < Imgix::Test
         def test_srcset_in_dpr_form
             device_pixel_ratio = 1
-            # puts srcset
+
             srcset.split(',').map { |src|
                 ratio = src.split(' ')[1]
                 assert_equal ("#{device_pixel_ratio}x"), ratio
