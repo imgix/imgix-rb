@@ -89,6 +89,7 @@ module Imgix
       width = @options['w'.to_sym]
       height = @options['h'.to_sym]
       aspect_ratio = @options['ar'.to_sym]
+      @options.delete('dpr'.to_sym)
 
       if aspect_ratio 
         if !aspect_ratio.is_a?(String)
@@ -99,7 +100,7 @@ module Imgix
         end
       end
 
-      if ((width && height) || (width && aspectRatio) || (height && aspectRatio))
+      if ((width) || (height && aspect_ratio))
         build_dpr_srcset(@options)
       else
         build_srcset_pairs(@options)
