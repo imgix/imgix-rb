@@ -46,6 +46,48 @@ path.defaults.width(300).to_url # Resets parameters
 path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
 ```
 
+## Srcset Generation
+
+The imgix gem allows for generation of custom `srcset` attributes, which can be invoked through `Imgix::Path#to_srcset`. By default, the `srcset` generated will allow for responsive size switching by building a menu of image-width mappings.
+
+```rb
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
+path = client.path('/images/demo.png')
+
+srcset = path.to_srcset
+```
+
+Will produce the following attribute value, which can then be served to the client:
+
+```html
+https://your-subdomain.imgix.net/images/demo.png?w=100&s=efb3e4ae8eaa1884357f40510b11787c 100w,
+https://your-subdomain.imgix.net/images/demo.png?w=116&s=1417ebeaaaecff39533408cb44893eda 116w,
+https://your-subdomain.imgix.net/images/demo.png?w=134&s=4e45e67c087df930b9ddc8cf5be869d0 134w,
+                                            ...
+https://your-subdomain.imgix.net/images/demo.png?w=7400&s=a5dd7dda1dbac613f0475f1ffd90ef79 7400w,
+https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce3412b64a3452 8192w
+```
+
+In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio provided, a different `srcset` will be generated for a fixed-size image instead.
+
+```rb
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
+path = client.path('/images/demo.png')
+
+srcset = path.to_srcset(h:800, ar:'3:2')
+```
+
+Will produce the following attribute value:
+
+```html
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 1x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 2x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 3x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 4x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 5x
+```
+
+For more information to better understand `srcset`, we highly recommend [Eric Portis' "Srcset and sizes" article](https://ericportis.com/posts/2014/srcset-sizes/) which goes into depth about the subject.
 
 ## Multiple Parameters
 
