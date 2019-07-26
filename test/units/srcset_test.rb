@@ -3,25 +3,6 @@ require 'test_helper'
 module SrcsetTest
 
     class SrcsetDefault < Imgix::Test
-        def test_srcset_removes_dpr
-            srcset = path.to_srcset({dpr:1})
-            srcset.split(',').map { |src|
-                assert_equal (src.include?'dpr='), false
-            }
-        end
-
-        def test_errors_when_ar_format_incorrect
-            assert_raises(ArgumentError) { 
-                path.to_srcset({ar:'3x2'})
-            }
-        end
-
-        def test_errors_when_ar_non_string
-            assert_raises(ArgumentError) { 
-                path.to_srcset({ar:2.5})
-            }
-        end
-
         def test_no_parameters
             srcset = path.to_srcset()
             expected_number_of_pairs = 31
