@@ -69,6 +69,12 @@ module SrcsetTest
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
 
+        def test_srcset_respects_height_parameter
+            srcset.split(',').map { |src|
+                assert_includes src, 'h='
+            }
+        end
+
         def test_srcset_within_bounds
             min, *max = srcset.split(',')
 

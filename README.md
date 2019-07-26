@@ -48,7 +48,7 @@ path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
 
 ## Srcset Generation
 
-The imgix gem allows for generation of custom `srcset` attributes, which can be invoked through `Imgix::Path#to_srcset`. By default, the `srcset` generated will allow for responsive size switching by building a menu of image-width mappings.
+The imgix gem allows for generation of custom `srcset` attributes, which can be invoked through `Imgix::Path#to_srcset`. By default, the `srcset` generated will allow for responsive size switching by building a list of image-width mappings.
 
 ```rb
 client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
