@@ -120,7 +120,7 @@ module SrcsetTest
         end
 
         def test_srcset_signs_urls
-            expected_signature = 'b95cfd915f4a198442bff4ce5befe5b8'
+            expected_signature = 'fb081a45c449b28f69e012d474943df3'
 
             srcset.split(',').map { |src|
                 url = src.split(' ')[0]
@@ -133,7 +133,7 @@ module SrcsetTest
 
         private
             def srcset
-                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg')
+                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100,h:100)
             end
     end
 
