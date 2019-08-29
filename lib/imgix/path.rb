@@ -126,9 +126,9 @@ module Imgix
     def build_srcset_pairs(params = {})
       srcset = ''
       for width in @target_widths do
-        currentParams = params || {}
-        currentParams['w'] = width
-        srcset += "#{to_url(currentParams)} #{width}w,\n"
+        current_params = params || {}
+        current_params['w'] = width
+        srcset += "#{to_url(current_params)} #{width}w,\n"
       end
 
       return srcset[0..-3]
@@ -137,10 +137,11 @@ module Imgix
     def build_dpr_srcset(params = {})
       srcset = ''
       target_ratios = [1,2,3,4,5]
-      url = to_url(params)
 
       for ratio in target_ratios do
-        srcset += "#{url} #{ratio}x,\n"
+        current_params = params
+        current_params['dpr'] = ratio
+        srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 
       return srcset[0..-3]
