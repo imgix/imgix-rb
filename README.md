@@ -74,7 +74,7 @@ In cases where enough information is provided about an image's dimensions, `to_s
 client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
 path = client.path('/images/demo.png')
 
-srcset = path.to_srcset(h:800, ar:'3:2')
+srcset = path.to_srcset(h:800, ar:'3:2', fit:'crop')
 ```
 
 Will produce the following attribute value:
