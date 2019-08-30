@@ -1,3 +1,4 @@
+dist: trusty
 language: ruby
 bundler_args: --without development
 rvm:
@@ -5,4 +6,4 @@ rvm:
   - 2.2.4
   - 2.1.8
   - jruby
-  - rbx
+  - rbx-3
