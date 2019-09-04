@@ -1,7 +1,9 @@
+env: trusty
 language: ruby
 bundler_args: --without development
 rvm:
   - 2.3.0
   - 2.2.4
   - 2.1.8
-  - jruby
+  - jruby-9.0.5.0
+  - rbx-3.107
