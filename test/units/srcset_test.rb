@@ -56,8 +56,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -134,8 +134,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -178,8 +178,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -250,8 +250,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -294,8 +294,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
