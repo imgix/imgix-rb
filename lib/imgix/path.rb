@@ -128,25 +128,24 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(params = {})
+    def build_srcset_pairs(params)
       srcset = ''
+
       for width in @target_widths do
-        current_params = params
-        current_params['w'.to_sym] = width
-        srcset += "#{to_url(current_params)} #{width}w,\n"
+        params['w'.to_sym] = width
+        srcset += "#{to_url(params)} #{width}w,\n"
       end
 
       return srcset[0..-3]
     end
 
-    def build_dpr_srcset(params = {})
+    def build_dpr_srcset(params)
       srcset = ''
       target_ratios = [1,2,3,4,5]
 
       for ratio in target_ratios do
-        current_params = params
-        current_params['dpr'.to_sym] = ratio
-        srcset += "#{to_url(current_params)} #{ratio}x,\n"
+        params['dpr'.to_sym] = ratio
+        srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 
       return srcset[0..-3]
