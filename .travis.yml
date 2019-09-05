@@ -1,3 +1,4 @@
+dist: trusty
 language: ruby
 bundler_args: --without development
 rvm:
