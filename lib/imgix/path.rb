@@ -85,16 +85,21 @@ module Imgix
     end
 
     def to_srcset(params = {})
+      prev_options = @options.dup
       @options.merge!(params)
+
       width = @options['w'.to_sym]
       height = @options['h'.to_sym]
       aspect_ratio = @options['ar'.to_sym]
 
       if ((width) || (height && aspect_ratio))
-        build_dpr_srcset(@options)
+        srcset = build_dpr_srcset(@options)
       else
-        build_srcset_pairs(@options)
+        srcset = build_srcset_pairs(@options)
       end
+
+      @options = prev_options
+      return srcset
     end
     
     private
@@ -123,24 +128,24 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(params = {})
+    def build_srcset_pairs(params)
       srcset = ''
+
       for width in @target_widths do
-        currentParams = params || {}
-        currentParams['w'] = width
-        srcset += "#{to_url(currentParams)} #{width}w,\n"
+        params['w'.to_sym] = width
+        srcset += "#{to_url(params)} #{width}w,\n"
       end
 
       return srcset[0..-3]
     end
 
-    def build_dpr_srcset(params = {})
+    def build_dpr_srcset(params)
       srcset = ''
       target_ratios = [1,2,3,4,5]
-      url = to_url(params)
 
       for ratio in target_ratios do
-        srcset += "#{url} #{ratio}x,\n"
+        params['dpr'.to_sym] = ratio
+        srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 
       return srcset[0..-3]

@@ -9,6 +9,21 @@ module SrcsetTest
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
         
+        def test_srcset_pair_values
+            resolutions = [100, 116, 134, 156, 182, 210, 244, 282,
+                328, 380, 442, 512, 594, 688, 798, 926,
+                1074, 1246, 1446, 1678, 1946, 2258, 2618,
+                3038, 3524, 4088, 4742, 5500, 6380, 7400, 8192]
+            srcset = path.to_srcset()
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length-1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
+        end
+        
         private
             def path
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg')
@@ -26,14 +41,29 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_dpr_params
+            i = 1
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, "dpr=#{i}"
+                i += 1
+            }
+        end
+
         def test_srcset_signs_urls
-            expected_signature = 'b95cfd915f4a198442bff4ce5befe5b8'
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, 's='
 
-            srcset.split(',').map { |src|
-                url = src.split(' ')[0]
-                assert_includes url, "s="
+                # parses out all parameters except for 's=...'
+                params = src[src.index('?')..src.index('s=')-2]
 
-                generated_signature = url.slice(url.index("s=")+2, url.length)
+                # parses out the 's=...' parameter
+                generated_signature = src.slice(src.index('s=')+2, src.length)
+
+                signature_base = 'MYT0KEN' + '/image.jpg' + params;
+                expected_signature = Digest::MD5.hexdigest(signature_base)
+                
                 assert_equal expected_signature, generated_signature
             }
         end
@@ -48,6 +78,20 @@ module SrcsetTest
         def test_srcset_generates_width_pairs
             expected_number_of_pairs = 31
             assert_equal expected_number_of_pairs, srcset.split(',').length
+        end
+
+        def test_srcset_pair_values
+            resolutions = [100, 116, 134, 156, 182, 210, 244, 282,
+                328, 380, 442, 512, 594, 688, 798, 926,
+                1074, 1246, 1446, 1678, 1946, 2258, 2618,
+                3038, 3524, 4088, 4742, 5500, 6380, 7400, 8192]
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length-1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
         end
 
         def test_srcset_respects_height_parameter
@@ -90,8 +134,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -119,14 +163,29 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_dpr_params
+            i = 1
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, "dpr=#{i}"
+                i += 1
+            }
+        end
+
         def test_srcset_signs_urls
-            expected_signature = 'fb081a45c449b28f69e012d474943df3'
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, 's='
 
-            srcset.split(',').map { |src|
-                url = src.split(' ')[0]
-                assert_includes url, "s="
+                # parses out all parameters except for 's=...'
+                params = src[src.index('?')..src.index('s=')-2]
 
-                generated_signature = url.slice(url.index("s=")+2, url.length)
+                # parses out the 's=...' parameter
+                generated_signature = src.slice(src.index('s=')+2, src.length)
+
+                signature_base = 'MYT0KEN' + '/image.jpg' + params;
+                expected_signature = Digest::MD5.hexdigest(signature_base)
+                
                 assert_equal expected_signature, generated_signature
             }
         end
@@ -141,6 +200,20 @@ module SrcsetTest
         def test_srcset_generates_width_pairs
             expected_number_of_pairs = 31
             assert_equal expected_number_of_pairs, srcset.split(',').length
+        end
+
+        def test_srcset_pair_values
+            resolutions = [100, 116, 134, 156, 182, 210, 244, 282,
+                328, 380, 442, 512, 594, 688, 798, 926,
+                1074, 1246, 1446, 1678, 1946, 2258, 2618,
+                3038, 3524, 4088, 4742, 5500, 6380, 7400, 8192]
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length-1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
         end
 
         def test_srcset_within_bounds
@@ -177,8 +250,8 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src.slice(src.index('?'), src.length)
-                params = params.slice(0, params.index('s=')-1)
+                params = src[src.index('?')..src.index('s=')-2]
+
                 # parses out the 's=...' parameter
                 generated_signature = src.slice(src.index('s=')+2, src.length)
 
@@ -206,14 +279,29 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_dpr_params
+            i = 1
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, "dpr=#{i}"
+                i += 1
+            }
+        end
+
         def test_srcset_signs_urls
-            expected_signature = '84db8cb226483fc0130b4fb58e1e6ff2'
+            srcset.split(',').map { |srcset_split|
+                src = srcset_split.split(' ')[0]
+                assert_includes src, 's='
 
-            srcset.split(',').map { |src|
-                url = src.split(' ')[0]
-                assert_includes url, "s="
+                # parses out all parameters except for 's=...'
+                params = src[src.index('?')..src.index('s=')-2]
 
-                generated_signature = url.slice(url.index("s=")+2, url.length)
+                # parses out the 's=...' parameter
+                generated_signature = src.slice(src.index('s=')+2, src.length)
+
+                signature_base = 'MYT0KEN' + '/image.jpg' + params;
+                expected_signature = Digest::MD5.hexdigest(signature_base)
+                
                 assert_equal expected_signature, generated_signature
             }
         end

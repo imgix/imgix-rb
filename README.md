@@ -68,23 +68,23 @@ https://your-subdomain.imgix.net/images/demo.png?w=7400&s=a5dd7dda1dbac613f0475f
 https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce3412b64a3452 8192w
 ```
 
-In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio provided, a different `srcset` will be generated for a fixed-size image instead.
+In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio (along with `fit=crop`, typically) provided, a different `srcset` will be generated for a fixed-size image instead.
 
 ```rb
-client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
+client = Imgix::Client.new(host: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
 path = client.path('/images/demo.png')
 
-srcset = path.to_srcset(h:800, ar:'3:2')
+srcset = path.to_srcset(h:800, ar:'3:2', fit:'crop')
 ```
 
 Will produce the following attribute value:
 
 ```html
-https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 1x,
-https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 2x,
-https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 3x,
-https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 4x,
-https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&s=be8c153bb9ed0dd152e846414a8fdc86 5x
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=1&s=f97f2dccf85beac33a3824b57ef4ddc6 1x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=2&s=e1727167fef53cdb0a89dd66b8672410 2x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=3&s=7718db8457345419c30214f1d1a3a5d3 3x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=4&s=000c50a7f97ccdbb9bb2f00bc5241ed4 4x,
+https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=5&s=970b6fc12a410f3dd2959674dd1f4120 5x
 ```
 
 For more information to better understand `srcset`, we highly recommend [Eric Portis' "Srcset and sizes" article](https://ericportis.com/posts/2014/srcset-sizes/) which goes into depth about the subject.
