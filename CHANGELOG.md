@@ -3,7 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.1.0](https://github.com/imgix/imgix-rb/compare/2.1.0...3.1.0) - July 28, 2019
+## [3.1.1](https://github.com/imgix/imgix-rb/compare/3.1.0...3.1.1) - July 28, 2019
+
+* fix: include dpr parameter when generating a DPR srcset ([#48](https://github.com/imgix/imgix-rb/pull/48))
+* ci(travis): change build dist to trusty and remove bundler script ([#49](https://github.com/imgix/imgix-rb/pull/49))
+
+## [3.1.0](https://github.com/imgix/imgix-rb/compare/3.0.0...3.1.0) - July 28, 2019
 
 * feat: add srcset generation ([#47](https://github.com/imgix/imgix-rb/pull/47))
 
