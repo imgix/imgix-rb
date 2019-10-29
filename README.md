@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Simply initialize a client with a `:host` and your `:secure_url_token`. By default, HTTPS URLs are generated, but you can toggle that by passing `use_https: false`.
+Initialize a client with a `:host` and your `:secure_url_token`. By default, HTTPS URLs are generated, but you can toggle that by passing `use_https: false`.
 
 Call `Imgix::Client#path` with the resource path to get an `Imgix::Path` object back. You can then manipulate the path parameters, and call `Imgix#Path#to_url` when you're done.
 
