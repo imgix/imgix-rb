@@ -2,7 +2,7 @@
 
 Official Ruby Gem for signing [imgix](http://imgix.com) URLs. Tested under 2.3.0, 2.2.4, 2.1.8, jruby-9.0.5.0, and rbx-2.11.
 
-[![Build Status](https://travis-ci.org/imgix/imgix-rb.png?branch=master)](https://travis-ci.org/imgix/imgix-rb)
+[![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=master)](https://travis-ci.org/imgix/imgix-rb)
 
 ## Installation
 
