@@ -53,12 +53,12 @@ module Imgix
       end
 
       @options = prev_options
-      return url
+      url
     end
 
     def defaults
       @options = {}
-      return self
+      self
     end
 
     def method_missing(method, *args, &block)
@@ -70,7 +70,7 @@ module Imgix
       end
 
       @options[key] = args.join(',')
-      return self
+      self
     end
 
     ALIASES.each do |from, to|
@@ -99,7 +99,7 @@ module Imgix
       end
 
       @options = prev_options
-      return srcset
+      srcset
     end
     
     private
@@ -136,7 +136,7 @@ module Imgix
         srcset += "#{to_url(params)} #{width}w,\n"
       end
 
-      return srcset[0..-3]
+      srcset[0..-3]
     end
 
     def build_dpr_srcset(params)
@@ -148,7 +148,7 @@ module Imgix
         srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 
-      return srcset[0..-3]
+      srcset[0..-3]
     end
   end
 end
