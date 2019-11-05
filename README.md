@@ -93,7 +93,9 @@ For more information to better understand `srcset`, we highly recommend [Eric Po
 
 **Width Tolerance**
 
-The `srcset` width tolerance dictates the rate at which widths grow between entries in a srcset attribute. By default, this rate is set to 8 percent. This setting can be used to fine tune how many `srcset` pairs are generated when invoking `Imgix::Path#to_srcset`. Users can specify their own width tolerance by passing a positive numeric value using the `width_tolerance` keyword argument:
+The `srcset` width tolerance dictates the maximum tolerated size difference between an image's downloaded size and its rendered size. For example: setting this value to 0.1 means that an image will not render more than 10% larger or smaller than its native size. In practice, the image URLs generated for a width-based srcset attribute will grow by twice this rate. A lower tolerance means images will render closer to their native size (thereby reducing rendering artifacts), but a large srcset list will be generated and consequently users may experience lower rates of cache-hit for pre-rendered images on your site.
+
+By default this rate is set to 8 percent, which we consider to be the ideal rate for maximizing cache hits without sacrificing visual quality. Users can specify their own width tolerance by passing a positive numeric value using the `width_tolerance` keyword argument:
 
 ```rb
 client = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
