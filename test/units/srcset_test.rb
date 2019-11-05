@@ -317,7 +317,6 @@ module SrcsetTest
     class SrcsetWidthTolerance < Imgix::Test
         def test_width_tolerance_generates_width_pairs
             expected_number_of_pairs = 15
-            puts "\n#{srcset}"
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
 
@@ -363,7 +362,7 @@ module SrcsetTest
 
         private
             def srcset
-                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 20)
+                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 0.20)
             end
     end
 end

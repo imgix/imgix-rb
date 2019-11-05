@@ -9,7 +9,7 @@ module Imgix
   DOMAIN_REGEX = /^(?:[a-z\d\-_]{1,62}\.){0,125}(?:[a-z\d](?:\-(?=\-*[a-z\d])|[a-z]|\d){0,62}\.)[a-z\d]{1,63}$/i
 
   # determines the growth rate when building out srcset pair widths
-  DEFAULT_WIDTH_TOLERANCE = 8
+  DEFAULT_WIDTH_TOLERANCE = 0.08
 
   # returns an array of width values used during scrset generation
   TARGET_WIDTHS = lambda { |tolerance|
@@ -22,7 +22,7 @@ module Imgix
     while(prev <= max_size)
       # ensures that each width is even
       resolutions.push((2 * (prev / 2).round))
-      prev *= 1 + ((increment_percentage.to_f) / 100) * 2
+      prev *= 1 + (increment_percentage * 2)
     end
 
     resolutions.push(max_size)
