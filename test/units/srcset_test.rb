@@ -19,11 +19,11 @@ module SrcsetTest
                 srcset_split.split(' ')[1].to_i
             }
 
-            for i in 0..srclist.length-1 do
+            for i in 0..srclist.length - 1 do
                 assert_equal(srclist[i], resolutions[i])
             end
         end
-        
+
         private
             def path
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg')
@@ -56,10 +56,10 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src[src.index('?')..src.index('s=')-2]
+                params = src[src.index('?')..src.index('s=') - 2]
 
                 # parses out the 's=...' parameter
-                generated_signature = src.slice(src.index('s=')+2, src.length)
+                generated_signature = src.slice(src.index('s=') + 2, src.length)
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
@@ -89,7 +89,7 @@ module SrcsetTest
                 srcset_split.split(' ')[1].to_i
             }
 
-            for i in 0..srclist.length-1 do
+            for i in 0..srclist.length - 1 do
                 assert_equal(srclist[i], resolutions[i])
             end
         end
@@ -105,14 +105,15 @@ module SrcsetTest
 
             # parse out the width descriptor as an integer
             min = min.split(' ')[1].to_i
-            max = max[max.length-1].split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
 
             assert_operator min, :>=, 100
             assert_operator max, :<=, 8192
         end
 
-        def test_srcset_iterates_18_percent
-            increment_allowed = 0.18
+        # a 17% testing threshold is used to account for rounding
+        def test_srcset_iterates_17_percent
+            increment_allowed = 0.17
 
             # create an array of widths
             widths = srcset.split(',').map { |src|
@@ -121,7 +122,7 @@ module SrcsetTest
 
             prev = widths[0]
 
-            for i in 1..widths.length-1 do
+            for i in 1..widths.length - 1 do
                 element = widths[i]
                 assert_operator (element / prev), :<, (1 + increment_allowed)
                 prev = element
@@ -134,10 +135,10 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src[src.index('?')..src.index('s=')-2]
+                params = src[src.index('?')..src.index('s=') - 2]
 
                 # parses out the 's=...' parameter
-                generated_signature = src.slice(src.index('s=')+2, src.length)
+                generated_signature = src.slice(src.index('s=') + 2, src.length)
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
@@ -178,10 +179,10 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src[src.index('?')..src.index('s=')-2]
+                params = src[src.index('?')..src.index('s=') - 2]
 
                 # parses out the 's=...' parameter
-                generated_signature = src.slice(src.index('s=')+2, src.length)
+                generated_signature = src.slice(src.index('s=') + 2, src.length)
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
@@ -211,7 +212,7 @@ module SrcsetTest
                 srcset_split.split(' ')[1].to_i
             }
 
-            for i in 0..srclist.length-1 do
+            for i in 0..srclist.length - 1 do
                 assert_equal(srclist[i], resolutions[i])
             end
         end
@@ -221,14 +222,15 @@ module SrcsetTest
 
             # parse out the width descriptor as an integer
             min = min.split(' ')[1].to_i
-            max = max[max.length-1].split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
 
             assert_operator min, :>=, 100
             assert_operator max, :<=, 8192
         end
 
-        def test_srcset_iterates_18_percent
-            increment_allowed = 0.18
+        # a 17% testing threshold is used to account for rounding
+        def test_srcset_iterates_17_percent
+            increment_allowed = 0.17
 
             # create an array of widths
             widths = srcset.split(',').map { |src|
@@ -237,7 +239,7 @@ module SrcsetTest
 
             prev = widths[0]
 
-            for i in 1..widths.length-1 do
+            for i in 1..widths.length - 1 do
                 element = widths[i]
                 assert_operator (element / prev), :<, (1 + increment_allowed)
                 prev = element
@@ -250,10 +252,10 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src[src.index('?')..src.index('s=')-2]
+                params = src[src.index('?')..src.index('s=') - 2]
 
                 # parses out the 's=...' parameter
-                generated_signature = src.slice(src.index('s=')+2, src.length)
+                generated_signature = src.slice(src.index('s=') + 2, src.length)
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
@@ -294,10 +296,10 @@ module SrcsetTest
                 assert_includes src, 's='
 
                 # parses out all parameters except for 's=...'
-                params = src[src.index('?')..src.index('s=')-2]
+                params = src[src.index('?')..src.index('s=') - 2]
 
                 # parses out the 's=...' parameter
-                generated_signature = src.slice(src.index('s=')+2, src.length)
+                generated_signature = src.slice(src.index('s=') + 2, src.length)
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
@@ -309,6 +311,58 @@ module SrcsetTest
         private
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset({h:100,ar:'3:2'})
+            end
+    end
+
+    class SrcsetWidthTolerance < Imgix::Test
+        def test_width_tolerance_generates_width_pairs
+            expected_number_of_pairs = 15
+            assert_equal expected_number_of_pairs, srcset.split(',').length
+        end
+
+        def test_width_tolerance_pair_values
+            resolutions = [100,140,196,274,384,538,752,1054,1476,2066,2892,4050,5670,7938,8192]
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length - 1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
+        end
+
+        def test_srcset_within_bounds
+            min, *max = srcset.split(',')
+
+            # parse out the width descriptor as an integer
+            min = min.split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
+
+            assert_operator min, :>=, 100
+            assert_operator max, :<=, 8192
+        end
+        
+        # a 17% testing threshold is used to account for rounding
+        def test_srcset_iterates_40_percent
+            increment_allowed = 0.42
+
+            # create an array of widths
+            widths = srcset.split(',').map { |src|
+                src.split(' ')[1].to_i
+            }
+
+            prev = widths[0]
+
+            for i in 1..widths.length - 1 do
+                element = widths[i]
+                assert_operator (element / prev), :<, (1 + increment_allowed)
+                prev = element
+            end
+        end
+
+        private
+            def srcset
+                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 20)
             end
     end
 end
