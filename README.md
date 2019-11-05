@@ -68,6 +68,8 @@ https://your-subdomain.imgix.net/images/demo.png?w=7400&s=a5dd7dda1dbac613f0475f
 https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce3412b64a3452 8192w
 ```
 
+**Fixed image rendering**
+
 In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio (along with `fit=crop`, typically) provided, a different `srcset` will be generated for a fixed-size image instead.
 
 ```rb
@@ -88,6 +90,25 @@ https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=5&s
 ```
 
 For more information to better understand `srcset`, we highly recommend [Eric Portis' "Srcset and sizes" article](https://ericportis.com/posts/2014/srcset-sizes/) which goes into depth about the subject.
+
+**Width Tolerance**
+
+The `srcset` width tolerance dictates the rate at which widths grow between entries in a srcset attribute. By default, this rate is set to 8 percent. This setting can be used to fine tune how many `srcset` pairs are generated when invoking `Imgix::Path#to_srcset`. Users can specify their own width tolerance by passing a positive numeric value using the `width_tolerance` keyword argument:
+
+```rb
+client = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+client.path('image.jpg').to_srcset(width_tolerance: .20)
+```
+
+In this case, the `width_tolerance` is set to 20 percent, which will be reflected in the difference between subsequent widths in a srcset pair:
+
+```
+https://testing.imgix.net/image.jpg?w=100 100w,
+https://testing.imgix.net/image.jpg?w=140 140w,
+https://testing.imgix.net/image.jpg?w=196 196w,
+							...
+https://testing.imgix.net/image.jpg?w=8192 8192w
+```
 
 ## Multiple Parameters
 
