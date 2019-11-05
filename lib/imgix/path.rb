@@ -130,7 +130,8 @@ module Imgix
 
     def build_srcset_pairs(params)
       srcset = ''
-      width_tolerance = params['width_tolerance'.to_sym]
+
+      width_tolerance = params.delete('width_tolerance'.to_sym)
       widths = width_tolerance == DEFAULT_WIDTH_TOLERANCE ? @target_widths : TARGET_WIDTHS.call(width_tolerance)
 
       for width in widths do
