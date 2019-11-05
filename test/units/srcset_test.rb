@@ -124,7 +124,7 @@ module SrcsetTest
 
             for i in 1..widths.length - 1 do
                 element = widths[i]
-                assert_operator (element / prev), :<, (1 + increment_allowed)
+                assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
                 prev = element
             end
         end
@@ -241,7 +241,7 @@ module SrcsetTest
 
             for i in 1..widths.length - 1 do
                 element = widths[i]
-                assert_operator (element / prev), :<, (1 + increment_allowed)
+                assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
                 prev = element
             end
         end
@@ -317,6 +317,7 @@ module SrcsetTest
     class SrcsetWidthTolerance < Imgix::Test
         def test_width_tolerance_generates_width_pairs
             expected_number_of_pairs = 15
+            puts "\n#{srcset}"
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
 
@@ -341,10 +342,10 @@ module SrcsetTest
             assert_operator min, :>=, 100
             assert_operator max, :<=, 8192
         end
-        
-        # a 17% testing threshold is used to account for rounding
-        def test_srcset_iterates_40_percent
-            increment_allowed = 0.42
+
+        # a 41% testing threshold is used to account for rounding
+        def test_srcset_iterates_41_percent
+            increment_allowed = 0.41
 
             # create an array of widths
             widths = srcset.split(',').map { |src|
@@ -355,7 +356,7 @@ module SrcsetTest
 
             for i in 1..widths.length - 1 do
                 element = widths[i]
-                assert_operator (element / prev), :<, (1 + increment_allowed)
+                assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
                 prev = element
             end
         end
