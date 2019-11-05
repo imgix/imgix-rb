@@ -14,6 +14,9 @@ module Imgix
   # returns an array of width values used during scrset generation
   TARGET_WIDTHS = lambda { |tolerance|
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE
+    unless increment_percentage.is_a? Numeric and increment_percentage > 0
+      raise ArgumentError, "The width_tolerance argument must be passed a positive scalar value"
+    end
 
     max_size = 8192
     resolutions = []

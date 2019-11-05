@@ -315,12 +315,12 @@ module SrcsetTest
     end
 
     class SrcsetWidthTolerance < Imgix::Test
-        def test_width_tolerance_generates_width_pairs
+        def test_srcset_generates_width_pairs
             expected_number_of_pairs = 15
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
 
-        def test_width_tolerance_pair_values
+        def test_srcset_pair_values
             resolutions = [100,140,196,274,384,538,752,1054,1476,2066,2892,4050,5670,7938,8192]
             srclist = srcset.split(',').map { |srcset_split|
                 srcset_split.split(' ')[1].to_i
@@ -358,6 +358,22 @@ module SrcsetTest
                 assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
                 prev = element
             end
+        end
+
+        def test_invalid_tolerance_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(width_tolerance: 'abc')
+            }
+        end
+
+        def test_negative_tolerance_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(width_tolerance: -0.10)
+            }
         end
 
         private
