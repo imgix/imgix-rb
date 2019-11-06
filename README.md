@@ -99,7 +99,7 @@ By default this rate is set to 8 percent, which we consider to be the ideal rate
 
 ```rb
 client = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
-client.path('image.jpg').to_srcset(width_tolerance: .20)
+client.path('image.jpg').to_srcset(width_tolerance: 0.20)
 ```
 
 In this case, the `width_tolerance` is set to 20 percent, which will be reflected in the difference between subsequent widths in a srcset pair:

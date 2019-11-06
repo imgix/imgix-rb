@@ -376,6 +376,22 @@ module SrcsetTest
             }
         end
 
+        def test_with_param_after
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(width_tolerance: 0.20, h:1000, fit:"clip")
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "width_tolerance="))
+        end
+
+        def test_with_param_before
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(h:1000, fit:"clip", width_tolerance: 0.20)
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "width_tolerance="))
+        end
+
         private
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 0.20)
