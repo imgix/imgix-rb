@@ -39,7 +39,7 @@ module Imgix
 
       @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != '/'
-      @target_widths = TARGET_WIDTHS.call
+      @target_widths = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE)
     end
 
     def to_url(opts = {})
@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(params = {})
+    def to_srcset(width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(@options)
+        srcset = build_srcset_pairs(width_tolerance: width_tolerance, params: @options)
       end
 
       @options = prev_options
@@ -128,10 +128,16 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(params)
+    def build_srcset_pairs(width_tolerance:, params:)
       srcset = ''
 
-      for width in @target_widths do
+      unless width_tolerance == DEFAULT_WIDTH_TOLERANCE
+        widths = TARGET_WIDTHS.call(width_tolerance)
+      else
+        widths = @target_widths
+      end
+
+      for width in widths do
         params['w'.to_sym] = width
         srcset += "#{to_url(params)} #{width}w,\n"
       end
