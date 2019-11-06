@@ -132,6 +132,7 @@ module Imgix
       srcset = ''
 
       if !sizes.empty?
+        validate_sizes!(sizes)
         widths = sizes
       elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE
         widths = TARGET_WIDTHS.call(width_tolerance)
@@ -158,5 +159,17 @@ module Imgix
 
       srcset[0..-3]
     end
+
+    def validate_sizes!(sizes)
+      unless sizes.is_a? Array
+        raise ArgumentError, "The sizes argument must be passed a valid array of integers"
+      else
+        valid_integers = sizes.all? {|i| i.is_a?(Integer) }
+        unless valid_integers
+          raise ArgumentError, "A custom sizes array must only contain integer values"  
+        end
+      end
+    end
+
   end
 end
