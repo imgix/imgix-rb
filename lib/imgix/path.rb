@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
+    def to_srcset(sizes: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(width_tolerance: width_tolerance, params: @options)
+        srcset = build_srcset_pairs(sizes: sizes, width_tolerance: width_tolerance, params: @options)
       end
 
       @options = prev_options
@@ -128,10 +128,12 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(width_tolerance:, params:)
+    def build_srcset_pairs(sizes:, width_tolerance:, params:)
       srcset = ''
 
-      unless width_tolerance == DEFAULT_WIDTH_TOLERANCE
+      if !sizes.empty?
+        widths = sizes
+      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE
         widths = TARGET_WIDTHS.call(width_tolerance)
       else
         widths = @target_widths
