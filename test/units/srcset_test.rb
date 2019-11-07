@@ -396,7 +396,8 @@ module SrcsetTest
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 0.20)
             end
     end
-    class SrcsetCustomSizes < Imgix::Test
+
+    class SrcsetCustomWidths < Imgix::Test
         def test_srcset_generates_width_pairs
             expected_number_of_pairs = 4
             assert_equal expected_number_of_pairs, srcset.split(',').length
@@ -420,15 +421,15 @@ module SrcsetTest
             min = min.split(' ')[1].to_i
             max = max[max.length - 1].split(' ')[1].to_i
 
-            assert_operator min, :>=, @sizes[0]
-            assert_operator max, :<=, @sizes[-1]
+            assert_operator min, :>=, @widths[0]
+            assert_operator max, :<=, @widths[-1]
         end
 
-        def test_invalid_sizes_input_emits_error
+        def test_invalid_widths_input_emits_error
             assert_raises(ArgumentError) {
                 Imgix::Client.new(host: 'testing.imgix.net')
                 .path('image.jpg')
-                .to_srcset(sizes: 'abc')
+                .to_srcset(widths: 'abc')
             }
         end
 
@@ -436,30 +437,34 @@ module SrcsetTest
             assert_raises(ArgumentError) {
                 Imgix::Client.new(host: 'testing.imgix.net')
                 .path('image.jpg')
-                .to_srcset(sizes: [100, 200, false])
+                .to_srcset(widths: [100, 200, false])
             }
         end
 
         def test_with_param_after
             srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
             .path('image.jpg')
-            .to_srcset(sizes: [100, 200, 300], h:1000, fit:"clip")
+            .to_srcset(widths: [100, 200, 300], h:1000, fit:"clip")
             assert_includes(srcset, "h=")
-            assert(not(srcset.include? "sizes="))
+            assert(not(srcset.include? "widths="))
         end
 
         def test_with_param_before
             srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
             .path('image.jpg')
-            .to_srcset(h:1000, fit:"clip", sizes: [100, 200, 300])
+            .to_srcset(h:1000, fit:"clip", widths: [100, 200, 300])
             assert_includes(srcset, "h=")
-            assert(not(srcset.include? "sizes="))
+            assert(not(srcset.include? "widths="))
         end
 
         private
             def srcset
-                @sizes = [100, 500, 1000, 1800]
-                @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(sizes: @sizes)
+                @widths = [100, 500, 1000, 1800]
+                @client ||= Imgix::Client.new(
+                    host: 'testing.imgix.net',
+                    include_library_param: false)
+                    .path('image.jpg')
+                    .to_srcset(widths: @widths)
             end
     end
 end
