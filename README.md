@@ -133,6 +133,32 @@ https://testing.imgix.net/image.jpg?w=196 196w,
 https://testing.imgix.net/image.jpg?w=8192 8192w
 ```
 
+### Min and Max Width Ranges
+
+If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer to either the `min_width` and/or `max_width` keyword parameters:
+
+```rb
+client = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
+client.path('image.jpg').to_srcset(min_width: 500, max_width: 2000)
+```
+
+Will result in a smaller, more tailored srcset.
+
+```
+https://testing.imgix.net/image.jpg?w=512 512w,
+https://testing.imgix.net/image.jpg?w=594 594w,
+https://testing.imgix.net/image.jpg?w=688 688w,
+https://testing.imgix.net/image.jpg?w=798 798w,
+https://testing.imgix.net/image.jpg?w=926 926w,
+https://testing.imgix.net/image.jpg?w=1074 1074w,
+https://testing.imgix.net/image.jpg?w=1246 1246w,
+https://testing.imgix.net/image.jpg?w=1446 1446w,
+https://testing.imgix.net/image.jpg?w=1678 1678w,
+https://testing.imgix.net/image.jpg?w=1946 1946w
+```
+
+Please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
+
 ## Multiple Parameters
 
 When the imgix api requires multiple parameters you have to use the method rather than an accessor.
