@@ -382,7 +382,7 @@ module SrcsetTest
             assert_includes(srcset, "h=")
             assert(not(srcset.include? "width_tolerance="))
         end
-        
+
         def test_with_param_before
             srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
             .path('image.jpg')
