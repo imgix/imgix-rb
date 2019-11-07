@@ -11,6 +11,11 @@ module Imgix
   # determines the growth rate when building out srcset pair widths
   DEFAULT_WIDTH_TOLERANCE = 0.08
 
+  # the default minimum srcset width
+  MIN_WIDTH = 100
+
+  # the default maximum srcset width, also the max width supported by imgix
+  MAX_WIDTH = 8192
   # returns an array of width values used during scrset generation
   TARGET_WIDTHS = lambda { |tolerance|
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE

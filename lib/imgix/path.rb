@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
+    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, min_width: MIN_WIDTH, max_width: MAX_WIDTH, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, params: @options)
+        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, min_width: min_width, max_width: max_width, params: @options)
       end
 
       @options = prev_options
@@ -128,7 +128,7 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(widths:, width_tolerance:, params:)
+    def build_srcset_pairs(widths:, width_tolerance:, min_width:, max_width:, params:)
       srcset = ''
 
       if !widths.empty?
@@ -171,5 +171,14 @@ module Imgix
       end
     end
 
+    def validate_range!(min_width, max_width)
+      if min_width.is_a? Numeric and max_width.is_a? Numeric
+        unless min_width > 0 and max_width > 0
+          raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
+        end
+      else
+        raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
+      end
+    end
   end
 end
