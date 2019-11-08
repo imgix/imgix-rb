@@ -135,29 +135,30 @@ https://testing.imgix.net/image.jpg?w=8192 8192w
 
 ### Minimum and Maximum Width Ranges
 
-If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer to either the `min_width` and/or `max_width` keyword parameters:
+If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer to either the `min_srcset` and/or `max_srcset` keyword parameters:
 
 ```rb
 client = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
-client.path('image.jpg').to_srcset(min_width: 500, max_width: 2000)
+client.path('image.jpg').to_srcset(min_srcset: 500, max_srcset: 2000)
 ```
 
 Will result in a smaller, more tailored srcset.
 
 ```
-https://testing.imgix.net/image.jpg?w=512 512w,
-https://testing.imgix.net/image.jpg?w=594 594w,
-https://testing.imgix.net/image.jpg?w=688 688w,
-https://testing.imgix.net/image.jpg?w=798 798w,
-https://testing.imgix.net/image.jpg?w=926 926w,
-https://testing.imgix.net/image.jpg?w=1074 1074w,
-https://testing.imgix.net/image.jpg?w=1246 1246w,
-https://testing.imgix.net/image.jpg?w=1446 1446w,
-https://testing.imgix.net/image.jpg?w=1678 1678w,
-https://testing.imgix.net/image.jpg?w=1946 1946w
+https://testing.imgix.net/image.jpg?w=500 500w,
+https://testing.imgix.net/image.jpg?w=580 580w,
+https://testing.imgix.net/image.jpg?w=672 672w,
+https://testing.imgix.net/image.jpg?w=780 780w,
+https://testing.imgix.net/image.jpg?w=906 906w,
+https://testing.imgix.net/image.jpg?w=1050 1050w,
+https://testing.imgix.net/image.jpg?w=1218 1218w,
+https://testing.imgix.net/image.jpg?w=1414 1414w,
+https://testing.imgix.net/image.jpg?w=1640 1640w,
+https://testing.imgix.net/image.jpg?w=1902 1902w,
+https://testing.imgix.net/image.jpg?w=2000 2000w
 ```
 
-Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `max_width: 1000` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
+Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `max_srcset: 1000` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
 
 Also please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
 
