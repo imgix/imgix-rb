@@ -68,7 +68,7 @@ https://your-subdomain.imgix.net/images/demo.png?w=7400&s=a5dd7dda1dbac613f0475f
 https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce3412b64a3452 8192w
 ```
 
-**Fixed image rendering**
+### Fixed image rendering
 
 In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio (along with `fit=crop`, typically) provided, a different `srcset` will be generated for a fixed-size image instead.
 
@@ -91,7 +91,28 @@ https://your-subdomain.imgix.net/images/demo.png?h=800&ar=3%3A2&fit=crop&dpr=5&s
 
 For more information to better understand `srcset`, we highly recommend [Eric Portis' "Srcset and sizes" article](https://ericportis.com/posts/2014/srcset-sizes/) which goes into depth about the subject.
 
-**Width Tolerance**
+### Custom Widths
+
+In situations where specific widths are desired when generating `srcset` pairs, a user can specify them by passing an array of integers to the `widths` keyword argument.
+
+```rb
+@client ||= Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
+.path('image.jpg')
+.to_srcset(widths: [100, 500, 1000, 1800])
+```
+
+Will generate the following `srcset` of width pairs:
+
+```html
+https://testing.imgix.net/image.jpg?w=100 100w,
+https://testing.imgix.net/image.jpg?w=500 500w,
+https://testing.imgix.net/image.jpg?w=1000 1000w,
+https://testing.imgix.net/image.jpg?w=1800 1800w
+```
+
+Please note that in situations where a `srcset` is being rendered as a [fixed image](#fixed-image-rendering), any custom `widths` passed in will be ignored. Additionally, if both `widths` and a `width_tolerance` are passed to the `to_srcset` method, the custom widths list will take precedence.
+
+### Width Tolerance
 
 The `srcset` width tolerance dictates the maximum tolerated size difference between an image's downloaded size and its rendered size. For example: setting this value to 0.1 means that an image will not render more than 10% larger or smaller than its native size. In practice, the image URLs generated for a width-based srcset attribute will grow by twice this rate. A lower tolerance means images will render closer to their native size (thereby reducing rendering artifacts), but a large srcset list will be generated and consequently users may experience lower rates of cache-hit for pre-rendered images on your site.
 

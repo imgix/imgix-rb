@@ -8,7 +8,7 @@ module SrcsetTest
             expected_number_of_pairs = 31
             assert_equal expected_number_of_pairs, srcset.split(',').length
         end
-        
+
         def test_srcset_pair_values
             resolutions = [100, 116, 134, 156, 182, 210, 244, 282,
                 328, 380, 442, 512, 594, 688, 798, 926,
@@ -67,7 +67,7 @@ module SrcsetTest
                 assert_equal expected_signature, generated_signature
             }
         end
-    
+
         private
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100)
@@ -186,7 +186,7 @@ module SrcsetTest
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
-                
+
                 assert_equal expected_signature, generated_signature
             }
         end
@@ -303,7 +303,7 @@ module SrcsetTest
 
                 signature_base = 'MYT0KEN' + '/image.jpg' + params;
                 expected_signature = Digest::MD5.hexdigest(signature_base)
-                
+
                 assert_equal expected_signature, generated_signature
             }
         end
@@ -337,7 +337,6 @@ module SrcsetTest
             # parse out the width descriptor as an integer
             min = min.split(' ')[1].to_i
             max = max[max.length - 1].split(' ')[1].to_i
-
             assert_operator min, :>=, 100
             assert_operator max, :<=, 8192
         end
@@ -395,6 +394,85 @@ module SrcsetTest
         private
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(width_tolerance: 0.20)
+            end
+    end
+
+    class SrcsetCustomWidths < Imgix::Test
+        def test_srcset_generates_width_pairs
+            expected_number_of_pairs = 4
+            assert_equal expected_number_of_pairs, srcset.split(',').length
+        end
+
+        def test_srcset_pair_values
+            resolutions = [100, 500, 1000, 1800]
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length - 1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
+        end
+
+        def test_srcset_within_bounds
+            min, *max = srcset.split(',')
+
+            # parse out the width descriptor as an integer
+            min = min.split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
+
+            assert_operator min, :>=, @widths[0]
+            assert_operator max, :<=, @widths[-1]
+        end
+
+        def test_invalid_widths_input_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(widths: 'abc')
+            }
+        end
+
+        def test_non_integer_array_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(widths: [100, 200, false])
+            }
+        end
+
+        def test_negative_integer_array_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(widths: [100, 200, -100])
+            }
+        end
+
+        def test_with_param_after
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(widths: [100, 200, 300], h:1000, fit:"clip")
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "widths="))
+        end
+
+        def test_with_param_before
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(h:1000, fit:"clip", widths: [100, 200, 300])
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "widths="))
+        end
+
+        private
+            def srcset
+                @widths = [100, 500, 1000, 1800]
+                @client ||= Imgix::Client.new(
+                    host: 'testing.imgix.net',
+                    include_library_param: false)
+                    .path('image.jpg')
+                    .to_srcset(widths: @widths)
             end
     end
 end

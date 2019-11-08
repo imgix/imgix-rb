@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
+    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(width_tolerance: width_tolerance, params: @options)
+        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, params: @options)
       end
 
       @options = prev_options
@@ -128,16 +128,19 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(width_tolerance:, params:)
+    def build_srcset_pairs(widths:, width_tolerance:, params:)
       srcset = ''
 
-      unless width_tolerance == DEFAULT_WIDTH_TOLERANCE
-        widths = TARGET_WIDTHS.call(width_tolerance)
+      if !widths.empty?
+        validate_widths!(widths)
+        srcset_widths = widths
+      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE
+        srcset_widths = TARGET_WIDTHS.call(width_tolerance)
       else
-        widths = @target_widths
+        srcset_widths = @target_widths
       end
 
-      for width in widths do
+      for width in srcset_widths do
         params['w'.to_sym] = width
         srcset += "#{to_url(params)} #{width}w,\n"
       end
@@ -156,5 +159,17 @@ module Imgix
 
       srcset[0..-3]
     end
+
+    def validate_widths!(widths)
+      unless widths.is_a? Array
+        raise ArgumentError, "The widths argument must be passed a valid array of integers"
+      else
+        positive_integers = widths.all? {|i| i.is_a?(Integer) and i > 0}
+        unless positive_integers
+          raise ArgumentError, "A custom widths array must only contain positive integer values"  
+        end
+      end
+    end
+
   end
 end
