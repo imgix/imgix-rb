@@ -441,6 +441,14 @@ module SrcsetTest
             }
         end
 
+        def test_negative_integer_array_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(widths: [100, 200, -100])
+            }
+        end
+
         def test_with_param_after
             srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
             .path('image.jpg')

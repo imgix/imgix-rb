@@ -164,9 +164,9 @@ module Imgix
       unless widths.is_a? Array
         raise ArgumentError, "The widths argument must be passed a valid array of integers"
       else
-        valid_integers = widths.all? {|i| i.is_a?(Integer) }
-        unless valid_integers
-          raise ArgumentError, "A custom widths array must only contain integer values"  
+        positive_integers = widths.all? {|i| i.is_a?(Integer) and i > 0}
+        unless positive_integers
+          raise ArgumentError, "A custom widths array must only contain positive integer values"  
         end
       end
     end
