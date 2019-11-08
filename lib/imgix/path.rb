@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, min_srcset: MIN_WIDTH, max_srcset: MAX_WIDTH, **params)
+    def to_srcset(options: {}, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, min_srcset: min_srcset, max_srcset: max_srcset, params: @options)
+        srcset = build_srcset_pairs(options: options, params: @options)
       end
 
       @options = prev_options
@@ -128,14 +128,19 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(widths:, width_tolerance:, min_srcset:, max_srcset:, params:)
+    def build_srcset_pairs(options:, params:)
       srcset = ''
+
+      widths = options['widths'.to_sym] || []
+      width_tolerance = options['width_tolerance'.to_sym] ||  DEFAULT_WIDTH_TOLERANCE
+      min_srcset = options['min_width'.to_sym] || MIN_WIDTH
+      max_srcset = options['max_width'.to_sym] || MAX_WIDTH
 
       if !widths.empty?
         validate_widths!(widths)
         srcset_widths = widths
       elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE or min_srcset != MIN_WIDTH or max_srcset != MAX_WIDTH
-        validate_range!(min_srcset,max_srcset)        
+        validate_range!(min_srcset, max_srcset)
         srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_srcset, max_srcset)
       else
         srcset_widths = @target_widths
