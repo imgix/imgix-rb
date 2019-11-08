@@ -475,4 +475,126 @@ module SrcsetTest
                     .to_srcset(widths: @widths)
             end
     end
+
+    class SrcsetMinMaxWidths < Imgix::Test
+        def test_srcset_generates_width_pairs
+            expected_number_of_pairs = 11
+            assert_equal expected_number_of_pairs, srcset.split(',').length
+        end
+
+        def test_srcset_pair_values
+            resolutions = [500,580,672,780,906,1050,1218,1414,1640,1902,2000]
+            srclist = srcset.split(',').map { |srcset_split|
+                srcset_split.split(' ')[1].to_i
+            }
+
+            for i in 0..srclist.length - 1 do
+                assert_equal(srclist[i], resolutions[i])
+            end
+        end
+
+        def test_srcset_within_bounds
+            min, *max = srcset.split(',')
+
+            # parse out the width descriptor as an integer
+            min = min.split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
+
+            assert_operator min, :>=, @MIN
+            assert_operator max, :<=, @MAX
+        end
+
+        # a 41% testing threshold is used to account for rounding
+        def test_with_custom_width_tolerance
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(min_srcset: 500, max_srcset: 2000, width_tolerance: 0.20)
+
+            increment_allowed = 0.41
+
+            # create an array of widths
+            widths = srcset.split(',').map { |src|
+                src.split(' ')[1].to_i
+            }
+
+            prev = widths[0]
+
+            for i in 1..widths.length - 1 do
+                element = widths[i]
+                assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
+                prev = element
+            end
+        end
+
+        def test_invalid_min_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(min_srcset: 'abc')
+            }
+        end
+
+        def test_negative_max_emits_error
+            assert_raises(ArgumentError) {
+                Imgix::Client.new(host: 'testing.imgix.net')
+                .path('image.jpg')
+                .to_srcset(max_srcset: -100)
+            }
+        end
+
+        def test_with_param_after
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(min_srcset: 500, max_srcset:2000, h:1000, fit:"clip")
+
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "min_srcset="))
+            assert(not(srcset.include? "max_srcset="))
+        end
+
+        def test_with_param_before
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
+            .path('image.jpg')
+            .to_srcset(h:1000, fit:"clip", min_srcset: 500, max_srcset:2000)
+
+            assert_includes(srcset, "h=")
+            assert(not(srcset.include? "min_srcset="))
+            assert(not(srcset.include? "max_srcset="))
+        end
+
+        def test_only_min
+            min_srcset = 1000
+            max_srcset = 8192
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false).path('image.jpg').to_srcset(min_srcset: min_srcset)
+
+            min, *max = srcset.split(',')
+
+            # parse out the width descriptor as an integer
+            min = min.split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
+
+            assert_operator min, :>=, min_srcset
+            assert_operator max, :<=, max_srcset
+        end
+
+        def test_only_max
+            min_srcset = 100
+            max_srcset = 1000
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false).path('image.jpg').to_srcset(max_srcset: max_srcset)
+            min, *max = srcset.split(',')
+
+            # parse out the width descriptor as an integer
+            min = min.split(' ')[1].to_i
+            max = max[max.length - 1].split(' ')[1].to_i
+
+            assert_operator min, :>=, min_srcset
+            assert_operator max, :<=, max_srcset
+
+        end
+
+        private
+            def srcset
+                @MIN = 500
+                @MAX = 2000
+                @client ||= Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false).path('image.jpg').to_srcset(min_srcset: @MIN, max_srcset: @MAX)
+            end
+    end
 end
