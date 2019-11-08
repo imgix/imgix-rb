@@ -39,7 +39,7 @@ module Imgix
 
       @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != '/'
-      @target_widths = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE)
+      @target_widths = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE, MIN_WIDTH, MAX_WIDTH)
     end
 
     def to_url(opts = {})
@@ -84,7 +84,7 @@ module Imgix
       end
     end
 
-    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, min_width: MIN_WIDTH, max_width: MAX_WIDTH, **params)
+    def to_srcset(widths: [], width_tolerance: DEFAULT_WIDTH_TOLERANCE, min_srcset: MIN_WIDTH, max_srcset: MAX_WIDTH, **params)
       prev_options = @options.dup
       @options.merge!(params)
 
@@ -95,7 +95,7 @@ module Imgix
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(@options)
       else
-        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, min_width: min_width, max_width: max_width, params: @options)
+        srcset = build_srcset_pairs(widths: widths, width_tolerance: width_tolerance, min_srcset: min_srcset, max_srcset: max_srcset, params: @options)
       end
 
       @options = prev_options
@@ -128,14 +128,15 @@ module Imgix
       query.length > 0
     end
 
-    def build_srcset_pairs(widths:, width_tolerance:, min_width:, max_width:, params:)
+    def build_srcset_pairs(widths:, width_tolerance:, min_srcset:, max_srcset:, params:)
       srcset = ''
 
       if !widths.empty?
         validate_widths!(widths)
         srcset_widths = widths
-      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE
-        srcset_widths = TARGET_WIDTHS.call(width_tolerance)
+      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE or min_srcset != MIN_WIDTH or max_srcset != MAX_WIDTH
+        validate_range!(min_srcset,max_srcset)        
+        srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_srcset, max_srcset)
       else
         srcset_widths = @target_widths
       end
@@ -171,9 +172,9 @@ module Imgix
       end
     end
 
-    def validate_range!(min_width, max_width)
-      if min_width.is_a? Numeric and max_width.is_a? Numeric
-        unless min_width > 0 and max_width > 0
+    def validate_range!(min_srcset, max_srcset)
+      if min_srcset.is_a? Numeric and max_srcset.is_a? Numeric
+        unless min_srcset > 0 and max_srcset > 0
           raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
         end
       else

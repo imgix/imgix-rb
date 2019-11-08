@@ -133,7 +133,7 @@ https://testing.imgix.net/image.jpg?w=196 196w,
 https://testing.imgix.net/image.jpg?w=8192 8192w
 ```
 
-### Min and Max Width Ranges
+### Minimum and Maximum Width Ranges
 
 If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer to either the `min_width` and/or `max_width` keyword parameters:
 
@@ -157,7 +157,9 @@ https://testing.imgix.net/image.jpg?w=1678 1678w,
 https://testing.imgix.net/image.jpg?w=1946 1946w
 ```
 
-Please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
+Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `max_width: 1000` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
+
+Also please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
 
 ## Multiple Parameters
 
@@ -168,7 +170,6 @@ For example to use the noise reduction:
 ``` ruby
 path.noise_reduction(50,50)
 ```
-
 
 ## Purge Cache
 

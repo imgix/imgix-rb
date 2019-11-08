@@ -17,15 +17,15 @@ module Imgix
   # the default maximum srcset width, also the max width supported by imgix
   MAX_WIDTH = 8192
   # returns an array of width values used during scrset generation
-  TARGET_WIDTHS = lambda { |tolerance|
+  TARGET_WIDTHS = lambda { |tolerance, min, max|
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE
     unless increment_percentage.is_a? Numeric and increment_percentage > 0
       raise ArgumentError, "The width_tolerance argument must be passed a positive scalar value"
     end
 
-    max_size = 8192
+    max_size = max || MAX_WIDTH
     resolutions = []
-    prev = 100
+    prev = min || MIN_WIDTH
 
     while(prev <= max_size)
       # ensures that each width is even
