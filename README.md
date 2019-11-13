@@ -93,12 +93,12 @@ For more information to better understand `srcset`, we highly recommend [Eric Po
 
 ### Custom Widths
 
-In situations where specific widths are desired when generating `srcset` pairs, a user can specify them by passing an array of integers to the `widths` keyword argument.
+In situations where specific widths are desired when generating `srcset` pairs, a user can specify them by passing an array of integers via `widths` to the `options` keyword argument.
 
 ```rb
 @client ||= Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
 .path('image.jpg')
-.to_srcset(widths: [100, 500, 1000, 1800])
+.to_srcset(options: { widths: [100, 500, 1000, 1800] })
 ```
 
 Will generate the following `srcset` of width pairs:
@@ -110,17 +110,17 @@ https://testing.imgix.net/image.jpg?w=1000 1000w,
 https://testing.imgix.net/image.jpg?w=1800 1800w
 ```
 
-Please note that in situations where a `srcset` is being rendered as a [fixed image](#fixed-image-rendering), any custom `widths` passed in will be ignored. Additionally, if both `widths` and a `width_tolerance` are passed to the `to_srcset` method, the custom widths list will take precedence.
+Please note that in situations where a `srcset` is being rendered as a [fixed image](#fixed-image-rendering), any custom `widths` passed in will be ignored. Additionally, if both `widths` and a `width_tolerance` are passed to the `options` parameter in the `to_srcset` method, the custom widths list will take precedence.
 
 ### Width Tolerance
 
 The `srcset` width tolerance dictates the maximum tolerated size difference between an image's downloaded size and its rendered size. For example: setting this value to 0.1 means that an image will not render more than 10% larger or smaller than its native size. In practice, the image URLs generated for a width-based srcset attribute will grow by twice this rate. A lower tolerance means images will render closer to their native size (thereby reducing rendering artifacts), but a large srcset list will be generated and consequently users may experience lower rates of cache-hit for pre-rendered images on your site.
 
-By default this rate is set to 8 percent, which we consider to be the ideal rate for maximizing cache hits without sacrificing visual quality. Users can specify their own width tolerance by passing a positive numeric value using the `width_tolerance` keyword argument:
+By default this rate is set to 8 percent, which we consider to be the ideal rate for maximizing cache hits without sacrificing visual quality. Users can specify their own width tolerance by passing a positive numeric value to `width_tolerance` within the `options` keyword argument:
 
 ```rb
 client = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
-client.path('image.jpg').to_srcset(width_tolerance: 0.20)
+client.path('image.jpg').to_srcset(options: { width_tolerance: 0.20 })
 ```
 
 In this case, the `width_tolerance` is set to 20 percent, which will be reflected in the difference between subsequent widths in a srcset pair:
@@ -135,11 +135,11 @@ https://testing.imgix.net/image.jpg?w=8192 8192w
 
 ### Minimum and Maximum Width Ranges
 
-If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer to either the `min_srcset` and/or `max_srcset` keyword parameters:
+If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer via `min_srcset` and/or `max_srcset` to the `options` keyword parameters:
 
 ```rb
 client = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
-client.path('image.jpg').to_srcset(min_srcset: 500, max_srcset: 2000)
+client.path('image.jpg').to_srcset(options: { min_srcset: 500, max_srcset: 2000 })
 ```
 
 Will result in a smaller, more tailored srcset.
@@ -158,7 +158,7 @@ https://testing.imgix.net/image.jpg?w=1902 1902w,
 https://testing.imgix.net/image.jpg?w=2000 2000w
 ```
 
-Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `max_srcset: 1000` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
+Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `options: { max_srcset: 1000 }` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
 
 Also please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
 
