@@ -85,6 +85,14 @@ module SrcsetTest
             }
         end
 
+        def test_disable_variable_qualities
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100 options: { disable_variable_qualities: true })
+
+            srcset.split(',').map { |src|
+                assert(not(src.include? "q="))
+            }
+        end
+
         private
             DPR_QUALITY = [75, 50, 35, 23, 20]
 
@@ -226,6 +234,14 @@ module SrcsetTest
             }
         end
 
+        def test_disable_variable_qualities
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, options: { disable_variable_qualities: true })
+
+            srcset.split(',').map { |src|
+                assert(not(src.include? "q="))
+            }
+        end
+
         private
             DPR_QUALITY = [75, 50, 35, 23, 20]
 
@@ -355,10 +371,18 @@ module SrcsetTest
 
         def test_srcset_respects_overriding_quality
             quality_override = 100
-            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, q:quality_override)
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, ar:'3:2', q:quality_override)
 
             srcset.split(',').map { |src|
                 assert_includes src, "q=#{quality_override}"
+            }
+        end
+
+        def test_disable_variable_qualities
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, ar:'3:2', options: { disable_variable_qualities: true })
+
+            srcset.split(',').map { |src|
+                assert(not(src.include? "q="))
             }
         end
 
