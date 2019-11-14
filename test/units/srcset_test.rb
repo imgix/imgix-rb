@@ -86,7 +86,7 @@ module SrcsetTest
         end
 
         def test_disable_variable_qualities
-            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100 options: { disable_variable_qualities: true })
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, options: { disable_variable_qualities: true })
 
             srcset.split(',').map { |src|
                 assert(not(src.include? "q="))
