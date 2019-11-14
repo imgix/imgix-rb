@@ -162,6 +162,30 @@ Remember that browsers will apply a device pixel ratio as a multiplier when sele
 
 Also please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
 
+### Variable Qualities
+
+This gem will automatically append a variable `q` parameter mapped to each `dpr` parameter when generating a [fixed-image](https://github.com/imgix/imgix-rb#fixed-image-rendering) srcset. This technique is commonly used to compensate for the increased filesize of high-DPR images. Since high-DPR images are displayed at a higher pixel density on devices, image quality can be lowered to reduce overall filesize without sacrificing perceived visual quality. For more information and examples of this technique in action, see [this blog post](https://blog.imgix.com/2016/03/30/dpr-quality).
+
+This behavior will respect any overriding `q` value passed in as a parameter. Additionally, it can be disabled altogether by passing `options: { disable_variable_qualities: true }` to `Imgix:Path#to_srcset`.
+
+This behavior specifically occurs when a [fixed-size image](https://github.com/imgix/imgix-rb#fixed-image-rendering) is rendered, for example:
+
+```rb
+srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false)
+.path('image.jpg')
+.to_srcset(w:100)
+```
+
+will generate a srcset with the following `q` to `dpr` mapping:
+
+```html
+https://testing.imgix.net/image.jpg?w=100&dpr=1&q=75 1x,
+https://testing.imgix.net/image.jpg?w=100&dpr=2&q=50 2x,
+https://testing.imgix.net/image.jpg?w=100&dpr=3&q=35 3x,
+https://testing.imgix.net/image.jpg?w=100&dpr=4&q=23 4x,
+https://testing.imgix.net/image.jpg?w=100&dpr=5&q=20 5x
+```
+
 ## Multiple Parameters
 
 When the imgix api requires multiple parameters you have to use the method rather than an accessor.
