@@ -68,7 +68,26 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_variable_qualities
+            i = 0
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{DPR_QUALITY[i]}"
+                i += 1
+            }
+        end
+
+        def test_srcset_respects_overriding_quality
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, q:quality_override)
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
+            }
+        end
+
         private
+            DPR_QUALITY = [75, 50, 35, 23, 20]
+
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100)
             end
@@ -156,7 +175,6 @@ module SrcsetTest
     class SrcsetGivenWidthAndHeight < Imgix::Test
         def test_srcset_in_dpr_form
             device_pixel_ratio = 1
-
             srcset.split(',').map { |src|
                 ratio = src.split(' ')[1]
                 assert_equal ("#{device_pixel_ratio}x"), ratio
@@ -191,7 +209,26 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_variable_qualities
+            i = 0
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{DPR_QUALITY[i]}"
+                i += 1
+            }
+        end
+
+        def test_srcset_respects_overriding_quality
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, q:quality_override)
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
+            }
+        end
+
         private
+            DPR_QUALITY = [75, 50, 35, 23, 20]
+
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100,h:100)
             end
@@ -308,7 +345,26 @@ module SrcsetTest
             }
         end
 
+        def test_srcset_has_variable_qualities
+            i = 0
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{DPR_QUALITY[i]}"
+                i += 1
+            }
+        end
+
+        def test_srcset_respects_overriding_quality
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, q:quality_override)
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
+            }
+        end
+
         private
+            DPR_QUALITY = [75, 50, 35, 23, 20]
+
             def srcset
                 @client ||= Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset({h:100,ar:'3:2'})
             end
