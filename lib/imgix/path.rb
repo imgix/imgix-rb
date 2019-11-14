@@ -157,9 +157,13 @@ module Imgix
     def build_dpr_srcset(params)
       srcset = ''
       target_ratios = [1,2,3,4,5]
+      quality = params['q'.to_sym]
 
-      for ratio in target_ratios do
-        params['dpr'.to_sym] = ratio
+      for index in 0..target_ratios.length - 1 do
+        ratio = target_ratios[index]
+
+        params['dpr'.to_sym] = ratio 
+        params['q'.to_sym] = quality || DPR_QUALITY[index]
         srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 

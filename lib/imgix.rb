@@ -16,6 +16,7 @@ module Imgix
 
   # the default maximum srcset width, also the max width supported by imgix
   MAX_WIDTH = 8192
+
   # returns an array of width values used during scrset generation
   TARGET_WIDTHS = lambda { |tolerance, min, max|
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE
@@ -36,4 +37,7 @@ module Imgix
     resolutions.push(max_size)
     return resolutions
   }
+
+  # default array of quality parameter values mapped to each dpr srcset entry
+  DPR_QUALITY = [75, 50, 35, 23, 20]
 end
