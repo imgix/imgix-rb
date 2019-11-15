@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.2.0](https://github.com/imgix/imgix-rb/compare/3.1.1...3.2.0) - November 15, 2019
+
+* feat: append variable qualities to dpr srcsets ([#58](https://github.com/imgix/imgix-rb/pull/58))
+* refactor: pass srcset modifiers through the `options` parameter ([#57](https://github.com/imgix/imgix-rb/pull/57))
+* feat: support defining a min and max width range ([#56](https://github.com/imgix/imgix-rb/pull/56))
+* feat: add ability to pass in custom widths ([#55](https://github.com/imgix/imgix-rb/pull/55))
+* feat: add ability to configure the srcset width tolerance ([#54](https://github.com/imgix/imgix-rb/pull/54))
+* style: drop redundant explicit return statements ([#52](https://github.com/imgix/imgix-rb/pull/52))
+
 ## [3.1.1](https://github.com/imgix/imgix-rb/compare/3.1.0...3.1.1) - July 28, 2019
 
 * fix: include dpr parameter when generating a DPR srcset ([#48](https://github.com/imgix/imgix-rb/pull/48))
