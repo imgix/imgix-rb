@@ -38,6 +38,12 @@ module Imgix
     return resolutions
   }
 
-  # default array of quality parameter values mapped to each dpr srcset entry
-  DPR_QUALITY = [75, 50, 35, 23, 20]
+  # hash of default quality parameter values mapped  by each dpr srcset entry
+  DPR_QUALITY = {
+    1 => 75, 
+    2 => 50,
+    3 => 35,
+    4 => 23,
+    5 => 20
+  }
 end

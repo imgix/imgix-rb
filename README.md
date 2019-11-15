@@ -166,7 +166,7 @@ Also please note that according to the [imgix API](https://docs.imgix.com/apis/u
 
 This gem will automatically append a variable `q` parameter mapped to each `dpr` parameter when generating a [fixed-image](https://github.com/imgix/imgix-rb#fixed-image-rendering) srcset. This technique is commonly used to compensate for the increased filesize of high-DPR images. Since high-DPR images are displayed at a higher pixel density on devices, image quality can be lowered to reduce overall filesize without sacrificing perceived visual quality. For more information and examples of this technique in action, see [this blog post](https://blog.imgix.com/2016/03/30/dpr-quality).
 
-This behavior will respect any overriding `q` value passed in as a parameter. Additionally, it can be disabled altogether by passing `options: { disable_variable_qualities: true }` to `Imgix:Path#to_srcset`.
+This behavior will respect any overriding `q` value passed in as a parameter. Additionally, it can be disabled altogether by passing `options: { disable_variable_quality: true }` to `Imgix:Path#to_srcset`.
 
 This behavior specifically occurs when a [fixed-size image](https://github.com/imgix/imgix-rb#fixed-image-rendering) is rendered, for example:
 

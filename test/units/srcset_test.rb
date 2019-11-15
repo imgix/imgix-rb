@@ -85,11 +85,20 @@ module SrcsetTest
             }
         end
 
-        def test_disable_variable_qualities
-            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, options: { disable_variable_qualities: true })
+        def test_disable_variable_quality
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, options: { disable_variable_quality: true })
 
             srcset.split(',').map { |src|
                 assert(not(src.include? "q="))
+            }
+        end
+
+        def test_respects_quality_param_when_disabled
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, q:100, options: { disable_variable_quality: true })
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
             }
         end
 
@@ -234,11 +243,20 @@ module SrcsetTest
             }
         end
 
-        def test_disable_variable_qualities
-            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, options: { disable_variable_qualities: true })
+        def test_disable_variable_quality
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, options: { disable_variable_quality: true })
 
             srcset.split(',').map { |src|
                 assert(not(src.include? "q="))
+            }
+        end
+
+        def test_respects_quality_param_when_disabled
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, q:100, options: { disable_variable_quality: true })
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
             }
         end
 
@@ -378,11 +396,20 @@ module SrcsetTest
             }
         end
 
-        def test_disable_variable_qualities
-            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, ar:'3:2', options: { disable_variable_qualities: true })
+        def test_disable_variable_quality
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, ar:'3:2', options: { disable_variable_quality: true })
 
             srcset.split(',').map { |src|
                 assert(not(src.include? "q="))
+            }
+        end
+
+        def test_respects_quality_param_when_disabled
+            quality_override = 100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false).path('image.jpg').to_srcset(w:100, h:100, q:100, options: { disable_variable_quality: true })
+
+            srcset.split(',').map { |src|
+                assert_includes src, "q=#{quality_override}"
             }
         end
 

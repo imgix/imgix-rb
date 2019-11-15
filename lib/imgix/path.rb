@@ -157,8 +157,8 @@ module Imgix
     def build_dpr_srcset(options:, params:)
       srcset = ''
 
-      disable_variable_qualities = options['disable_variable_qualities'.to_sym] || false
-      validate_variable_qualities!(disable_variable_qualities)
+      disable_variable_quality = options['disable_variable_quality'.to_sym] || false
+      validate_variable_qualities!(disable_variable_quality)
 
       target_ratios = [1,2,3,4,5]
       quality = params['q'.to_sym]
@@ -167,8 +167,8 @@ module Imgix
         ratio = target_ratios[index]
         params['dpr'.to_sym] = ratio
 
-        unless disable_variable_qualities
-          params['q'.to_sym] = quality || DPR_QUALITY[index]
+        unless disable_variable_quality
+          params['q'.to_sym] = quality || DPR_QUALITY[index + 1]
         end
 
         srcset += "#{to_url(params)} #{ratio}x,\n"
@@ -198,9 +198,9 @@ module Imgix
       end
     end
 
-    def validate_variable_qualities!(disable_variable_qualities)
-      unless disable_variable_qualities.is_a?(TrueClass) || disable_variable_qualities.is_a?(FalseClass)
-        raise ArgumentError, "The disable_variable_qualities argument must be passed a Boolean value"
+    def validate_variable_qualities!(disable_variable_quality)
+      unless disable_variable_quality.is_a?(TrueClass) || disable_variable_quality.is_a?(FalseClass)
+        raise ArgumentError, "The disable_variable_quality argument must be passed a Boolean value"
       end
     end
   end
