@@ -93,7 +93,7 @@ module Imgix
       aspect_ratio = @options['ar'.to_sym]
 
       if ((width) || (height && aspect_ratio))
-        srcset = build_dpr_srcset(@options)
+        srcset = build_dpr_srcset(options: options, params:@options)
       else
         srcset = build_srcset_pairs(options: options, params: @options)
       end
@@ -154,12 +154,22 @@ module Imgix
       srcset[0..-3]
     end
 
-    def build_dpr_srcset(params)
+    def build_dpr_srcset(options:, params:)
       srcset = ''
+
+      disable_variable_quality = options['disable_variable_quality'.to_sym] || false
+      validate_variable_qualities!(disable_variable_quality)
+
       target_ratios = [1,2,3,4,5]
+      quality = params['q'.to_sym]
 
       for ratio in target_ratios do
         params['dpr'.to_sym] = ratio
+
+        unless disable_variable_quality
+          params['q'.to_sym] = quality || DPR_QUALITY[ratio]
+        end
+
         srcset += "#{to_url(params)} #{ratio}x,\n"
       end
 
@@ -184,6 +194,12 @@ module Imgix
         end
       else
         raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
+      end
+    end
+
+    def validate_variable_qualities!(disable_variable_quality)
+      unless disable_variable_quality.is_a?(TrueClass) || disable_variable_quality.is_a?(FalseClass)
+        raise ArgumentError, "The disable_variable_quality argument must be passed a Boolean value"
       end
     end
   end
