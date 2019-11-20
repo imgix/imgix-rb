@@ -694,7 +694,16 @@ module SrcsetTest
 
             assert_operator min, :>=, min_width
             assert_operator max, :<=, max_width
+        end
 
+        def test_max_as_100
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false).path('image.jpg').to_srcset(options: {max_width: 100})
+            assert_equal(srcset, "https://testing.imgix.net/image.jpg?w=100 100w")
+        end
+
+        def test_min_as_8192
+            srcset = Imgix::Client.new(host: 'testing.imgix.net', include_library_param: false).path('image.jpg').to_srcset(options: {min_width: 8192})
+            assert_equal(srcset, "https://testing.imgix.net/image.jpg?w=8192 8192w")
         end
 
         private

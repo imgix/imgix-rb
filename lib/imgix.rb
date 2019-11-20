@@ -28,7 +28,7 @@ module Imgix
     resolutions = []
     prev = min || MIN_WIDTH
 
-    while(prev <= max_size)
+    while(prev < max_size)
       # ensures that each width is even
       resolutions.push((2 * (prev / 2).round))
       prev *= 1 + (increment_percentage * 2)
