@@ -88,9 +88,9 @@ module Imgix
       prev_options = @options.dup
       @options.merge!(params)
 
-      width = @options['w'.to_sym]
-      height = @options['h'.to_sym]
-      aspect_ratio = @options['ar'.to_sym]
+      width = @options[:w]
+      height = @options[:h]
+      aspect_ratio = @options[:ar]
 
       if ((width) || (height && aspect_ratio))
         srcset = build_dpr_srcset(options: options, params:@options)
@@ -131,10 +131,10 @@ module Imgix
     def build_srcset_pairs(options:, params:)
       srcset = ''
 
-      widths = options['widths'.to_sym] || []
-      width_tolerance = options['width_tolerance'.to_sym] ||  DEFAULT_WIDTH_TOLERANCE
-      min_srcset = options['min_width'.to_sym] || MIN_WIDTH
-      max_srcset = options['max_width'.to_sym] || MAX_WIDTH
+      widths = options[:widths] || []
+      width_tolerance = options[:width_tolerance] ||  DEFAULT_WIDTH_TOLERANCE
+      min_srcset = options[:min_width] || MIN_WIDTH
+      max_srcset = options[:max_width] || MAX_WIDTH
 
       if !widths.empty?
         validate_widths!(widths)
@@ -147,7 +147,7 @@ module Imgix
       end
 
       for width in srcset_widths do
-        params['w'.to_sym] = width
+        params[:w] = width
         srcset += "#{to_url(params)} #{width}w,\n"
       end
 
@@ -157,17 +157,17 @@ module Imgix
     def build_dpr_srcset(options:, params:)
       srcset = ''
 
-      disable_variable_quality = options['disable_variable_quality'.to_sym] || false
+      disable_variable_quality = options[:disable_variable_quality] || false
       validate_variable_qualities!(disable_variable_quality)
 
       target_ratios = [1,2,3,4,5]
-      quality = params['q'.to_sym]
+      quality = params[:q]
 
       for ratio in target_ratios do
-        params['dpr'.to_sym] = ratio
+        params[:dpr] = ratio
 
         unless disable_variable_quality
-          params['q'.to_sym] = quality || DPR_QUALITY[ratio]
+          params[:q] = quality || DPR_QUALITY[ratio]
         end
 
         srcset += "#{to_url(params)} #{ratio}x,\n"
