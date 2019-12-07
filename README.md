@@ -1,8 +1,28 @@
-# Imgix
+<!-- ix-docs-ignore -->
+![alt text](https://assets.imgix.net/sdk-imgix-logo.svg "imgix logo")
 
-Official Ruby Gem for signing [imgix](http://imgix.com) URLs. Tested under 2.3.0, 2.2.4, 2.1.8, jruby-9.0.5.0, and rbx-2.11.
+`imgix-rb` is a client library for generating image URLs with [imgix](https://www.imgix.com/). It is tested under ruby versions 2.3.0, 2.2.4, 2.1.8, jruby-9.0.5.0, and rbx-3.107.
 
+[![Gem Version](https://badge.fury.io/rb/imgix.svg)](https://rubygems.org/gems/imgix)
 [![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=master)](https://travis-ci.org/imgix/imgix-rb)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/master/LICENSE)
+
+---
+<!-- /ix-docs-ignore -->
+
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Srcset Generation](#Srcset-Generation)
+  - [Fixed image rendering](#Fixed-image-rendering)
+  - [Custom Widths](#Custom-Widths)
+  - [Width Tolerance](#Width-Tolerance)
+  - [Minimum and Maximum Width Ranges](#Minimum-and-Maximum-Width-Ranges)
+  - [Variable Qualities](#Variable-Qualities)
+- [Multiple Parameters](#Multiple-Parameters)
+- [Purge Cache](#Purge-Cache)
+- [URL encoding and signed imgix URLs](#URL-encoding-and-signed-imgix-URLs)
+- [What is the ixlib param on every request?](#What-is-the-ixlib-param-on-every-request?)
+- [Contributing](#Contributing)
 
 ## Installation
 
@@ -207,9 +227,9 @@ client.purge('/images/demo.png')
 
 To learn more about purging assets with imgix, [see our docs](https://docs.imgix.com/setup/purging-images).
 
-## URL encoding and signed ImgIX URLs
+## URL encoding and signed imgix URLs
 
-Some important third parties (like Facebook) apply URL escaping to query string components, which can cause correctly signed ImgIX URLs to to be transformed into incorrectly signed ones. We URL encode the query part of the URL before signing, so you don't have to worry about this.
+Some important third parties (like Facebook) apply URL escaping to query string components, which can cause correctly signed imgix URLs to to be transformed into incorrectly signed ones. We URL encode the query part of the URL before signing, so you don't have to worry about this.
 
 ## What is the `ixlib` param on every request?
 
