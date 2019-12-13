@@ -5,6 +5,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/imgix.svg)](https://rubygems.org/gems/imgix)
 [![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=master)](https://travis-ci.org/imgix/imgix-rb)
+![Downloads](https://img.shields.io/gem/dt/imgix)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/master/LICENSE)
 
 ---
@@ -21,7 +22,7 @@
 - [Multiple Parameters](#Multiple-Parameters)
 - [Purge Cache](#Purge-Cache)
 - [URL encoding and signed imgix URLs](#URL-encoding-and-signed-imgix-URLs)
-- [What is the ixlib param on every request?](#What-is-the-ixlib-param-on-every-request?)
+- [What is the ixlib param on every request?](#what-is-the-ixlib-param-on-every-request)
 - [Contributing](#Contributing)
 
 ## Installation
