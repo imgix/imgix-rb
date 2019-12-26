@@ -1,9 +1,9 @@
 <!-- ix-docs-ignore -->
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
 
-`imgix-rb` is a client library for generating image URLs with [imgix](https://www.imgix.com/). It is tested under ruby versions 2.3.0, 2.2.4, 2.1.8, jruby-9.0.5.0, and rbx-3.107.
+`imgix-rb` is a client library for generating image URLs with [imgix](https://www.imgix.com/). It is tested under Ruby versions `2.3.0`, `2.2.4`, `2.1.8`, `jruby-9.0.5.0`, and `rbx-3.107`.
 
-[![Gem Version](https://badge.fury.io/rb/imgix.svg)](https://rubygems.org/gems/imgix)
+[![Gem Version](https://img.shields.io/gem/v/imgix.svg)](https://rubygems.org/gems/imgix)
 [![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=master)](https://travis-ci.org/imgix/imgix-rb)
 ![Downloads](https://img.shields.io/gem/dt/imgix)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/master/LICENSE)
@@ -11,19 +11,19 @@
 ---
 <!-- /ix-docs-ignore -->
 
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Srcset Generation](#Srcset-Generation)
-  - [Fixed image rendering](#Fixed-image-rendering)
-  - [Custom Widths](#Custom-Widths)
-  - [Width Tolerance](#Width-Tolerance)
-  - [Minimum and Maximum Width Ranges](#Minimum-and-Maximum-Width-Ranges)
-  - [Variable Qualities](#Variable-Qualities)
-- [Multiple Parameters](#Multiple-Parameters)
-- [Purge Cache](#Purge-Cache)
-- [URL encoding and signed imgix URLs](#URL-encoding-and-signed-imgix-URLs)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Srcset Generation](#srcset-generation)
+  - [Fixed image rendering](#fixed-image-rendering)
+  - [Custom Widths](#custom-widths)
+  - [Width Tolerance](#width-tolerance)
+  - [Minimum and Maximum Width Ranges](#minimum-and-maximum-width-ranges)
+  - [Variable Qualities](#variable-qualities)
+- [Multiple Parameters](#multiple-parameters)
+- [Purge Cache](#purge-cache)
+- [URL encoding and signed imgix URLs](#url-encoding-and-signed-imgix-urls)
 - [What is the ixlib param on every request?](#what-is-the-ixlib-param-on-every-request)
-- [Contributing](#Contributing)
+- [Contributing](#contributing)
 
 ## Installation
 
