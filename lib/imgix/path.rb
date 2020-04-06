@@ -101,7 +101,7 @@ module Imgix
       @options = prev_options
       srcset
     end
-    
+
     private
 
     def signature
@@ -133,15 +133,16 @@ module Imgix
 
       widths = options[:widths] || []
       width_tolerance = options[:width_tolerance] ||  DEFAULT_WIDTH_TOLERANCE
-      min_srcset = options[:min_width] || MIN_WIDTH
-      max_srcset = options[:max_width] || MAX_WIDTH
+      min_width = options[:min_width] || MIN_WIDTH
+      max_width = options[:max_width] || MAX_WIDTH
 
       if !widths.empty?
         validate_widths!(widths)
         srcset_widths = widths
-      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE or min_srcset != MIN_WIDTH or max_srcset != MAX_WIDTH
-        validate_range!(min_srcset, max_srcset)
-        srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_srcset, max_srcset)
+      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE || min_width != MIN_WIDTH or max_width != MAX_WIDTH
+        validate_range!(min_width, max_width)
+        validate_width_tolerance!(width_tolerance)
+        srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_width, max_width)
       else
         srcset_widths = @target_widths
       end
@@ -176,13 +177,19 @@ module Imgix
       srcset[0..-3]
     end
 
+    def validate_width_tolerance!(width_tolerance)
+      if !width_tolerance.is_a?(Numeric) || !width_tolerance.positive?
+        raise ArgumentError, "The srcset widthTolerance argument can only be passed a positive scalar number"
+      end
+    end
+
     def validate_widths!(widths)
       unless widths.is_a? Array
         raise ArgumentError, "The widths argument must be passed a valid array of integers"
       else
         positive_integers = widths.all? {|i| i.is_a?(Integer) and i > 0}
         unless positive_integers
-          raise ArgumentError, "A custom widths array must only contain positive integer values"  
+          raise ArgumentError, "A custom widths array must only contain positive integer values"
         end
       end
     end
