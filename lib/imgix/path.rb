@@ -178,7 +178,7 @@ module Imgix
     end
 
     def validate_width_tolerance!(width_tolerance)
-      if !width_tolerance.is_a?(Numeric) || !width_tolerance.positive?
+      if !width_tolerance.is_a?(Numeric) || width_tolerance <= 0
         raise ArgumentError, "The srcset widthTolerance argument can only be passed a positive scalar number"
       end
     end
