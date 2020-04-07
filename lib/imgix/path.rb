@@ -139,7 +139,7 @@ module Imgix
       if !widths.empty?
         validate_widths!(widths)
         srcset_widths = widths
-      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE || min_width != MIN_WIDTH or max_width != MAX_WIDTH
+      elsif width_tolerance != DEFAULT_WIDTH_TOLERANCE || min_width != MIN_WIDTH || max_width != MAX_WIDTH
         validate_range!(min_width, max_width)
         validate_width_tolerance!(width_tolerance)
         srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_width, max_width)
