@@ -29,7 +29,8 @@ module Imgix
     end
 
     def purge(path)
-      raise 'Authentication token required' if @api_key.nil?
+      token_error = 'Authentication token required'
+      raise token_error if @api_key.nil?
 
       url = prefix(path) + path
       uri = URI.parse('https://api.imgix.com/v2/image/purger')
