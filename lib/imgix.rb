@@ -6,7 +6,7 @@ require 'imgix/path'
 
 module Imgix
   # regex pattern used to determine if a domain is valid
-  DOMAIN_REGEX = /^(?:[a-z\d\-_]{1,62}\.){0,125}(?:[a-z\d](?:\-(?=\-*[a-z\d])|[a-z]|\d){0,62}\.)[a-z\d]{1,63}$/i
+  DOMAIN_REGEX = /^(?:[a-z\d\-_]{1,62}\.){0,125}(?:[a-z\d](?:\-(?=\-*[a-z\d])|[a-z]|\d){0,62}\.)[a-z\d]{1,63}$/i.freeze
 
   # determines the growth rate when building out srcset pair widths
   DEFAULT_WIDTH_TOLERANCE = 0.08
@@ -20,15 +20,17 @@ module Imgix
   # returns an array of width values used during scrset generation
   TARGET_WIDTHS = lambda { |tolerance, min, max|
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE
-    unless increment_percentage.is_a? Numeric and increment_percentage > 0
-      raise ArgumentError, "The width_tolerance argument must be passed a positive scalar value"
+
+    unless increment_percentage.is_a?(Numeric) && increment_percentage > 0
+      width_increment_error = 'error: `width_tolerance` must be a positive `Numeric` value'
+      raise ArgumentError, width_increment_error
     end
 
     max_size = max || MAX_WIDTH
     resolutions = []
     prev = min || MIN_WIDTH
 
-    while(prev < max_size)
+    while prev < max_size
       # ensures that each width is even
       resolutions.push((2 * (prev / 2).round))
       prev *= 1 + (increment_percentage * 2)
@@ -40,10 +42,10 @@ module Imgix
 
   # hash of default quality parameter values mapped  by each dpr srcset entry
   DPR_QUALITY = {
-    1 => 75, 
+    1 => 75,
     2 => 50,
     3 => 35,
     4 => 23,
     5 => 20
-  }
+  }.freeze
 end
