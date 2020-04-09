@@ -10,26 +10,26 @@ module Imgix
     include ParamHelpers
 
     ALIASES = {
-      width:           :w,
-      height:          :h,
-      rotation:        :rot,
+      width: :w,
+      height: :h,
+      rotation: :rot,
       noise_reduction: :nr,
-      sharpness:       :sharp,
-      exposure:        :exp,
-      vibrance:        :vib,
-      saturation:      :sat,
-      brightness:      :bri,
-      contrast:        :con,
-      highlight:       :high,
-      shadow:          :shad,
-      gamma:           :gam,
-      pixelate:        :px,
-      halftone:        :htn,
-      watermark:       :mark,
-      text:            :txt,
-      format:          :fm,
-      quality:         :q
-    }
+      sharpness: :sharp,
+      exposure: :exp,
+      vibrance: :vib,
+      saturation: :sat,
+      brightness: :bri,
+      contrast: :con,
+      highlight: :high,
+      shadow: :shad,
+      gamma: :gam,
+      pixelate: :px,
+      halftone: :htn,
+      watermark: :mark,
+      text: :txt,
+      format: :fm,
+      quality: :q
+    }.freeze
 
     def initialize(prefix, secure_url_token, path = '/')
       @prefix = prefix
@@ -92,11 +92,11 @@ module Imgix
       height = @options[:h]
       aspect_ratio = @options[:ar]
 
-      if ((width) || (height && aspect_ratio))
-        srcset = build_dpr_srcset(options: options, params:@options)
-      else
-        srcset = build_srcset_pairs(options: options, params: @options)
-      end
+      srcset = if width || (height && aspect_ratio)
+                 build_dpr_srcset(options: options, params: @options)
+               else
+                 build_srcset_pairs(options: options, params: @options)
+               end
 
       @options = prev_options
       srcset
@@ -132,7 +132,7 @@ module Imgix
       srcset = ''
 
       widths = options[:widths] || []
-      width_tolerance = options[:width_tolerance] ||  DEFAULT_WIDTH_TOLERANCE
+      width_tolerance = options[:width_tolerance] || DEFAULT_WIDTH_TOLERANCE
       min_width = options[:min_width] || MIN_WIDTH
       max_width = options[:max_width] || MAX_WIDTH
 
@@ -161,7 +161,7 @@ module Imgix
       disable_variable_quality = options[:disable_variable_quality] || false
       validate_variable_qualities!(disable_variable_quality)
 
-      target_ratios = [1,2,3,4,5]
+      target_ratios = [1, 2, 3, 4, 5]
       quality = params[:q]
 
       for ratio in target_ratios do
@@ -178,35 +178,36 @@ module Imgix
     end
 
     def validate_width_tolerance!(width_tolerance)
+      width_increment_error = 'error: `width_tolerance` must be a positive `Numeric` value'
+
       if !width_tolerance.is_a?(Numeric) || width_tolerance <= 0
-        raise ArgumentError, "The srcset widthTolerance argument can only be passed a positive scalar number"
+        raise ArgumentError, width_increment_error
       end
     end
 
     def validate_widths!(widths)
-      unless widths.is_a? Array
-        raise ArgumentError, "The widths argument must be passed a valid array of integers"
-      else
-        positive_integers = widths.all? {|i| i.is_a?(Integer) and i > 0}
-        unless positive_integers
-          raise ArgumentError, "A custom widths array must only contain positive integer values"
-        end
-      end
+      widths_error = 'error: `widths` must be an array of positive `Numeric` values'
+      raise ArgumentError, widths_error unless widths.is_a?(Array)
+
+      all_positive_integers = widths.all? { |i| i.is_a?(Integer) && i > 0 }
+      raise ArgumentError, widths_error unless all_positive_integers
     end
 
     def validate_range!(min_srcset, max_srcset)
-      if min_srcset.is_a? Numeric and max_srcset.is_a? Numeric
-        unless min_srcset > 0 and max_srcset > 0
-          raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
-        end
-      else
-        raise ArgumentError, "The min and max arguments must be passed positive Numeric values"
+      range_numeric_error = 'error: `min_width` and `max_width` must be positive `Numeric` values'
+      unless min_srcset.is_a?(Numeric) && max_srcset.is_a?(Numeric)
+        raise ArgumentError, range_numeric_error
+      end
+
+      unless min_srcset > 0 && max_srcset > 0
+        raise ArgumentError, range_numeric_error
       end
     end
 
-    def validate_variable_qualities!(disable_variable_quality)
-      unless disable_variable_quality.is_a?(TrueClass) || disable_variable_quality.is_a?(FalseClass)
-        raise ArgumentError, "The disable_variable_quality argument must be passed a Boolean value"
+    def validate_variable_qualities!(disable_quality)
+      disable_quality_error = 'error: `disable_quality` must be a Boolean value'
+      unless disable_quality.is_a?(TrueClass) || disable_quality.is_a?(FalseClass)
+        raise ArgumentError, disable_quality_error
       end
     end
   end
