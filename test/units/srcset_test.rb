@@ -4,11 +4,10 @@ require 'test_helper'
 
 module SrcsetTest
   RESOLUTIONS = [
-    100, 116, 134, 156, 182, 210, 244,
-    282, 328, 380, 442, 512, 594, 688,
-    798, 926, 1074, 1246, 1446, 1678, 1946,
-    2258, 2618, 3038, 3524, 4088, 4742, 5500,
-    6380, 7400, 8192
+    100, 116, 135, 156, 181, 210, 244, 283,
+    328, 380, 441, 512, 594, 689, 799, 927,
+    1075, 1247, 1446, 1678, 1946, 2257, 2619,
+    3038, 3524, 4087, 4741, 5500, 6380, 7401, 8192
   ].freeze
 
   DPR_QUALITY = [75, 50, 35, 23, 20].freeze
@@ -461,8 +460,8 @@ module SrcsetTest
 
     def test_srcset_pair_values
       resolutions = [100, 140, 196, 274, 384,
-                     538, 752, 1054, 1476, 2066,
-                     2892, 4050, 5670, 7938, 8192]
+                     538, 753, 1054, 1476, 2066,
+                     2893, 4050, 5669, 7937, 8192]
 
       srclist = srcset.split(',').map do |srcset_split|
         srcset_split.split(' ')[1].to_i
@@ -626,8 +625,8 @@ module SrcsetTest
     end
 
     def test_srcset_pair_values
-      resolutions = [500, 580, 672, 780, 906, 1050,
-        1218, 1414, 1640, 1902, 2000]
+      resolutions = [500, 580, 673, 780, 905, 1050,
+        1218, 1413, 1639, 1901, 2000]
       srclist = srcset.split(',').map do |srcset_split|
         srcset_split.split(' ')[1].to_i
       end
