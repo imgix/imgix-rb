@@ -1,4 +1,4 @@
-dist: xenial
+dist: trusty
 language: ruby
 bundler_args: --without development
 rvm:
@@ -12,7 +12,7 @@ matrix:
 
   include:
     - name: Rubinius
-      rvm: rbx-2.2.7
+      rvm: rbx-2
       dist: trusty
 
   allow_failures:
