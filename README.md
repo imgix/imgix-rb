@@ -4,9 +4,9 @@
 `imgix-rb` is a client library for generating image URLs with [imgix](https://www.imgix.com/). It is tested under Ruby versions `2.3.0`, `2.2.4`, `2.1.8`, `jruby-9.0.5.0`, and `rbx-3.107`.
 
 [![Gem Version](https://img.shields.io/gem/v/imgix.svg)](https://rubygems.org/gems/imgix)
-[![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=master)](https://travis-ci.org/imgix/imgix-rb)
+[![Build Status](https://travis-ci.org/imgix/imgix-rb.svg?branch=main)](https://travis-ci.org/imgix/imgix-rb)
 ![Downloads](https://img.shields.io/gem/dt/imgix)
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/main/LICENSE)
 
 ---
 <!-- /ix-docs-ignore -->

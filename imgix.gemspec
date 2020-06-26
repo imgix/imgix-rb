@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata = {
     'bug_tracker_uri'   => 'https://github.com/imgix/imgix-rb/issues',
-    'changelog_uri'     => 'https://github.com/imgix/imgix-rb/blob/master/CHANGELOG.md',
+    'changelog_uri'     => 'https://github.com/imgix/imgix-rb/blob/main/CHANGELOG.md',
     'documentation_uri' => "https://www.rubydoc.info/gems/imgix/#{spec.version}",
     'source_code_uri'   => "https://github.com/imgix/imgix-rb/tree/#{spec.version}"
   }
