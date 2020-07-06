@@ -23,7 +23,7 @@ module Imgix
     end
 
     def path(path)
-      p = Path.new(prefix(path), @secure_url_token, path)
+      p = Path.new(prefix, @secure_url_token, path)
       p.ixlib("#{@library}-#{@version}") if @include_library_param
       p
     end
@@ -32,7 +32,7 @@ module Imgix
       token_error = 'Authentication token required'
       raise token_error if @api_key.nil?
 
-      url = prefix(path) + path
+      url = prefix + path
       uri = URI.parse('https://api.imgix.com/v2/image/purger')
 
       user_agent = { 'User-Agent' => "imgix #{@library}-#{@version}" }
@@ -48,7 +48,7 @@ module Imgix
       res
     end
 
-    def prefix(path)
+    def prefix
       "#{@use_https ? 'https' : 'http'}://#{@host}"
     end
 
