@@ -3,6 +3,7 @@
 module Imgix
   module ParamHelpers
     def rect(position)
+      warn "Warning: `ParamHelpers.rect` has been deprecated and will be removed in the next major version."
       @options[:rect] = position and return self if position.is_a?(String)
 
       @options[:rect] = [
