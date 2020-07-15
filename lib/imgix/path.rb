@@ -75,10 +75,14 @@ module Imgix
 
     ALIASES.each do |from, to|
       define_method from do |*args|
+        warn "Warning `Path.#{from}' has been deprecated and " \
+             "will be removed in the next major version.\n"
         self.send(to, *args)
       end
 
       define_method "#{from}=" do |*args|
+        warn "Warning `Path.#{from}=' has been deprecated and " \
+             "will be removed in the next major version.\n"
         self.send("#{to}=", *args)
         return self
       end
