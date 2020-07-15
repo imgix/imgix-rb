@@ -14,7 +14,11 @@ class PathTest < Imgix::Test
   def test_signing_path_with_param
     url = 'https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e'
     path = client.path('/images/demo.png')
-    path.width = 200
+
+    assert_output(nil, "Warning `Path.width=' has been deprecated and " \
+      "will be removed in the next major version.\n") {
+        path.width = 200
+      }
 
     assert_equal url, path.to_url
 
@@ -22,13 +26,22 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url(w: 200)
 
     path = client.path('/images/demo.png')
-    assert_equal url, path.width(200).to_url
+
+    assert_output(nil, "Warning `Path.width' has been deprecated and " \
+      "will be removed in the next major version.\n") {
+        assert_equal url, path.width(200).to_url
+      }
   end
 
   def test_resetting_defaults
     url = 'https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e'
     path = client.path('/images/demo.png')
-    path.height = 300
+    
+    assert_output(nil, "Warning `Path.height=' has been deprecated and " \
+      "will be removed in the next major version.\n") {
+        path.height = 300
+      }
+
 
     assert_equal url, path.defaults.to_url(w: 200)
   end
@@ -40,7 +53,17 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url(h: 200, w: 200)
 
     path = client.path('/images/demo.png')
-    assert_equal url, path.height(200).width(200).to_url
+    assert_output(nil, "Warning `Path.height' has been deprecated and " \
+      "will be removed in the next major version.\n") {
+        path.height(200)
+    }
+
+    assert_output(nil, "Warning `Path.width' has been deprecated and " \
+      "will be removed in the next major version.\n") {
+        path.width(200)
+    }
+
+    assert_equal url, path.to_url
   end
 
   def test_path_with_multi_value_param_safely_encoded
