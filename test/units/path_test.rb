@@ -15,10 +15,11 @@ class PathTest < Imgix::Test
     url = 'https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e'
     path = client.path('/images/demo.png')
 
-    assert_output(nil, "Warning `Path.width=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.width=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.width = 200
-      }
+    }
 
     assert_equal url, path.to_url
 
@@ -27,21 +28,22 @@ class PathTest < Imgix::Test
 
     path = client.path('/images/demo.png')
 
-    assert_output(nil, "Warning `Path.width' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.width' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         assert_equal url, path.width(200).to_url
-      }
+    }
   end
 
   def test_resetting_defaults
     url = 'https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e'
     path = client.path('/images/demo.png')
     
-    assert_output(nil, "Warning `Path.height=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.height=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.height = 300
-      }
-
+    }
 
     assert_equal url, path.defaults.to_url(w: 200)
   end
@@ -53,13 +55,17 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url(h: 200, w: 200)
 
     path = client.path('/images/demo.png')
-    assert_output(nil, "Warning `Path.height' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+
+    assert_output(nil, "Warning: `Path.height' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.height(200)
     }
 
-    assert_output(nil, "Warning `Path.width' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+
+    assert_output(nil, "Warning: `Path.width' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.width(200)
     }
 

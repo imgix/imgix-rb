@@ -14,8 +14,9 @@ class UrlTest < Imgix::Test
   def test_signing_with_one
     path = client.path(DEMO_IMAGE_PATH)
 
-    assert_output(nil, "Warning `Path.width=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.width=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.width = 200
     }
 
@@ -25,26 +26,31 @@ class UrlTest < Imgix::Test
   def test_signing_with_multiple_params
     path = client.path(DEMO_IMAGE_PATH)
 
-    assert_output(nil, "Warning `Path.height=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.height=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.height = 200
     }
 
-    assert_output(nil, "Warning `Path.width=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.width=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.width = 200
     }
+
     assert_equal 'https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a', path.to_url
 
     path = client.path(DEMO_IMAGE_PATH)
 
-    assert_output(nil, "Warning `Path.width=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.width=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.width = 200
     }
 
-    assert_output(nil, "Warning `Path.height=' has been deprecated and " \
-      "will be removed in the next major version.\n") {
+    assert_output(nil, "Warning: `Path.height=' has been deprecated and " \
+      "will be removed in the next major version (along " \
+      "with all parameter `ALIASES`).\n") {
         path.height = 200
     }
 
