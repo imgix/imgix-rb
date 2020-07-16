@@ -14,6 +14,10 @@ module Imgix
 
       @host = options[:host]
       validate_host!
+      warn "Warning: The identifier `host' has been deprecated and " \
+           "will\nappear as `domain' in the next major version, e.g. " \
+           "`@host'\nbecomes `@domain', `options[:host]' becomes " \
+           "`options[:domain]'.\n"
       @secure_url_token = options[:secure_url_token]
       @api_key = options[:api_key]
       @use_https = options[:use_https]
