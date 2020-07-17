@@ -11,13 +11,22 @@ module Imgix
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
+      host, domain = options[:host], options[:domain]
 
-      @host = options[:host]
+      host_deprecated = "Warning: The identifier `host' has been deprecated and " \
+        "will\nappear as `domain' in the next major version, e.g. " \
+        "`@host'\nbecomes `@domain', `options[:host]' becomes " \
+        "`options[:domain]'.\n"
+
+      if host
+        warn host_deprecated
+        @host = host
+      elsif domain
+        @host = domain
+      end
+
       validate_host!
-      warn "Warning: The identifier `host' has been deprecated and " \
-           "will\nappear as `domain' in the next major version, e.g. " \
-           "`@host'\nbecomes `@domain', `options[:host]' becomes " \
-           "`options[:domain]'.\n"
+
       @secure_url_token = options[:secure_url_token]
       @api_key = options[:api_key]
       @use_https = options[:use_https]
