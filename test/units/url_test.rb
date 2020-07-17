@@ -57,6 +57,21 @@ class UrlTest < Imgix::Test
     assert_equal 'https://demo.imgix.net/images/demo.png?w=200&h=200&s=00b5cde5c7b8bca8618cb911da4ac379', path.to_url
   end
 
+  def test_domain_resolves_host_warn
+    assert_output(nil, "Warning: The identifier `host' has been deprecated and " \
+      "will\nappear as `domain' in the next major version, e.g. " \
+      "`@host'\nbecomes `@domain', `options[:host]' becomes " \
+      "`options[:domain]'.\n") {
+        Imgix::Client.new(host: 'demo.imgix.net', include_library_param: false)
+    }
+
+
+    # Assert the output of this call (to both stdout and stderr) is nil.
+    assert_output(nil, nil) {
+      Imgix::Client.new(domain: 'demo.imgix.net', include_library_param: false)
+    }
+  end
+
 private
 
   def client
