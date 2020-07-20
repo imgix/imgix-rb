@@ -3,9 +3,11 @@ name: Question
 about: Ask a question about the project
 title: ''
 labels: ''
-assignees: imgix-sdk-team
+assignees:
 
 ---
+
+Please provide the following information and someone from @imgix/imgix-sdk-team will respond to your issue shortly.
 
 **Before you submit:**
 
