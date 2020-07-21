@@ -11,6 +11,7 @@ class ParamHelpers < Imgix::Test
 
     assert_output(nil, host_warn) {
         client = Imgix::Client.new(host: 'test.imgix.net')
+
         rect_warn = "Warning: `ParamHelpers.rect` has been deprecated and " \
                     "will be removed in the next major version.\n"
 

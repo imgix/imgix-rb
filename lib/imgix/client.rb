@@ -36,7 +36,7 @@ module Imgix
     end
 
     def path(path)
-      p = Path.new(prefix(path), @secure_url_token, path)
+      p = Path.new(new_prefix, @secure_url_token, path)
       p.ixlib("#{@library}-#{@version}") if @include_library_param
       p
     end
@@ -45,7 +45,7 @@ module Imgix
       token_error = 'Authentication token required'
       raise token_error if @api_key.nil?
 
-      url = prefix(path) + path
+      url = new_prefix + path
       uri = URI.parse('https://api.imgix.com/v2/image/purger')
 
       user_agent = { 'User-Agent' => "imgix #{@library}-#{@version}" }
@@ -62,6 +62,13 @@ module Imgix
     end
 
     def prefix(path)
+      msg = "Warning: `Client::prefix' will take zero arguments " \
+        "in the next major version.\n"
+      warn msg
+      new_prefix
+    end
+
+    def new_prefix
       "#{@use_https ? 'https' : 'http'}://#{@host}"
     end
 
