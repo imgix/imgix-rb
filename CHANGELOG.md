@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.3.0](https://github.com/imgix/imgix-rb/compare/3.2.1...3.3.0) - July 21, 2020
+
+* fix: warn prefix-with-args is deprecated ([#78](https://github.com/imgix/imgix-rb/pull/78))
+* fix: warn host has been deprecated in favor of domain ([#76](https://github.com/imgix/imgix-rb/pull/76))
+* fix: deprecate ALIASES and corresponding define_method(s) ([#75](https://github.com/imgix/imgix-rb/pull/75))
+* fix: deprecate ParamHelpers.rect ([#74](https://github.com/imgix/imgix-rb/pull/74))
+* fix: allow rbx-3.107 to fail (travis-config) ([#70](https://github.com/imgix/imgix-rb/pull/70))
+* fix: remove ensure even requirement ([#69](https://github.com/imgix/imgix-rb/pull/69))
+
 ## [3.2.1](https://github.com/imgix/imgix-rb/compare/3.2.0...3.2.1) - November 15, 2019
 
 * fix: duplicate entries when using `min_width` or `max_width` ([#59](https://github.com/imgix/imgix-rb/pull/59))
