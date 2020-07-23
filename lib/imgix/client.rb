@@ -23,6 +23,8 @@ module Imgix
         @host = host
       elsif domain
         @host = domain
+      else
+        @host = host
       end
 
       validate_host!
