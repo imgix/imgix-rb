@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.3.1](https://github.com/imgix/imgix-rb/compare/3.3.0...3.3.1) - July 27, 2020
+
+* fix: ensure host is initialized ([#82](https://github.com/imgix/imgix-rb/pull/82))
+
 ## [3.3.0](https://github.com/imgix/imgix-rb/compare/3.2.1...3.3.0) - July 21, 2020
 
 * fix: warn prefix-with-args is deprecated ([#78](https://github.com/imgix/imgix-rb/pull/78))
