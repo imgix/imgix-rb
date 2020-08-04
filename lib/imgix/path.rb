@@ -153,7 +153,7 @@ module Imgix
         srcset_widths = @target_widths
       end
 
-      for width in srcset_widths do
+      srcset_widths.each do |width|
         params[:w] = width
         srcset += "#{to_url(params)} #{width}w,\n"
       end
@@ -170,7 +170,7 @@ module Imgix
       target_ratios = [1, 2, 3, 4, 5]
       quality = params[:q]
 
-      for ratio in target_ratios do
+      target_ratios.each do |ratio|
         params[:dpr] = ratio
 
         unless disable_variable_quality
