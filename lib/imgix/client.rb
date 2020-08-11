@@ -44,6 +44,11 @@ module Imgix
     end
 
     def purge(path)
+      api_key_deprecated = \
+        "Warning: Your `api_key` will no longer work after upgrading to\n" \
+        "imgix-rb version >= 4.0.0.\n"
+      warn api_key_deprecated
+
       token_error = 'Authentication token required'
       raise token_error if @api_key.nil?
 
