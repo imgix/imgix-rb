@@ -49,8 +49,8 @@ module Imgix
         "imgix-rb version >= 4.0.0.\n"
       warn api_key_deprecated
 
-      token_error = 'Authentication token required'
-      raise token_error if @api_key.nil?
+      api_key_error = 'A valid api key is required to send purge requests'
+      raise api_key_error if @api_key.nil?
 
       url = new_prefix + path
       uri = URI.parse('https://api.imgix.com/v2/image/purger')
