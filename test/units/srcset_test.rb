@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 module SrcsetTest
   RESOLUTIONS = [
@@ -12,9 +12,9 @@ module SrcsetTest
 
   DPR_QUALITY = [75, 50, 35, 23, 20].freeze
 
-  DOMAIN = 'testing.imgix.net'
-  TOKEN = 'MYT0KEN'
-  JPG_PATH = 'image.jpg'
+  DOMAIN = "testing.imgix.net"
+  TOKEN = "MYT0KEN"
+  JPG_PATH = "image.jpg"
 
   def mock_client
     Imgix::Client.new(
@@ -32,20 +32,20 @@ module SrcsetTest
   end
 
   def signature_base(params)
-    TOKEN + '/' + JPG_PATH + params
+    TOKEN + "/" + JPG_PATH + params
   end
 
   def get_sig_from(src)
-    src.slice(src.index('s=') + 2, src.length)
+    src.slice(src.index("s=") + 2, src.length)
   end
 
   def get_params_from(src)
-    src[src.index('?')..src.index('s=') - 2]
+    src[src.index("?")..src.index("s=") - 2]
   end
 
   def get_expected_signature(src)
     # Ensure signature param exists.
-    assert_includes src, 's='
+    assert_includes src, "s="
 
     params = get_params_from(src)
     signature_base = signature_base(params)
@@ -60,17 +60,17 @@ module SrcsetTest
       srcset = path.to_srcset
 
       expected_number_of_pairs = 31
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
       resolutions = RESOLUTIONS
       srcset = path.to_srcset
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], resolutions[i])
       end
     end
@@ -88,8 +88,8 @@ module SrcsetTest
     def test_srcset_in_dpr_form
       device_pixel_ratio = 1
 
-      srcset.split(',').map do |src|
-        ratio = src.split(' ')[1]
+      srcset.split(",").map do |src|
+        ratio = src.split(" ")[1]
         assert_equal "#{device_pixel_ratio}x", ratio
         device_pixel_ratio += 1
       end
@@ -97,16 +97,16 @@ module SrcsetTest
 
     def test_srcset_has_dpr_params
       i = 1
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         assert_includes src, "dpr=#{i}"
         i += 1
       end
     end
 
     def test_srcset_signs_urls
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
@@ -115,7 +115,7 @@ module SrcsetTest
 
     def test_srcset_has_variable_qualities
       i = 0
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{DPR_QUALITY[i]}"
         i += 1
       end
@@ -125,7 +125,7 @@ module SrcsetTest
       quality_override = 100
       srcset = mock_signed_client.to_srcset(w: 100, q: quality_override)
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
@@ -136,8 +136,8 @@ module SrcsetTest
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
-        assert(not(src.include?('q=')))
+      srcset.split(",").map do |src|
+        assert(!src.include?("q="))
       end
     end
 
@@ -148,7 +148,7 @@ module SrcsetTest
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
@@ -165,32 +165,32 @@ module SrcsetTest
 
     def test_srcset_generates_width_pairs
       expected_number_of_pairs = 31
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
       resolutions = RESOLUTIONS
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], resolutions[i])
       end
     end
 
     def test_srcset_respects_height_parameter
-      srcset.split(',').map do |src|
-        assert_includes src, 'h='
+      srcset.split(",").map do |src|
+        assert_includes src, "h="
       end
     end
 
     def test_srcset_within_bounds
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, 100
       assert_operator max, :<=, 8192
@@ -201,13 +201,13 @@ module SrcsetTest
       increment_allowed = 0.17
 
       # create an array of widths
-      widths = srcset.split(',').map do |src|
-        src.split(' ')[1].to_i
+      widths = srcset.split(",").map do |src|
+        src.split(" ")[1].to_i
       end
 
       prev = widths[0]
 
-      for i in 1..widths.length - 1
+      (1..widths.length - 1).each do |i|
         element = widths[i]
         assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
         prev = element
@@ -215,8 +215,8 @@ module SrcsetTest
     end
 
     def test_srcset_signs_urls
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
@@ -235,8 +235,8 @@ module SrcsetTest
 
     def test_srcset_in_dpr_form
       device_pixel_ratio = 1
-      srcset.split(',').map do |src|
-        ratio = src.split(' ')[1]
+      srcset.split(",").map do |src|
+        ratio = src.split(" ")[1]
         assert_equal "#{device_pixel_ratio}x", ratio
         device_pixel_ratio += 1
       end
@@ -244,16 +244,16 @@ module SrcsetTest
 
     def test_srcset_has_dpr_params
       i = 1
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         assert_includes src, "dpr=#{i}"
         i += 1
       end
     end
 
     def test_srcset_signs_urls
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
@@ -262,7 +262,7 @@ module SrcsetTest
 
     def test_srcset_has_variable_qualities
       i = 0
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{DPR_QUALITY[i]}"
         i += 1
       end
@@ -272,7 +272,7 @@ module SrcsetTest
       quality_override = 100
       srcset = mock_signed_client.to_srcset(w: 100, h: 100, q: quality_override)
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
@@ -283,8 +283,8 @@ module SrcsetTest
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
-        assert(not(src.include?('q=')))
+      srcset.split(",").map do |src|
+        assert(!src.include?("q="))
       end
     end
 
@@ -295,7 +295,7 @@ module SrcsetTest
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
@@ -312,25 +312,25 @@ module SrcsetTest
 
     def test_srcset_generates_width_pairs
       expected_number_of_pairs = 31
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], RESOLUTIONS[i])
       end
     end
 
     def test_srcset_within_bounds
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, 100
       assert_operator max, :<=, 8192
@@ -341,13 +341,13 @@ module SrcsetTest
       increment_allowed = 0.17
 
       # create an array of widths
-      widths = srcset.split(',').map do |src|
-        src.split(' ')[1].to_i
+      widths = srcset.split(",").map do |src|
+        src.split(" ")[1].to_i
       end
 
       prev = widths[0]
 
-      for i in 1..widths.length - 1
+      (1..widths.length - 1).each do |i|
         element = widths[i]
         assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
         prev = element
@@ -355,8 +355,8 @@ module SrcsetTest
     end
 
     def test_srcset_signs_urls
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
@@ -366,7 +366,7 @@ module SrcsetTest
     private
 
     def srcset
-      @client ||= mock_signed_client.to_srcset(ar: '3:2')
+      @client ||= mock_signed_client.to_srcset(ar: "3:2")
     end
   end
 
@@ -376,8 +376,8 @@ module SrcsetTest
     def test_srcset_in_dpr_form
       device_pixel_ratio = 1
 
-      srcset.split(',').map do |src|
-        ratio = src.split(' ')[1]
+      srcset.split(",").map do |src|
+        ratio = src.split(" ")[1]
         assert_equal "#{device_pixel_ratio}x", ratio
         device_pixel_ratio += 1
       end
@@ -385,16 +385,16 @@ module SrcsetTest
 
     def test_srcset_has_dpr_params
       i = 1
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         assert_includes src, "dpr=#{i}"
         i += 1
       end
     end
 
     def test_srcset_signs_urls
-      srcset.split(',').map do |srcset_split|
-        src = srcset_split.split(' ')[0]
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
@@ -403,7 +403,7 @@ module SrcsetTest
 
     def test_srcset_has_variable_qualities
       i = 0
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{DPR_QUALITY[i]}"
         i += 1
       end
@@ -412,22 +412,22 @@ module SrcsetTest
     def test_srcset_respects_overriding_quality
       quality_override = 100
       srcset = mock_signed_client.to_srcset(
-        w: 100, ar: '3:2', q: quality_override
+        w: 100, ar: "3:2", q: quality_override
       )
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
 
     def test_disable_variable_quality
       srcset = mock_signed_client.to_srcset(
-        w: 100, ar: '3:2',
+        w: 100, ar: "3:2",
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
-        assert(not(src.include?('q=')))
+      srcset.split(",").map do |src|
+        assert(!src.include?("q="))
       end
     end
 
@@ -438,7 +438,7 @@ module SrcsetTest
         options: { disable_variable_quality: true }
       )
 
-      srcset.split(',').map do |src|
+      srcset.split(",").map do |src|
         assert_includes src, "q=#{quality_override}"
       end
     end
@@ -446,7 +446,7 @@ module SrcsetTest
     private
 
     def srcset
-      @client ||= mock_signed_client.to_srcset({ h: 100, ar: '3:2' })
+      @client ||= mock_signed_client.to_srcset({ h: 100, ar: "3:2" })
     end
   end
 
@@ -455,7 +455,7 @@ module SrcsetTest
 
     def test_srcset_generates_width_pairs
       expected_number_of_pairs = 15
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
@@ -463,21 +463,21 @@ module SrcsetTest
                      538, 753, 1054, 1476, 2066,
                      2893, 4050, 5669, 7937, 8192]
 
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], resolutions[i])
       end
     end
 
     def test_srcset_within_bounds
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
       assert_operator min, :>=, 100
       assert_operator max, :<=, 8192
     end
@@ -487,13 +487,13 @@ module SrcsetTest
       increment_allowed = 0.41
 
       # create an array of widths
-      widths = srcset.split(',').map do |src|
-        src.split(' ')[1].to_i
+      widths = srcset.split(",").map do |src|
+        src.split(" ")[1].to_i
       end
 
       prev = widths[0]
 
-      for i in 1..widths.length - 1
+      (1..widths.length - 1).each do |i|
         element = widths[i]
         assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
         prev = element
@@ -502,7 +502,7 @@ module SrcsetTest
 
     def test_invalid_tolerance_emits_error
       assert_raises(ArgumentError) do
-        mock_client.to_srcset(options: { width_tolerance: 'abc' })
+        mock_client.to_srcset(options: { width_tolerance: "abc" })
       end
     end
 
@@ -515,21 +515,21 @@ module SrcsetTest
     def test_with_param_after
       srcset = mock_signed_client.to_srcset(
         options: { width_tolerance: 0.20 },
-        h: 1000, fit: 'clip'
+        h: 1000, fit: "clip"
       )
 
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('width_tolerance=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("width_tolerance="))
     end
 
     def test_with_param_before
       srcset = mock_signed_client.to_srcset(
-        h: 1000, fit: 'clip',
+        h: 1000, fit: "clip",
         options: { width_tolerance: 0.20 }
       )
 
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('width_tolerance=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("width_tolerance="))
     end
 
     private
@@ -546,26 +546,26 @@ module SrcsetTest
 
     def test_srcset_generates_width_pairs
       expected_number_of_pairs = 4
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
       resolutions = [100, 500, 1000, 1800]
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], resolutions[i])
       end
     end
 
     def test_srcset_within_bounds
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, @widths[0]
       assert_operator max, :<=, @widths[-1]
@@ -573,7 +573,7 @@ module SrcsetTest
 
     def test_invalid_widths_input_emits_error
       assert_raises(ArgumentError) do
-        mock_client.to_srcset(options: { widths: 'abc' })
+        mock_client.to_srcset(options: { widths: "abc" })
       end
     end
 
@@ -592,20 +592,20 @@ module SrcsetTest
     def test_with_param_after
       srcset = mock_signed_client.to_srcset(
         options: { widths: [100, 200, 300] },
-        h: 1000, fit: 'clip'
+        h: 1000, fit: "clip"
       )
 
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('widths=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("widths="))
     end
 
     def test_with_param_before
       srcset = mock_client.to_srcset(
-        h: 1000, fit: 'clip',
+        h: 1000, fit: "clip",
         options: { widths: [100, 200, 300] }
       )
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('widths=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("widths="))
     end
 
     private
@@ -621,27 +621,27 @@ module SrcsetTest
 
     def test_srcset_generates_width_pairs
       expected_number_of_pairs = 11
-      assert_equal expected_number_of_pairs, srcset.split(',').length
+      assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
       resolutions = [500, 580, 673, 780, 905, 1050,
-        1218, 1413, 1639, 1901, 2000]
-      srclist = srcset.split(',').map do |srcset_split|
-        srcset_split.split(' ')[1].to_i
+                     1218, 1413, 1639, 1901, 2000]
+      srclist = srcset.split(",").map do |srcset_split|
+        srcset_split.split(" ")[1].to_i
       end
 
-      for i in 0..srclist.length - 1
+      (0..srclist.length - 1).each do |i|
         assert_equal(srclist[i], resolutions[i])
       end
     end
 
     def test_srcset_within_bounds
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, @MIN
       assert_operator max, :<=, @MAX
@@ -656,13 +656,13 @@ module SrcsetTest
       increment_allowed = 0.41
 
       # create an array of widths
-      widths = srcset.split(',').map do |src|
-        src.split(' ')[1].to_i
+      widths = srcset.split(",").map do |src|
+        src.split(" ")[1].to_i
       end
 
       prev = widths[0]
 
-      for i in 1..widths.length - 1
+      (1..widths.length - 1).each do |i|
         element = widths[i]
         assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
         prev = element
@@ -671,7 +671,7 @@ module SrcsetTest
 
     def test_invalid_min_emits_error
       assert_raises(ArgumentError) do
-        mock_client.to_srcset(options: { min_width: 'abc' })
+        mock_client.to_srcset(options: { min_width: "abc" })
       end
     end
 
@@ -684,23 +684,23 @@ module SrcsetTest
     def test_with_param_after
       srcset = mock_client.to_srcset(
         options: { min_width: 500, max_width: 2000 },
-        h: 1000, fit: 'clip'
+        h: 1000, fit: "clip"
       )
 
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('min_width=')))
-      assert(not(srcset.include?('max_width=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("min_width="))
+      assert(!srcset.include?("max_width="))
     end
 
     def test_with_param_before
       srcset = mock_client.to_srcset(
-        h: 1000, fit: 'clip',
+        h: 1000, fit: "clip",
         options: { min_width: 500, max_width: 2000 }
       )
 
-      assert_includes(srcset, 'h=')
-      assert(not(srcset.include?('min_width=')))
-      assert(not(srcset.include?('max_width=')))
+      assert_includes(srcset, "h=")
+      assert(!srcset.include?("min_width="))
+      assert(!srcset.include?("max_width="))
     end
 
     def test_only_min
@@ -708,11 +708,11 @@ module SrcsetTest
       max_width = 8192
       srcset = mock_client.to_srcset(options: { min_width: min_width })
 
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, min_width
       assert_operator max, :<=, max_width
@@ -722,11 +722,11 @@ module SrcsetTest
       min_width = 100
       max_width = 1000
       srcset = mock_client.to_srcset(options: { max_width: max_width })
-      min, *max = srcset.split(',')
+      min, *max = srcset.split(",")
 
       # parse out the width descriptor as an integer
-      min = min.split(' ')[1].to_i
-      max = max[max.length - 1].split(' ')[1].to_i
+      min = min.split(" ")[1].to_i
+      max = max[max.length - 1].split(" ")[1].to_i
 
       assert_operator min, :>=, min_width
       assert_operator max, :<=, max_width
@@ -734,12 +734,12 @@ module SrcsetTest
 
     def test_max_as_100
       srcset = mock_client.to_srcset(options: { max_width: 100 })
-      assert_equal(srcset, 'https://testing.imgix.net/image.jpg?w=100 100w')
+      assert_equal(srcset, "https://testing.imgix.net/image.jpg?w=100 100w")
     end
 
     def test_min_as_8192
       srcset = mock_client.to_srcset(options: { min_width: 8192 })
-      assert_equal(srcset, 'https://testing.imgix.net/image.jpg?w=8192 8192w')
+      assert_equal(srcset, "https://testing.imgix.net/image.jpg?w=8192 8192w")
     end
 
     private

@@ -15,8 +15,8 @@ class ParamHelpers < Imgix::Test
         rect_warn = "Warning: `ParamHelpers.rect` has been deprecated and " \
                     "will be removed in the next major version.\n"
 
-        assert_output(nil, rect_warn){
-            client.path('/images/demo.png').rect(x: 0, y: 50, width: 200, height: 300)
+        assert_output(nil, rect_warn) {
+            client.path("/images/demo.png").rect(x: 0, y: 50, width: 200, height: 300)
         }
     }
   end

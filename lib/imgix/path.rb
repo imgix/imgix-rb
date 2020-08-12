@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'base64'
-require 'cgi/util'
-require 'erb'
-require 'imgix/param_helpers'
+require "base64"
+require "cgi/util"
+require "erb"
+require "imgix/param_helpers"
 
 module Imgix
   class Path
@@ -31,14 +31,14 @@ module Imgix
       quality: :q
     }.freeze
 
-    def initialize(prefix, secure_url_token, path = '/')
+    def initialize(prefix, secure_url_token, path = "/")
       @prefix = prefix
       @secure_url_token = secure_url_token
       @path = path
       @options = {}
 
       @path = CGI.escape(@path) if /^https?/ =~ @path
-      @path = "/#{@path}" if @path[0] != '/'
+      @path = "/#{@path}" if @path[0] != "/"
       @target_widths = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE, MIN_WIDTH, MAX_WIDTH)
     end
 
@@ -49,7 +49,7 @@ module Imgix
       url = @prefix + path_and_params
 
       if @secure_url_token
-        url += (has_query? ? '&' : '?') + "s=#{signature}"
+        url += (has_query? ? "&" : "?") + "s=#{signature}"
       end
 
       @options = prev_options
@@ -61,15 +61,15 @@ module Imgix
       self
     end
 
-    def method_missing(method, *args, &block)
-      key = method.to_s.gsub('=', '')
-      if args.length == 0
+    def method_missing(method, *args)
+      key = method.to_s.gsub("=", "")
+      if args.empty?
         return @options[key]
-      elsif args.first.nil? && @options.has_key?(key)
+      elsif args.first.nil? && @options.key?(key)
         @options.delete(key) and return self
       end
 
-      @options[key] = args.join(',')
+      @options[key] = args.join(",")
       self
     end
 
@@ -78,14 +78,14 @@ module Imgix
         warn "Warning: `Path.#{from}' has been deprecated and " \
              "will be removed in the next major version (along " \
              "with all parameter `ALIASES`).\n"
-        self.send(to, *args)
+        send(to, *args)
       end
 
       define_method "#{from}=" do |*args|
         warn "Warning: `Path.#{from}=' has been deprecated and " \
              "will be removed in the next major version (along " \
              "with all parameter `ALIASES`).\n"
-        self.send("#{to}=", *args)
+        send("#{to}=", *args)
         return self
       end
     end
@@ -99,10 +99,10 @@ module Imgix
       aspect_ratio = @options[:ar]
 
       srcset = if width || (height && aspect_ratio)
-                 build_dpr_srcset(options: options, params: @options)
-               else
-                 build_srcset_pairs(options: options, params: @options)
-               end
+          build_dpr_srcset(options: options, params: @options)
+        else
+          build_srcset_pairs(options: options, params: @options)
+        end
 
       @options = prev_options
       srcset
@@ -127,15 +127,15 @@ module Imgix
         else
           escaped_key << "=" << ERB::Util.url_encode(val.to_s)
         end
-      end.join('&')
+      end.join("&")
     end
 
     def has_query?
-      query.length > 0
+      !query.empty?
     end
 
     def build_srcset_pairs(options:, params:)
-      srcset = ''
+      srcset = ""
 
       widths = options[:widths] || []
       width_tolerance = options[:width_tolerance] || DEFAULT_WIDTH_TOLERANCE
@@ -162,7 +162,7 @@ module Imgix
     end
 
     def build_dpr_srcset(options:, params:)
-      srcset = ''
+      srcset = ""
 
       disable_variable_quality = options[:disable_variable_quality] || false
       validate_variable_qualities!(disable_variable_quality)
@@ -173,9 +173,7 @@ module Imgix
       target_ratios.each do |ratio|
         params[:dpr] = ratio
 
-        unless disable_variable_quality
-          params[:q] = quality || DPR_QUALITY[ratio]
-        end
+        params[:q] = quality || DPR_QUALITY[ratio] unless disable_variable_quality
 
         srcset += "#{to_url(params)} #{ratio}x,\n"
       end
@@ -184,15 +182,13 @@ module Imgix
     end
 
     def validate_width_tolerance!(width_tolerance)
-      width_increment_error = 'error: `width_tolerance` must be a positive `Numeric` value'
+      width_increment_error = "error: `width_tolerance` must be a positive `Numeric` value"
 
-      if !width_tolerance.is_a?(Numeric) || width_tolerance <= 0
-        raise ArgumentError, width_increment_error
-      end
+      raise ArgumentError, width_increment_error if !width_tolerance.is_a?(Numeric) || width_tolerance <= 0
     end
 
     def validate_widths!(widths)
-      widths_error = 'error: `widths` must be an array of positive `Numeric` values'
+      widths_error = "error: `widths` must be an array of positive `Numeric` values"
       raise ArgumentError, widths_error unless widths.is_a?(Array)
 
       all_positive_integers = widths.all? { |i| i.is_a?(Integer) && i > 0 }
@@ -200,18 +196,14 @@ module Imgix
     end
 
     def validate_range!(min_srcset, max_srcset)
-      range_numeric_error = 'error: `min_width` and `max_width` must be positive `Numeric` values'
-      unless min_srcset.is_a?(Numeric) && max_srcset.is_a?(Numeric)
-        raise ArgumentError, range_numeric_error
-      end
+      range_numeric_error = "error: `min_width` and `max_width` must be positive `Numeric` values"
+      raise ArgumentError, range_numeric_error unless min_srcset.is_a?(Numeric) && max_srcset.is_a?(Numeric)
 
-      unless min_srcset > 0 && max_srcset > 0
-        raise ArgumentError, range_numeric_error
-      end
+      raise ArgumentError, range_numeric_error unless min_srcset > 0 && max_srcset > 0
     end
 
     def validate_variable_qualities!(disable_quality)
-      disable_quality_error = 'error: `disable_quality` must be a Boolean value'
+      disable_quality_error = "error: `disable_quality` must be a Boolean value"
       unless disable_quality.is_a?(TrueClass) || disable_quality.is_a?(FalseClass)
         raise ArgumentError, disable_quality_error
       end

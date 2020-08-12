@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'imgix/version'
-require 'imgix/client'
-require 'imgix/path'
+require "imgix/version"
+require "imgix/client"
+require "imgix/path"
 
 module Imgix
   # regex pattern used to determine if a domain is valid
@@ -22,7 +22,7 @@ module Imgix
     increment_percentage = tolerance || DEFAULT_WIDTH_TOLERANCE
 
     unless increment_percentage.is_a?(Numeric) && increment_percentage > 0
-      width_increment_error = 'error: `width_tolerance` must be a positive `Numeric` value'
+      width_increment_error = "error: `width_tolerance` must be a positive `Numeric` value"
       raise ArgumentError, width_increment_error
     end
 
