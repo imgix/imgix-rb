@@ -72,24 +72,7 @@ class PathTest < Imgix::Test
   def test_path_with_multiple_params
     url = "https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a"
     path = client.path("/images/demo.png")
-
     assert_equal url, path.to_url(h: 200, w: 200)
-
-    path = client.path("/images/demo.png")
-
-    assert_output(nil, "Warning: `Path.height' has been deprecated and " \
-      "will be removed in the next major version (along " \
-      "with all parameter `ALIASES`).\n") do
-      path.height(200)
-    end
-
-    assert_output(nil, "Warning: `Path.width' has been deprecated and " \
-      "will be removed in the next major version (along " \
-      "with all parameter `ALIASES`).\n") do
-      path.width(200)
-    end
-
-    assert_equal url, path.to_url
   end
 
   def test_path_with_multi_value_param_safely_encoded
