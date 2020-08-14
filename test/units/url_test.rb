@@ -62,7 +62,7 @@ class UrlTest < Imgix::Test
       "will\nappear as `domain' in the next major version, e.g. " \
       "`@host'\nbecomes `@domain', `options[:host]' becomes " \
       "`options[:domain]'.\n") do
-      Imgix::Client.new(host: "demo.imgix.net", include_library_param: false)
+      Imgix::Client.new(domain: "demo.imgix.net", include_library_param: false)
     end
 
     # Assert the output of this call (to both stdout and stderr) is nil.
@@ -75,7 +75,7 @@ class UrlTest < Imgix::Test
 
   def client
     @client ||= Imgix::Client.new(
-      host: "demo.imgix.net",
+      domain: "demo.imgix.net",
       secure_url_token: "10adc394",
       include_library_param: false
     )
