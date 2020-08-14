@@ -117,12 +117,12 @@ class PathTest < Imgix::Test
     assert_equal "https://demo.imgix.net/~text?txt64=SSBjYW5uw7h0IGJlbMOuw6l24oiRIGl0IHdvcu-jv3MhIPCfmLE", ix_url
   end
 
-  def test_host_is_required
+  def test_domain_is_required
     assert_raises(ArgumentError) { Imgix::Client.new }
   end
 
   def test_token_is_optional
-    client = Imgix::Client.new(host: "demo.imgix.net", include_library_param: false)
+    client = Imgix::Client.new(domain: "demo.imgix.net", include_library_param: false)
     url = "https://demo.imgix.net/images/demo.png"
     path = client.path("/images/demo.png")
 
@@ -130,7 +130,7 @@ class PathTest < Imgix::Test
   end
 
   def test_https_is_optional
-    client = Imgix::Client.new(host: "demo.imgix.net", include_library_param: false, use_https: false)
+    client = Imgix::Client.new(domain: "demo.imgix.net", include_library_param: false, use_https: false)
     url = "http://demo.imgix.net/images/demo.png"
     path = client.path("/images/demo.png")
 
@@ -149,7 +149,7 @@ class PathTest < Imgix::Test
   end
 
   def test_include_library_param
-    client = Imgix::Client.new(host: "demo.imgix.net") # enabled by default
+    client = Imgix::Client.new(domain: "demo.imgix.net") # enabled by default
     url = client.path("/images/demo.png").to_url
 
     assert_equal "ixlib=rb-#{Imgix::VERSION}", URI(url).query
@@ -158,7 +158,7 @@ class PathTest < Imgix::Test
   def test_configure_library_param
     library = "sinatra"
     version = Imgix::VERSION
-    client = Imgix::Client.new(host: "demo.imgix.net", library_param: library, library_version: version) # enabled by default
+    client = Imgix::Client.new(domain: "demo.imgix.net", library_param: library, library_version: version) # enabled by default
     url = client.path("/images/demo.png").to_url
 
     assert_equal "ixlib=#{library}-#{version}", URI(url).query
@@ -167,10 +167,10 @@ class PathTest < Imgix::Test
   private
 
   def client
-    @client ||= Imgix::Client.new(host: "demo.imgix.net", secure_url_token: "10adc394", include_library_param: false)
+    @client ||= Imgix::Client.new(domain: "demo.imgix.net", secure_url_token: "10adc394", include_library_param: false)
   end
 
   def unsigned_client
-    @unsigned_client ||= Imgix::Client.new(host: "demo.imgix.net", include_library_param: false)
+    @unsigned_client ||= Imgix::Client.new(domain: "demo.imgix.net", include_library_param: false)
   end
 end
