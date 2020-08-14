@@ -11,19 +11,9 @@ module Imgix
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
-      host = options[:host]
-      domain = options[:domain]
+      @domain = options[:domain]
 
-      if host
-        warn host_deprecated
-        @host = host
-      elsif domain
-        @host = domain
-      else
-        @host = host
-      end
-
-      validate_host!
+      validate_domain!
 
       @secure_url_token = options[:secure_url_token]
       @api_key = options[:api_key]
@@ -72,20 +62,20 @@ module Imgix
     end
 
     def new_prefix
-      "#{@use_https ? 'https' : 'http'}://#{@host}"
+      "#{@use_https ? 'https' : 'http'}://#{@domain}"
     end
 
     private
 
-    def validate_host!
-      host_error = "The :host option must be specified"
-      raise ArgumentError, host_error if @host.nil?
+    def validate_domain!
+      domain_error  = "The :domain option must be specified"
+      raise ArgumentError, domain_error if @domain.nil?
 
       domain_error = "Domains must be passed in as fully-qualified"\
                      "domain names and should not include a protocol"\
                      'or any path element, i.e. "example.imgix.net"'\
 
-      raise ArgumentError, domain_error if @host.match(DOMAIN_REGEX).nil?
+      raise ArgumentError, domain_error if @domain.match(DOMAIN_REGEX).nil?
     end
   end
 end
