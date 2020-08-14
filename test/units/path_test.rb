@@ -35,37 +35,12 @@ class PathTest < Imgix::Test
   def test_signing_path_with_param
     url = "https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e"
     path = client.path("/images/demo.png")
-
-    assert_output(nil, "Warning: `Path.width=' has been deprecated and " \
-      "will be removed in the next major version (along " \
-      "with all parameter `ALIASES`).\n") do
-      path.width = 200
-    end
-
-    assert_equal url, path.to_url
-
-    path = client.path("/images/demo.png")
     assert_equal url, path.to_url(w: 200)
-
-    path = client.path("/images/demo.png")
-
-    assert_output(nil, "Warning: `Path.width' has been deprecated and " \
-      "will be removed in the next major version (along " \
-      "with all parameter `ALIASES`).\n") do
-      assert_equal url, path.width(200).to_url
-    end
   end
 
   def test_resetting_defaults
     url = "https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e"
     path = client.path("/images/demo.png")
-
-    assert_output(nil, "Warning: `Path.height=' has been deprecated and " \
-      "will be removed in the next major version (along " \
-      "with all parameter `ALIASES`).\n") do
-      path.height = 300
-    end
-
     assert_equal url, path.defaults.to_url(w: 200)
   end
 
@@ -79,7 +54,7 @@ class PathTest < Imgix::Test
     url = "https://demo.imgix.net/images/demo.png?markalign=middle%2Ccenter&s=f0d0e28a739f022638f4ba6dddf9b694"
     path = client.path("/images/demo.png")
 
-    assert_equal url, path.markalign("middle", "center").to_url
+    assert_equal url, path.to_url(markalign: "middle,center")
   end
 
   def test_param_keys_are_escaped
