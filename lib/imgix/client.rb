@@ -14,11 +14,6 @@ module Imgix
       host = options[:host]
       domain = options[:domain]
 
-      host_deprecated = "Warning: The identifier `host' has been deprecated and " \
-        "will\nappear as `domain' in the next major version, e.g. " \
-        "`@host'\nbecomes `@domain', `options[:host]' becomes " \
-        "`options[:domain]'.\n"
-
       if host
         warn host_deprecated
         @host = host
