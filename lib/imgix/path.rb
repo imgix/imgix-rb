@@ -7,28 +7,6 @@ require "erb"
 module Imgix
   class Path
 
-    ALIASES = {
-      width: :w,
-      height: :h,
-      rotation: :rot,
-      noise_reduction: :nr,
-      sharpness: :sharp,
-      exposure: :exp,
-      vibrance: :vib,
-      saturation: :sat,
-      brightness: :bri,
-      contrast: :con,
-      highlight: :high,
-      shadow: :shad,
-      gamma: :gam,
-      pixelate: :px,
-      halftone: :htn,
-      watermark: :mark,
-      text: :txt,
-      format: :fm,
-      quality: :q
-    }.freeze
-
     def initialize(prefix, secure_url_token, path = "/")
       @prefix = prefix
       @secure_url_token = secure_url_token
@@ -57,35 +35,6 @@ module Imgix
     def defaults
       @options = {}
       self
-    end
-
-    def method_missing(method, *args)
-      key = method.to_s.gsub("=", "")
-      if args.empty?
-        return @options[key]
-      elsif args.first.nil? && @options.key?(key)
-        @options.delete(key) and return self
-      end
-
-      @options[key] = args.join(",")
-      self
-    end
-
-    ALIASES.each do |from, to|
-      define_method from do |*args|
-        warn "Warning: `Path.#{from}' has been deprecated and " \
-             "will be removed in the next major version (along " \
-             "with all parameter `ALIASES`).\n"
-        send(to, *args)
-      end
-
-      define_method "#{from}=" do |*args|
-        warn "Warning: `Path.#{from}=' has been deprecated and " \
-             "will be removed in the next major version (along " \
-             "with all parameter `ALIASES`).\n"
-        send("#{to}=", *args)
-        return self
-      end
     end
 
     def to_srcset(options: {}, **params)
