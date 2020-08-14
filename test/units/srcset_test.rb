@@ -18,14 +18,14 @@ module SrcsetTest
 
   def mock_client
     Imgix::Client.new(
-      host: DOMAIN,
+      domain: DOMAIN,
       include_library_param: false
     ).path(JPG_PATH)
   end
 
   def mock_signed_client
     Imgix::Client.new(
-      host: DOMAIN,
+      domain: DOMAIN,
       secure_url_token: TOKEN,
       include_library_param: false
     ).path(JPG_PATH)
