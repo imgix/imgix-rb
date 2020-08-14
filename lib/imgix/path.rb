@@ -3,11 +3,9 @@
 require "base64"
 require "cgi/util"
 require "erb"
-require "imgix/param_helpers"
 
 module Imgix
   class Path
-    include ParamHelpers
 
     ALIASES = {
       width: :w,
