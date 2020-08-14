@@ -37,6 +37,14 @@ module Imgix
       self
     end
 
+    def ixlib(lib_version)
+      @options[:ixlib] = lib_version
+    end
+
+    def ixlib=(lib_version)
+      @options[:ixlib] = lib_version
+    end
+
     def to_srcset(options: {}, **params)
       prev_options = @options.dup
       @options.merge!(params)
