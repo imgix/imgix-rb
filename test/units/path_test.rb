@@ -3,27 +3,6 @@
 require "test_helper"
 
 class PathTest < Imgix::Test
-  def test_prefix_with_arg_warns
-    prefix_warn = "Warning: `Client::prefix' will take zero arguments " \
-      "in the next major version.\n"
-
-    assert_output(nil, prefix_warn) do
-      Imgix::Client.new(
-        domain: "test.imgix.net",
-        include_library_param: false
-      ).prefix("")
-    end
-
-    # `new_prefix' is a placeholder until the bump, when it will become
-    # `prefix`.
-    assert_output(nil, nil) do
-      Imgix::Client.new(
-        domain: "test.imgix.net",
-        include_library_param: false
-      ).new_prefix
-    end
-  end
-
   def test_creating_a_path
     path = client.path("/images/demo.png")
     assert_equal "https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4", path.to_url
