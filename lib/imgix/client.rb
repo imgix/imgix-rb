@@ -38,7 +38,7 @@ module Imgix
       api_key_error = "A valid api key is required to send purge requests"
       raise api_key_error if @api_key.nil?
 
-      url = new_prefix + path
+      url = prefix + path
       uri = URI.parse("https://api.imgix.com/v2/image/purger")
 
       user_agent = { "User-Agent" => "imgix #{@library}-#{@version}" }
