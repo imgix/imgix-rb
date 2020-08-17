@@ -54,29 +54,6 @@ client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token:
 client.path('/images/demo.png').to_url(w: 200)
 #=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
 
-# OR
-path = client.path('/images/demo.png')
-path.width = 200
-path.to_url
-
-# OR
-client.path('/images/demo.png').width(200).height(300).to_url
-
-# Some other tricks
-path.defaults.width(300).to_url # Resets parameters
-path.rect(x: 0, y: 50, width: 200, height: 300).to_url # Rect helper
-```
-
-**Deprecation Notice:** Usage of `:host` has been deprecated and will become invalid in the next major release.
-
-In the previous version, `:host` can be used to specify a domain for an `Imgix::Client` like so:
-
-```ruby
-Imgix::Client.new(host: 'demo.imgix.net', secure_url_token: 'token')
-```
-
-Code using `:host` like the above will continue to work until the next major release. While using `:host` will remain valid until the next major release, its usage will result in a deprecation warning. In order to resolve these deprecation warnings before upgrading to the new release, use `:domain` instead of `:host`.
-
 
 ## Srcset Generation
 
