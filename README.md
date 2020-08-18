@@ -48,12 +48,12 @@ Initialize a client with a `:domain` and your `:secure_url_token`. By default, H
 
 Call `Imgix::Client#path` with the resource path to get an `Imgix::Path` object back. You can then manipulate the path parameters, and call `Imgix#Path#to_url` when you're done.
 
-``` ruby
+```rb
 client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
 
 client.path('/images/demo.png').to_url(w: 200)
 #=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
-
+```
 
 ## Srcset Generation
 
