@@ -9,14 +9,6 @@ class PurgeTest < Imgix::Test
     end
   end
 
-  def test_purger_version_warns
-    stub_request(:post, endpoint).with(body: body).to_return(status: 200)
-
-    assert_output(nil, deprecation_warning) do
-      mock_client(api_key: "10adc394").purge("/images/demo.png")
-    end
-  end
-
   def test_successful_purge
     stub_request(:post, endpoint).with(body: body).to_return(status: 200)
 
@@ -61,10 +53,5 @@ class PurgeTest < Imgix::Test
 
   def body
     { "url" => mock_image }
-  end
-
-  def deprecation_warning
-    "Warning: Your `api_key` will no longer work after upgrading to\n" \
-    "imgix-rb version >= 4.0.0.\n"
   end
 end
