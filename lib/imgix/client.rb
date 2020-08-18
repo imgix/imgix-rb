@@ -4,6 +4,7 @@ require "digest"
 require "addressable/uri"
 require "net/http"
 require "uri"
+require "json"
 
 module Imgix
   class Client
@@ -33,20 +34,16 @@ module Imgix
       api_key_error = "A valid api key is required to send purge requests"
       raise api_key_error if @api_key.nil?
 
+      endpoint = URI.parse("https://api.imgix.com/api/v1/purge")
+      # Ensure the path has been prefixed with '/'.
+      path = path.start_with?("/") ? path : "/#{path}"
       url = prefix + path
-      uri = URI.parse("https://api.imgix.com/v2/image/purger")
 
-      user_agent = { "User-Agent" => "imgix #{@library}-#{@version}" }
+      req = create_request(endpoint, url)
 
-      req = Net::HTTP::Post.new(uri.path, user_agent)
-      req.basic_auth @api_key, ""
-      req.set_form_data({ url: url })
-
-      sock = Net::HTTP.new(uri.host, uri.port)
+      sock = Net::HTTP.new(endpoint.host, endpoint.port)
       sock.use_ssl = true
-      res = sock.start { |http| http.request(req) }
-
-      res
+      sock.start { |http| http.request(req) }
     end
 
     def prefix
@@ -54,6 +51,27 @@ module Imgix
     end
 
     private
+
+    def create_request(endpoint, img_url)
+      req = Net::HTTP::Post.new(endpoint.path)
+      req["Content-Type"] = "application/json"
+      req["Authorization"] = "Bearer #{@api_key}"
+      req["User-Agent"] = "imgix #{@library}-#{@version}"
+      req.body = json_data(img_url)
+
+      req
+    end
+
+    def json_data(url)
+      {
+        data: {
+          attributes: {
+              url: url
+          },
+          type: "purges"
+        }
+      }.to_json
+    end
 
     def validate_domain!
       domain_error  = "The :domain option must be specified"

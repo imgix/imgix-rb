@@ -1,23 +1,31 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "json"
 
 class PurgeTest < Imgix::Test
   def test_runtime_error_without_api_key
     assert_raises(RuntimeError) do
-      mock_client(api_key: nil).purge(mock_image)
+      mock_client(api_key: nil).purge(mock_image_url)
     end
   end
 
   def test_successful_purge
-    stub_request(:post, endpoint).with(body: body).to_return(status: 200)
+    stub_request(:post, endpoint).with(
+      body: json_request_body(mock_image_url),
+      headers: mock_headers
+    ).to_return(
+      status: 200,
+      body: "",
+      headers: {}
+    )
 
-    mock_client(api_key: "10adc394").purge("/images/demo.png")
+    mock_client(api_key: mock_api_key).purge("/images/demo.png")
 
     assert_requested(
       :post,
       endpoint,
-      body: "url=https%3A%2F%2Fdemo.imgix.net%2Fimages%2Fdemo.png",
+      body: json_request_body(mock_image_url),
       headers: mock_headers,
       times: 1
     )
@@ -37,21 +45,32 @@ class PurgeTest < Imgix::Test
     {
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "Authorization" => "Bearer MTBhZGMzOTQ6",
+      "Authorization" => "Bearer #{mock_api_key}",
       "Content-Type" => "application/json",
       "User-Agent" => "imgix rb-#{Imgix::VERSION}"
     }
   end
 
-  def mock_image
+  def mock_image_url
     "https://demo.imgix.net/images/demo.png"
+  end
+
+  def mock_api_key
+    "ak_10adc394-10adc394-10adc394-10adc394-10adc394-10adc394-10adc394__"
+  end
+
+  def json_request_body(url)
+    {
+      data: {
+        attributes: {
+            url: url
+        },
+        type: "purges"
+      }
+    }.to_json
   end
 
   def endpoint
     "https://api.imgix.com/api/v1/purge"
-  end
-
-  def body
-    { "url" => mock_image }
   end
 end
