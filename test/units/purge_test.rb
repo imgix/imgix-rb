@@ -37,8 +37,8 @@ class PurgeTest < Imgix::Test
     {
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "Authorization" => "Basic MTBhZGMzOTQ6",
-      "Content-Type" => "application/x-www-form-urlencoded",
+      "Authorization" => "Bearer MTBhZGMzOTQ6",
+      "Content-Type" => "application/json",
       "User-Agent" => "imgix rb-#{Imgix::VERSION}"
     }
   end
@@ -48,7 +48,7 @@ class PurgeTest < Imgix::Test
   end
 
   def endpoint
-    "https://api.imgix.com/v2/image/purger"
+    "https://api.imgix.com/api/v1/purge"
   end
 
   def body
