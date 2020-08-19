@@ -195,21 +195,9 @@ https://testing.imgix.net/image.jpg?w=100&dpr=4&q=23 4x,
 https://testing.imgix.net/image.jpg?w=100&dpr=5&q=20 5x
 ```
 
-## Multiple Parameters
-
-When the imgix api requires multiple parameters you have to use the method rather than an accessor.
-
-For example to use the noise reduction:
-
-``` ruby
-path.noise_reduction(50,50)
-```
-
 ## Purge Cache
 
-**Deprecation Notice:** The API keys used in `Imgix::Client#purge` version `3.3.X` have been deprecated. To utilize the updated `Imgix::Client#purge` method in version `4.0.0`, please regenerate your API key at `http://dashboard.imgix.com/api-keys`. Feel free to reach out to our [support line](support@imgix.com) if you have any questions or concerns.
-
-If you need to remove or update an image on imgix, you can purge it from our cache by initializing a client with your api_key, then calling Imgix::Client#purge with the resource path.
+If you need to remove or update an image on imgix, you can purge it from our cache by initializing a client with your [api key](http://dashboard.imgix.com/api-keys), then calling `Imgix::Client#purge` with the resource path.
 
 ```ruby
 client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', api_key: 'your-key')
