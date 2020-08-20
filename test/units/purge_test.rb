@@ -46,7 +46,7 @@ class PurgeTest < Imgix::Test
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "Authorization" => "Bearer #{mock_api_key}",
-      "Content-Type" => "application/json",
+      "Content-Type" => "application/vnd.api+json",
       "User-Agent" => "imgix rb-#{Imgix::VERSION}"
     }
   end

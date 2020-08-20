@@ -65,7 +65,7 @@ module Imgix
     # method.
     def create_request(endpoint, resource, data_fmt = :json_data_from)
       req = Net::HTTP::Post.new(endpoint.path)
-      req["Content-Type"] = "application/json"
+      req["Content-Type"] = "application/vnd.api+json"
       req["Authorization"] = "Bearer #{@api_key}"
       req["User-Agent"] = "imgix #{@library}-#{@version}"
 
