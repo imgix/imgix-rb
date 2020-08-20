@@ -197,7 +197,7 @@ https://testing.imgix.net/image.jpg?w=100&dpr=5&q=20 5x
 
 ## Purge Cache
 
-If you need to remove or update an image on imgix, you can purge it from our cache by initializing a client with your [api key](http://dashboard.imgix.com/api-keys), then calling `Imgix::Client#purge` with the resource path.
+If you need to remove or update an image on imgix, you can purge it from our cache by initializing a client with your [API key](http://dashboard.imgix.com/api-keys), then calling `Imgix::Client#purge` with the resource path.
 
 ```ruby
 client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', api_key: 'your-key')
