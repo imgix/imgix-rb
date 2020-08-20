@@ -52,12 +52,33 @@ module Imgix
 
     private
 
-    def create_request(endpoint, img_url)
+    # Create a request object by specifying it's endpoint, resource, and
+    # an optional data_fmt.
+    #
+    # `endpoint` must be a valid URI object
+    # `resource` must be a valid URL designating the resource to be purged
+    # `data_fmt` must be a valid method or Proc object
+    #
+    # Specify a `data_fmt` method when a resource (URL) requires
+    # additional formatting before being included in the request body.
+    # By default, this method formats the request body using the
+    # `json_from_url` method.
+    def create_request(endpoint, resource, data_fmt = :json_data)
       req = Net::HTTP::Post.new(endpoint.path)
       req["Content-Type"] = "application/json"
       req["Authorization"] = "Bearer #{@api_key}"
       req["User-Agent"] = "imgix #{@library}-#{@version}"
-      req.body = json_data(img_url)
+
+      case
+      when data_fmt.is_a?(Proc)
+        req.body = data_fmt.call(resource)
+      when data_fmt.is_a?(Symbol)
+        req.body = send(data_fmt, resource)
+      else
+        fmt_arg_error = "`fmt' is required to be of class Symbol or " \
+          "Proc but was found to be\n\s\sof class #{data_fmt.class}\n"
+        raise ArgumentError, fmt_arg_error
+      end
 
       req
     end
