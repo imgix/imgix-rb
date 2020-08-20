@@ -39,7 +39,7 @@ module Imgix
       path = path.start_with?("/") ? path : "/#{path}"
       url = prefix + path
 
-      req = create_request(endpoint, url)
+      req = create_request(endpoint, url, :json_data_from)
 
       sock = Net::HTTP.new(endpoint.host, endpoint.port)
       sock.use_ssl = true
@@ -61,9 +61,9 @@ module Imgix
     #
     # Specify a `data_fmt` method when a resource (URL) requires
     # additional formatting before being included in the request body.
-    # By default, this method formats the request body using the
-    # `json_from_url` method.
-    def create_request(endpoint, resource, data_fmt = :json_data)
+    # By default, the data format is specified by the `json_data_from`
+    # method.
+    def create_request(endpoint, resource, data_fmt = :json_data_from)
       req = Net::HTTP::Post.new(endpoint.path)
       req["Content-Type"] = "application/json"
       req["Authorization"] = "Bearer #{@api_key}"
@@ -83,7 +83,7 @@ module Imgix
       req
     end
 
-    def json_data(url)
+    def json_data_from(url)
       {
         data: {
           attributes: {
