@@ -31,7 +31,7 @@ module Imgix
     end
 
     def purge(path)
-      api_key_error = "A valid api key is required to send purge requests"
+      api_key_error = "A valid API key is required to send purge requests"
       raise api_key_error if @api_key.nil?
 
       endpoint = URI.parse("https://api.imgix.com/api/v1/purge")
