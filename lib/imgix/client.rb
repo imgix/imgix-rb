@@ -69,10 +69,9 @@ module Imgix
       req["Authorization"] = "Bearer #{@api_key}"
       req["User-Agent"] = "imgix #{@library}-#{@version}"
 
-      case
-      when data_fmt.is_a?(Proc)
+      if data_fmt.is_a?(Proc)
         req.body = data_fmt.call(resource)
-      when data_fmt.is_a?(Symbol)
+      elsif data_fmt.is_a?(Symbol)
         req.body = send(data_fmt, resource)
       else
         fmt_arg_error = "`fmt' is required to be of class Symbol or " \
