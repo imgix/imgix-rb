@@ -13,27 +13,52 @@ class PathTest < Imgix::Test
 
   def test_signing_path_with_param
     url = "https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e"
-    path = client.path("/images/demo.png")
-    assert_equal url, path.to_url(w: 200)
+    path = client.path("/images/demo.png").w(200)
+    assert_equal url, path.to_url
   end
 
   def test_resetting_defaults
     url = "https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e"
     path = client.path("/images/demo.png")
-    assert_equal url, path.defaults.to_url(w: 200)
+    assert_equal url, path.defaults.width(200).to_url
+  end
+
+  # Test path.w(value) and path.width(value) produce the same URL.
+  def test_aliases_w_and_width
+    expected = "https://demo.imgix.net/image.png?w=720"
+    actual_w = unsigned_client.path("image.png").w(720)
+    actual_width = unsigned_client.path("image.png").width(720)
+    assert_equal expected, actual_w.to_url, actual_width.to_url
+  end
+
+  # Test mark64 is an alias for watermark64.
+  def test_aliases_mark_watermark
+    expected = "https://static.imgix.net/lorie.png?" \
+      "h=480&w=320&mark64=aHR0cHM6Ly9hc3NldHMuaW1naXgubmV0L3ByZXNza2l0L2" \
+      "ltZ2l4LXByZXNza2l0LnBkZj9wYWdlPTQmZm09cG5n"
+
+    mark_img_url = "https://assets.imgix.net/presskit/imgix-presskit.pdf?page=4&fm=png"
+
+    client = Imgix::Client.new(
+      domain: "static.imgix.net",
+      include_library_param: false
+    )
+
+    actual = client.path("lorie.png").h(480).w(320).mark64(mark_img_url)
+    assert_equal expected, actual.to_url
   end
 
   def test_path_with_multiple_params
     url = "https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a"
-    path = client.path("/images/demo.png")
-    assert_equal url, path.to_url(h: 200, w: 200)
+    path = client.path("/images/demo.png").h(200).w(200)
+    assert_equal url, path.to_url
   end
 
   def test_path_with_multi_value_param_safely_encoded
     url = "https://demo.imgix.net/images/demo.png?markalign=middle%2Ccenter&s=f0d0e28a739f022638f4ba6dddf9b694"
-    path = client.path("/images/demo.png")
+    path = client.path("/images/demo.png").markalign("middle,center")
 
-    assert_equal url, path.to_url(markalign: "middle,center")
+    assert_equal url, path.to_url
   end
 
   def test_param_keys_are_escaped
