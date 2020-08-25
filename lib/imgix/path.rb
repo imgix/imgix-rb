@@ -63,6 +63,71 @@ module Imgix
       srcset
     end
 
+    ALIASES = {
+      width:           :w,
+      height:          :h,
+      rotation:        :rot,
+      noise_reduction: :nr,
+      sharpness:       :sharp,
+      exposure:        :exp,
+      vibrance:        :vib,
+      saturation:      :sat,
+      brightness:      :bri,
+      contrast:        :con,
+      highlight:       :high,
+      shadow:          :shad,
+      gamma:           :gam,
+      pixelate:        :px,
+      halftone:        :htn,
+      watermark:       :mark,
+      text:            :txt,
+      format:          :fm,
+      quality:         :q,
+      fill_color:      :fillcolor
+    }.freeze
+
+    # Define query parameters on a Path (via method_missing).
+    # Normally, when overriding method_missing, it is a best practice
+    # to fall back to super, but this method works differently.
+    #
+    # method_missing intercepts messages sent to objects of this class
+    # and acts as a getter, setter, and deleter. If there are no args,
+    # e.g. `path.width`, then this method acts like a getter.
+    #
+    # Likewise, if the first argument is nil and the method name exists
+    # as a key in @options, e.g. `path.param_name = nil`, then this
+    # method acts like a deleter and the `param_name` is removed from
+    # the list of @options.
+    #
+    # Finally, in _all_ other cases, the `method` name is used as the
+    # `key` and the `*args` are used as the value.
+    def method_missing(method, *args, &block)
+      key = method.to_s.gsub('=', '')
+
+      if args.length == 0 # Get, or
+        return @options[key]
+      elsif args.first.nil? && @options.has_key?(key) # Delete, or
+        @options.delete(key) and return self
+      end
+
+      @options[key] = args.join(',') # Set the option.
+      self
+    end
+
+    # Use ALIASES to define setters for a subset of imgix parameters.
+    # E.g. `path.width(100)` would result in `send(:w, [100])`.
+    ALIASES.each do |from, to|
+      define_method from do |*args|
+        self.send(to, *args)
+      end
+
+      # E.g. `path.width = 100` would result in `send(":w=", [100])`.
+      define_method "#{from}=" do |*args|
+        self.send("#{to}=", *args)
+        return self
+      end
+    end
+
     private
 
     def signature
