@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "digest"
-require "addressable/uri"
 require "net/http"
 require "uri"
 require "json"
