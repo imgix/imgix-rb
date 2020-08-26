@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0](https://github.com/imgix/imgix-rb/compare/3.4.0...4.0.0) - August 26, 2020
+
+* deprecate: host-usage, param_helpers, and prefix-1-ary ([#91](https://github.com/imgix/imgix-rb/pull/91))
+* fix: update purge operation api keys ([#93](https://github.com/imgix/imgix-rb/pull/93))
+
 ## [3.4.0](https://github.com/imgix/imgix-rb/compare/3.3.1...3.4.0) - August 12, 2020
 
 * fix: deprecate api key versions ([#87](https://github.com/imgix/imgix-rb/pull/87))
