@@ -215,11 +215,11 @@ module Imgix
       raise ArgumentError, widths_error unless all_positive_integers
     end
 
-    def validate_range!(min_srcset, max_srcset)
+    def validate_range!(min_width, max_width)
       range_numeric_error = "error: `min_width` and `max_width` must be positive `Numeric` values"
-      raise ArgumentError, range_numeric_error unless min_srcset.is_a?(Numeric) && max_srcset.is_a?(Numeric)
+      raise ArgumentError, range_numeric_error unless min_width.is_a?(Numeric) && max_width.is_a?(Numeric)
 
-      raise ArgumentError, range_numeric_error unless min_srcset > 0 && max_srcset > 0
+      raise ArgumentError, range_numeric_error unless min_width > 0 && max_width > 0
     end
 
     def validate_variable_qualities!(disable_quality)
