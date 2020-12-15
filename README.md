@@ -144,11 +144,11 @@ https://testing.imgix.net/image.jpg?w=8192 8192w
 
 ### Minimum and Maximum Width Ranges
 
-If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer via `min_srcset` and/or `max_srcset` to the `options` keyword parameters:
+If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer via `min_width` and/or `max_width` to the `options` keyword parameters:
 
 ```rb
 client = Imgix::Client.new(domain: 'testing.imgix.net', include_library_param: false)
-client.path('image.jpg').to_srcset(options: { min_srcset: 500, max_srcset: 2000 })
+client.path('image.jpg').to_srcset(options: { min_width: 500, max_width: 2000 })
 ```
 
 Will result in a smaller, more tailored srcset.
@@ -167,7 +167,7 @@ https://testing.imgix.net/image.jpg?w=1902 1902w,
 https://testing.imgix.net/image.jpg?w=2000 2000w
 ```
 
-Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `options: { max_srcset: 1000 }` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
+Remember that browsers will apply a device pixel ratio as a multiplier when selecting which image to download from a `srcset`. For example, even if you know your image will render no larger than 1000px, specifying `options: { max_width: 1000 }` will give your users with DPR higher than 1 no choice but to download and render a low-resolution version of the image. Therefore, it is vital to factor in any potential differences when choosing a minimum or maximum range.
 
 Also please note that according to the [imgix API](https://docs.imgix.com/apis/url/size/w), the maximum renderable image width is 8192 pixels.
 
