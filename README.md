@@ -7,6 +7,7 @@
 [![Build Status](https://travis-ci.com/imgix/imgix-rb.svg?branch=main)](https://travis-ci.com/imgix/imgix-rb)
 ![Downloads](https://img.shields.io/gem/dt/imgix)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/imgix/imgix-rb/blob/main/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb?ref=badge_shield)
 
 ---
 <!-- /ix-docs-ignore -->
@@ -14,16 +15,16 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Srcset Generation](#srcset-generation)
-  - [Fixed image rendering](#fixed-image-rendering)
-  - [Custom Widths](#custom-widths)
-  - [Width Tolerance](#width-tolerance)
-  - [Minimum and Maximum Width Ranges](#minimum-and-maximum-width-ranges)
-  - [Variable Qualities](#variable-qualities)
-- [Multiple Parameters](#multiple-parameters)
+    * [Fixed image rendering](#fixed-image-rendering)
+    * [Custom Widths](#custom-widths)
+    * [Width Tolerance](#width-tolerance)
+    * [Minimum and Maximum Width Ranges](#minimum-and-maximum-width-ranges)
+    * [Variable Qualities](#variable-qualities)
 - [Purge Cache](#purge-cache)
 - [URL encoding and signed imgix URLs](#url-encoding-and-signed-imgix-urls)
 - [What is the `ixlib` param on every request?](#what-is-the-ixlib-param-on-every-request)
 - [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
@@ -223,3 +224,6 @@ client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', include_library_p
 ## Contributing
 
 See the [contributing guide](Contributing.markdown).
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb?ref=badge_large)
