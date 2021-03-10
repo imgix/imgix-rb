@@ -11,6 +11,7 @@ module SrcsetTest
   ].freeze
 
   DPR_QUALITY = [75, 50, 35, 23, 20].freeze
+  DPR_MULTIPLIER = ["1x", "2x", "3x", "4x", "5x", ].freeze
 
   DOMAIN = "testing.imgix.net"
   TOKEN = "MYT0KEN"
@@ -164,18 +165,18 @@ module SrcsetTest
     include SrcsetTest
 
     def test_srcset_generates_width_pairs
-      expected_number_of_pairs = 31
+      expected_number_of_pairs = 5
       assert_equal expected_number_of_pairs, srcset.split(",").length
     end
 
     def test_srcset_pair_values
-      resolutions = RESOLUTIONS
+      resolutions = DPR_MULTIPLIER
       srclist = srcset.split(",").map do |srcset_split|
         srcset_split.split(" ")[1].to_i
       end
 
       (0..srclist.length - 1).each do |i|
-        assert_equal(srclist[i], resolutions[i])
+        assert_equal(resolutions[i], srclist[i])
       end
     end
 
