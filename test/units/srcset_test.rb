@@ -172,7 +172,7 @@ module SrcsetTest
     def test_srcset_pair_values
       resolutions = DPR_MULTIPLIER
       srclist = srcset.split(",").map do |srcset_split|
-        srcset_split.split(" ")[1].to_i
+        srcset_split.split(" ")[1]
       end
 
       (0..srclist.length - 1).each do |i|
