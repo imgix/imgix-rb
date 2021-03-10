@@ -53,7 +53,7 @@ module Imgix
       height = @options[:h]
       aspect_ratio = @options[:ar]
 
-      srcset = if width || (height && aspect_ratio)
+      srcset = if width || height
           build_dpr_srcset(options: options, params: @options)
         else
           build_srcset_pairs(options: options, params: @options)
