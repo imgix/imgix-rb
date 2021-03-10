@@ -192,24 +192,6 @@ module SrcsetTest
       end
     end
 
-    # a 17% testing threshold is used to account for rounding
-    def test_srcset_iterates_17_percent
-      increment_allowed = 0.17
-
-      # create an array of widths
-      widths = srcset.split(",").map do |src|
-        src.split(" ")[1].to_i
-      end
-
-      prev = widths[0]
-
-      (1..widths.length - 1).each do |i|
-        element = widths[i]
-        assert_operator (element.to_f / prev.to_f), :<, (1 + increment_allowed)
-        prev = element
-      end
-    end
-
     def test_srcset_signs_urls
       srcset.split(",").map do |srcset_split|
         src = srcset_split.split(" ")[0]
