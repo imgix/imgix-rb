@@ -192,17 +192,6 @@ module SrcsetTest
       end
     end
 
-    def test_srcset_within_bounds
-      min, *max = srcset.split(",")
-
-      # parse out the width descriptor as an integer
-      min = min.split(" ")[1].to_i
-      max = max[max.length - 1].split(" ")[1].to_i
-
-      assert_operator min, :>=, 100
-      assert_operator max, :<=, 8192
-    end
-
     # a 17% testing threshold is used to account for rounding
     def test_srcset_iterates_17_percent
       increment_allowed = 0.17
