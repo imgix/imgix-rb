@@ -446,7 +446,7 @@ module SrcsetTest
     private
 
     def srcset
-      @client ||= mock_signed_client.to_srcset({ h: 100, ar: "3:2" })
+      @client ||= mock_signed_client.to_srcset(h: 100, ar: "3:2")
     end
   end
 
