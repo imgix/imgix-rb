@@ -80,7 +80,7 @@ https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce34
 
 ### Fixed image rendering
 
-In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w`, `h`, and `ar`. By invoking `to_srcset` with either a width **or** the height and aspect ratio (along with `fit=crop`, typically) provided, a different `srcset` will be generated for a fixed-size image instead.
+In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w` or `h`. By invoking `to_srcset` with either a width **or** height provided, a different `srcset` will be generated for a fixed-size image instead.
 
 ```rb
 client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
