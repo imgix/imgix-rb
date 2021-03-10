@@ -186,6 +186,12 @@ module SrcsetTest
       end
     end
 
+    def test_srcset_includes_dpr_param
+      srcset.split(",").map do |src|
+        assert_includes src, "dpr="
+      end
+    end
+
     def test_srcset_within_bounds
       min, *max = srcset.split(",")
 
