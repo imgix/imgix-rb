@@ -11,7 +11,6 @@ module SrcsetTest
   ].freeze
 
   DPR_QUALITY = [75, 50, 35, 23, 20].freeze
-  DPR_MULTIPLIER = ["1x", "2x", "3x", "4x", "5x", ].freeze
 
   DOMAIN = "testing.imgix.net"
   TOKEN = "MYT0KEN"
