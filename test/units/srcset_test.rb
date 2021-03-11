@@ -164,31 +164,22 @@ module SrcsetTest
   class SrcsetGivenHeight < Imgix::Test
     include SrcsetTest
 
-    def test_srcset_generates_width_pairs
-      expected_number_of_pairs = 5
-      assert_equal expected_number_of_pairs, srcset.split(",").length
-    end
+    def test_srcset_in_dpr_form
+      device_pixel_ratio = 1
 
-    def test_srcset_pair_values
-      resolutions = DPR_MULTIPLIER
-      srclist = srcset.split(",").map do |srcset_split|
-        srcset_split.split(" ")[1]
-      end
-
-      (0..srclist.length - 1).each do |i|
-        assert_equal(resolutions[i], srclist[i])
-      end
-    end
-
-    def test_srcset_respects_height_parameter
       srcset.split(",").map do |src|
-        assert_includes src, "h="
+        ratio = src.split(" ")[1]
+        assert_equal "#{device_pixel_ratio}x", ratio
+        device_pixel_ratio += 1
       end
     end
 
-    def test_srcset_includes_dpr_param
-      srcset.split(",").map do |src|
-        assert_includes src, "dpr="
+    def test_srcset_has_dpr_params
+      i = 1
+      srcset.split(",").map do |srcset_split|
+        src = srcset_split.split(" ")[0]
+        assert_includes src, "dpr=#{i}"
+        i += 1
       end
     end
 
@@ -198,6 +189,46 @@ module SrcsetTest
         expected_signature = get_expected_signature(src)
 
         assert_includes src, expected_signature
+      end
+    end
+
+    def test_srcset_has_variable_qualities
+      i = 0
+      srcset.split(",").map do |src|
+        assert_includes src, "q=#{DPR_QUALITY[i]}"
+        i += 1
+      end
+    end
+
+    def test_srcset_respects_overriding_quality
+      quality_override = 100
+      srcset = mock_signed_client.to_srcset(h: 100, q: quality_override)
+
+      srcset.split(",").map do |src|
+        assert_includes src, "q=#{quality_override}"
+      end
+    end
+
+    def test_disable_variable_quality
+      srcset = mock_signed_client.to_srcset(
+        h: 100,
+        options: { disable_variable_quality: true }
+      )
+
+      srcset.split(",").map do |src|
+        assert(!src.include?("q="))
+      end
+    end
+
+    def test_respects_quality_param_when_disabled
+      quality_override = 100
+      srcset = mock_signed_client.to_srcset(
+        h: 100, q: 100,
+        options: { disable_variable_quality: true }
+      )
+
+      srcset.split(",").map do |src|
+        assert_includes src, "q=#{quality_override}"
       end
     end
 
