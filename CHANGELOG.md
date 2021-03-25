@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * fix: dpr srcset when only h param ([#101](https://github.com/imgix/imgix-rb/pull/101))
 * docs: update travis badge to point to travis-ci.com ([#99](https://github.com/imgix/imgix-rb/pull/99))
 * docs: fixed typo w/ srcset min/max widths ([#97](https://github.com/imgix/imgix-rb/pull/97))
+
 ## [4.0.0](https://github.com/imgix/imgix-rb/compare/3.4.0...4.0.0) - August 26, 2020
 
 * deprecate: host-usage, param_helpers, and prefix-1-ary ([#91](https://github.com/imgix/imgix-rb/pull/91))
