@@ -22,10 +22,11 @@ module Imgix
       prev_options = @options.dup
       @options.merge!(opts)
 
-      url = @prefix + path_and_params
+      current_path_and_params = path_and_params
+      url = @prefix + current_path_and_params
 
       if @secure_url_token
-        url += (has_query? ? "&" : "?") + "s=#{signature}"
+        url += (has_query? ? "&" : "?") + "s=#{signature(current_path_and_params)}"
       end
 
       @options = prev_options
@@ -130,8 +131,8 @@ module Imgix
 
     private
 
-    def signature
-      Digest::MD5.hexdigest(@secure_url_token + path_and_params)
+    def signature(current_path_and_params)
+      Digest::MD5.hexdigest(@secure_url_token + current_path_and_params)
     end
 
     def path_and_params
