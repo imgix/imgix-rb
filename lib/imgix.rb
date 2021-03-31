@@ -3,6 +3,7 @@
 require "imgix/version"
 require "imgix/client"
 require "imgix/path"
+require "imgix/variant"
 
 module Imgix
   # regex pattern used to determine if a domain is valid
@@ -48,4 +49,16 @@ module Imgix
     4 => 23,
     5 => 20
   }.freeze
+
+  def self.escape_query_string(options)
+    options.map do |key, val|
+      escaped_key = ERB::Util.url_encode(key.to_s)
+
+      if escaped_key.end_with? '64'
+        escaped_key << "=" << Base64.urlsafe_encode64(val.to_s).delete('=')
+      else
+        escaped_key << "=" << ERB::Util.url_encode(val.to_s)
+      end
+    end.join("&")
+  end
 end

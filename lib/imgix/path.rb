@@ -20,6 +20,7 @@ module Imgix
 
     def to_url(opts = {})
       prev_options = @options.dup
+      @variant = opts.delete(:variant)
       @options.merge!(opts)
 
       current_path_and_params = path_and_params
@@ -29,6 +30,7 @@ module Imgix
         url += (has_query? ? "&" : "?") + "s=#{signature(current_path_and_params)}"
       end
 
+      @variant = nil
       @options = prev_options
       url
     end
@@ -140,15 +142,15 @@ module Imgix
     end
 
     def query
-      @options.map do |key, val|
-        escaped_key = ERB::Util.url_encode(key.to_s)
-
-        if escaped_key.end_with? '64'
-          escaped_key << "=" << Base64.urlsafe_encode64(val.to_s).delete('=')
+      if @variant
+        if @options[:ixlib]
+          "ixlib=#{@options[:ixlib]}&#{@variant.query}"
         else
-          escaped_key << "=" << ERB::Util.url_encode(val.to_s)
+          @variant.query
         end
-      end.join("&")
+      else
+        Imgix.escape_query_string(@options)
+      end
     end
 
     def has_query?

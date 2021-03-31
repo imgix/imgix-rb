@@ -54,6 +54,20 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url
   end
 
+  def test_path_with_multiple_params_as_variant
+    url = "https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a"
+    variant = Imgix::Variant.new(h: 200, w: 200)
+    path = client.path("/images/demo.png").to_url(variant: variant)
+    assert_equal url, path
+  end
+
+  def test_path_with_multiple_params_as_variant_and_library_param
+    url = "https://demo.imgix.net/images/demo.png?ixlib=rb-4.0.1&h=200&w=200&s=e8765acd05885795e353a4e470a9da6f"
+    variant = Imgix::Variant.new(h: 200, w: 200)
+    path = client_with_library_param.path("/images/demo.png").to_url(variant: variant)
+    assert_equal url, path
+  end
+
   def test_path_with_multi_value_param_safely_encoded
     url = "https://demo.imgix.net/images/demo.png?markalign=middle%2Ccenter&s=f0d0e28a739f022638f4ba6dddf9b694"
     path = client.path("/images/demo.png").markalign("middle,center")
@@ -130,6 +144,10 @@ class PathTest < Imgix::Test
 
   def client
     @client ||= Imgix::Client.new(domain: "demo.imgix.net", secure_url_token: "10adc394", include_library_param: false)
+  end
+
+  def client_with_library_param
+    @client ||= Imgix::Client.new(domain: "demo.imgix.net", secure_url_token: "10adc394", include_library_param: true)
   end
 
   def unsigned_client
