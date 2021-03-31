@@ -39,6 +39,7 @@ module Imgix
     resolutions.push(max_size)
     return resolutions
   }
+  DEFAULT_TARGET_WIDTHS = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE, MIN_WIDTH, MAX_WIDTH).freeze
 
   # hash of default quality parameter values mapped  by each dpr srcset entry
   DPR_QUALITY = {

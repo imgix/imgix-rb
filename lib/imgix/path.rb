@@ -15,7 +15,6 @@ module Imgix
 
       @path = CGI.escape(@path) if /^https?/ =~ @path
       @path = "/#{@path}" if @path[0] != "/"
-      @target_widths = TARGET_WIDTHS.call(DEFAULT_WIDTH_TOLERANCE, MIN_WIDTH, MAX_WIDTH)
     end
 
     def to_url(opts = {})
@@ -170,7 +169,7 @@ module Imgix
         validate_width_tolerance!(width_tolerance)
         srcset_widths = TARGET_WIDTHS.call(width_tolerance, min_width, max_width)
       else
-        srcset_widths = @target_widths
+        srcset_widths = DEFAULT_TARGET_WIDTHS
       end
 
       srcset_widths.each do |width|
