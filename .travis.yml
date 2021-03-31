@@ -4,9 +4,6 @@ bundler_args: --without development
 rvm:
   - 2.7.0
   - 2.6.3
-  - 2.3.0
-  - 2.2.4
-  - 2.1.8
   - jruby-9.2.11.0
 
 jobs:
@@ -20,4 +17,3 @@ jobs:
   
   allow_failures:
     - name: Rubinius
- 
