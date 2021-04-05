@@ -10,11 +10,64 @@ module Imgix
     def initialize(prefix, secure_url_token, path = "/")
       @prefix = prefix
       @secure_url_token = secure_url_token
-      @path = path
+      #TODO(luqven): should this method not be invoked on initialization?
+      @path = sanitize_path(path)
       @options = {}
+    end
 
-      @path = CGI.escape(@path) if /^https?/ =~ @path
-      @path = "/#{@path}" if @path[0] != "/"
+    # Escape and encode any characters in path that are reserved and not utf8 encoded.
+    # This includes " +?:#" characters. If a path is being used as a proxy, utf8
+    # encode everything. If it is not being used as proxy, leave certain chars, like
+    # "/", alone. Method assumes path is not already encoded.
+    def sanitize_path(path)
+      # remove the leading "/", we'll add it back after encoding
+      path = path.slice(1, path.length) if Regexp.new('^/') =~ path
+      # if path is being used as a proxy, encode the entire thing
+      if /^https?/ =~ path
+        return encode_URI_Component(path) 
+      else
+        # otherwise, encode only specific characters
+        return encode_URI(path)
+      end
+    end
+
+    # URL encode the entire path
+    def encode_URI_Component(path)
+      return "/" + CGI.escape(path)
+    end
+
+    # URL encode every character in the path, including
+    # " +?:#" characters.
+    def encode_URI(path)
+      result = []
+      path.split("/").each do |str|
+        escaped_key = ERB::Util.url_encode(str)
+        escaped_key = utf8_encode_delimiter(escaped_key)
+        result << escaped_key
+      end
+      result =  "/" + result.join("/")
+      return result;
+    end
+
+    def utf8_encode_delimiter(char)
+      encoding  = { 
+        " ": "%20",
+        "<": "%3C",
+        ">": "%3E",
+        "[": "%5B",
+        "]": "%5D",
+        "{": "%7B",
+        "}": "%7D",
+        "|": "%7C",
+        "\\": "%5C",
+        "^": "%5E",
+        "%": "%25"
+      }
+      if encoding[char]
+        return encoding[char]
+      else
+        return char
+      end
     end
 
     def to_url(opts = {})
