@@ -8,5 +8,7 @@ gemspec
 gem 'rake'
 gem 'json'
 gem 'minitest'
+gem 'minitest-reporters'
 gem 'webmock'
 gem 'benchmark-ips'
+
