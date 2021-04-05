@@ -54,6 +54,18 @@ class PathTest < Imgix::Test
     assert_equal url, path.to_url
   end
 
+  def test_relative_path_with_params
+    url = "https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a"
+    path = client.path("images/demo.png").h(200).w(200)
+    assert_equal url, path.to_url
+  end
+
+  def test_file_path_with_reserved_delimiters
+    url = "https://demo.imgix.net/%20%3C%3E%5B%5D%7B%7D%7C%5C%5C%5E%25.jpg?h=200&w=200&s=c53e7dc75b2d8fb70006f12357881622"
+    path = client.path("/ <>[]{}|\\\\^%.jpg").h(200).w(200)
+    assert_equal url, path.to_url
+  end
+
   def test_path_with_multi_value_param_safely_encoded
     url = "https://demo.imgix.net/images/demo.png?markalign=middle%2Ccenter&s=f0d0e28a739f022638f4ba6dddf9b694"
     path = client.path("/images/demo.png").markalign("middle,center")
