@@ -12,7 +12,7 @@ jobs:
 
   include:
     - name: Rubinius
-      rvm: rbx-3.107
+      rvm: rbx-3
       dist: trusty
   
   allow_failures:
