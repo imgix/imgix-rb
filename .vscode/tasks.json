@@ -4,7 +4,10 @@
 		{
 			"label": "rake: test",
 			"type": "shell",
-			"group": "test",
+			"group":{
+				"kind": "test",
+				"isDefault": true
+			},
 			"problemMatcher": {
 				"owner": "ruby",
 				"fileLocation": ["relative", "${workspaceFolder}"],
