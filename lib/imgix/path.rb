@@ -10,7 +10,6 @@ module Imgix
     def initialize(prefix, secure_url_token, path = "/")
       @prefix = prefix
       @secure_url_token = secure_url_token
-      #TODO(luqven): should this method not be invoked on initialization?
       @path = path
       @options = {}
     end
