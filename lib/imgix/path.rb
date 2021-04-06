@@ -42,32 +42,10 @@ module Imgix
       result = []
       path.split("/").each do |str|
         escaped_key = ERB::Util.url_encode(str)
-        escaped_key = utf8_encode_delimiter(escaped_key)
         result << escaped_key
       end
       result =  "/" + result.join("/")
       return result;
-    end
-
-    def utf8_encode_delimiter(char)
-      encoding  = { 
-        " ": "%20",
-        "<": "%3C",
-        ">": "%3E",
-        "[": "%5B",
-        "]": "%5D",
-        "{": "%7B",
-        "}": "%7D",
-        "|": "%7C",
-        "\\": "%5C",
-        "^": "%5E",
-        "%": "%25"
-      }
-      if encoding[char]
-        return encoding[char]
-      else
-        return char
-      end
     end
 
     def to_url(opts = {})
