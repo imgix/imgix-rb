@@ -11,44 +11,12 @@ module Imgix
       @prefix = prefix
       @secure_url_token = secure_url_token
       #TODO(luqven): should this method not be invoked on initialization?
-      @path = sanitize_path(path)
+      @path = path
       @options = {}
     end
 
-    # Escape and encode any characters in path that are reserved and not utf8 encoded.
-    # This includes " +?:#" characters. If a path is being used as a proxy, utf8
-    # encode everything. If it is not being used as proxy, leave certain chars, like
-    # "/", alone. Method assumes path is not already encoded.
-    def sanitize_path(path)
-      # remove the leading "/", we'll add it back after encoding
-      path = path.slice(1, path.length) if Regexp.new('^/') =~ path
-      # if path is being used as a proxy, encode the entire thing
-      if /^https?/ =~ path
-        return encode_URI_Component(path) 
-      else
-        # otherwise, encode only specific characters
-        return encode_URI(path)
-      end
-    end
-
-    # URL encode the entire path
-    def encode_URI_Component(path)
-      return "/" + CGI.escape(path)
-    end
-
-    # URL encode every character in the path, including
-    # " +?:#" characters.
-    def encode_URI(path)
-      result = []
-      path.split("/").each do |str|
-        escaped_key = ERB::Util.url_encode(str)
-        result << escaped_key
-      end
-      result =  "/" + result.join("/")
-      return result;
-    end
-
     def to_url(opts = {})
+      @path = sanitize_path(@path)
       prev_options = @options.dup
       @options.merge!(opts)
 
@@ -161,8 +129,41 @@ module Imgix
 
     private
 
-    def signature(current_path_and_params)
-      Digest::MD5.hexdigest(@secure_url_token + current_path_and_params)
+    # Escape and encode any characters in path that are reserved and not utf8 encoded.
+    # This includes " +?:#" characters. If a path is being used as a proxy, utf8
+    # encode everything. If it is not being used as proxy, leave certain chars, like
+    # "/", alone. Method assumes path is not already encoded.
+    def sanitize_path(path)
+      # remove the leading "/", we'll add it back after encoding
+      path = path.slice(1, path.length) if Regexp.new('^/') =~ path
+      # if path is being used as a proxy, encode the entire thing
+      if /^https?/ =~ path
+        return encode_URI_Component(path)
+      else
+        # otherwise, encode only specific characters
+        return encode_URI(path)
+      end
+    end
+
+    # URL encode the entire path
+    def encode_URI_Component(path)
+      return "/" + CGI.escape(path)
+    end
+
+    # URL encode every character in the path, including
+    # " +?:#" characters.
+    def encode_URI(path)
+      result = []
+      path.split("/").each do |str|
+        escaped_key = ERB::Util.url_encode(str)
+        result << escaped_key
+      end
+      result =  "/" + result.join("/")
+      return result;
+    end
+
+    def signature(path_and_params)
+      Digest::MD5.hexdigest(@secure_url_token + path_and_params)
     end
 
     def path_and_params
