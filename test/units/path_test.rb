@@ -85,6 +85,11 @@ class PathTest < Imgix::Test
     assert_equal "https://demo.imgix.net/demo.png?hello_world=%2Ffoo%22%3E%20%3Cscript%3Ealert%28%22hacked%22%29%3C%2Fscript%3E%3C", ix_url
   end
 
+  def test_unicode_path_variants_are_utf8_encoded
+    ix_url = unsigned_client.path("I cannøt belîév∑ it wors! 😱").to_url
+
+    assert_equal "https://demo.imgix.net/I%20cann%C3%B8t%20bel%C3%AE%C3%A9v%E2%88%91%20it%20wor%EF%A3%BFs%21%20%F0%9F%98%B1", ix_url
+  end
   def test_base64_param_variants_are_base64_encoded
     ix_url = unsigned_client.path("~text").to_url({txt64: "I cannøt belîév∑ it wors! 😱"})
 
