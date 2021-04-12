@@ -26,6 +26,22 @@ class UrlTest < Imgix::Test
     assert_equal expected, path.to_url(h: 200, w: 200)
   end
 
+  def test_calling_to_url_many_times
+    path = client.path(DEMO_IMAGE_PATH)
+    expected = ["https://demo.imgix.net/images/demo.png?h=200&w=200&s=d570a1ecd765470f7b34a69b56718a7a"]
+    result = []
+
+    10.times do
+      expected << expected[0]
+    end
+
+    expected.length.times do
+      result << path.to_url(h: 200, w: 200)
+    end
+
+    assert_equal expected, result
+  end
+
   private
 
   def client
