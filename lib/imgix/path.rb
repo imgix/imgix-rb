@@ -15,11 +15,11 @@ module Imgix
     end
 
     def to_url(opts = {})
-      @path = sanitize_path(@path)
+      sanitized_path ||= sanitize_path(@path)
       prev_options = @options.dup
       @options.merge!(opts)
 
-      current_path_and_params = path_and_params
+      current_path_and_params = path_and_params(sanitized_path)
       url = @prefix + current_path_and_params
 
       if @secure_url_token
@@ -161,12 +161,12 @@ module Imgix
       return result;
     end
 
-    def signature(path_and_params)
-      Digest::MD5.hexdigest(@secure_url_token + path_and_params)
+    def signature(rest)
+      Digest::MD5.hexdigest(@secure_url_token + rest)
     end
 
-    def path_and_params
-      has_query? ? "#{@path}?#{query}" : @path
+    def path_and_params(path)
+      has_query? ? "#{path}?#{query}" : path
     end
 
     def query
