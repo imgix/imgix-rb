@@ -152,13 +152,14 @@ module Imgix
     # URL encode every character in the path, including
     # " +?:#" characters.
     def encode_URI(path)
-      result = []
+      # For each component in the path, URL encode it and add it
+      # to the array path component.
+      path_components = []
       path.split("/").each do |str|
-        escaped_key = ERB::Util.url_encode(str)
-        result << escaped_key
+        path_components << ERB::Util.url_encode(str)
       end
-      result =  "/" + result.join("/")
-      return result;
+      # Prefix and join the encoded path components.
+      "/#{path_components.join('/')}"
     end
 
     def signature(rest)
