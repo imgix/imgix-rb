@@ -7,9 +7,7 @@ Bundler.require :test
 require "minitest/autorun"
 require "imgix"
 require "webmock/minitest"
-
-require 'minitest/autorun'
-require 'minitest/reporters' # requires the gem
+require "minitest/reporters"
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
