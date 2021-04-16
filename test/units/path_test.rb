@@ -61,8 +61,8 @@ class PathTest < Imgix::Test
   end
 
   def test_file_path_with_reserved_delimiters
-    url = "https://demo.imgix.net/%20%3C%3E%5B%5D%7B%7D%7C%5C%5C%5E%25.jpg?h=200&w=200&s=c53e7dc75b2d8fb70006f12357881622"
-    path = client.path("/ <>[]{}|\\\\^%.jpg").h(200).w(200)
+    url = "https://demo.imgix.net/%20%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg?h=200&w=200&s=1731846fd046c84270d052b1152b0cfa"
+    path = client.path("/ <>[]{}|\\^%.jpg").h(200).w(200)
     assert_equal url, path.to_url
   end
 
