@@ -61,9 +61,25 @@ class PathTest < Imgix::Test
   end
 
   def test_file_path_with_reserved_delimiters
-    url = "https://demo.imgix.net/%20%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg?h=200&w=200&s=1731846fd046c84270d052b1152b0cfa"
-    path = client.path("/ <>[]{}|\\^%.jpg").h(200).w(200)
-    assert_equal url, path.to_url
+    urls = [
+      "https://demo.imgix.net/%20%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg?h=200&w=200&s=1731846fd046c84270d052b1152b0cfa",
+      "https://demo.imgix.net/%26%24%2B%2C%3A%3B%3D%3F%40%23.jpg?h=200&w=200&s=08730633f350ceb3cc6bce4caa4be55a",
+    ]
+    paths = [
+      "/ <>[]{}|\\^%.jpg",
+      "&$+,:;=?@#.jpg",
+    ]
+    result = true
+    message = "URLS Encoded Incorrectly: "
+
+    urls.each_with_index do |url, idx|
+      current_url = client.path(paths[idx]).h(200).w(200).to_url
+      if (url != current_url)
+        message += "\n #{current_url} != \n #{url}"
+        result = false
+      end
+    end
+    assert(result, message)
   end
 
   def test_path_with_multi_value_param_safely_encoded
@@ -86,10 +102,25 @@ class PathTest < Imgix::Test
   end
 
   def test_unicode_path_variants_are_utf8_encoded
-    ix_url = unsigned_client.path("I cannøt belîév∑ it wors! 😱").to_url
+    urls = [
+      "https://demo.imgix.net/I%20cann%C3%B8t%20bel%C3%AE%C3%A9v%E2%88%91%20it%20wor%EF%A3%BFs%21%20%F0%9F%98%B1",
+      "https://demo.imgix.net/%D8%B3%D8%A7%D9%86%D8%AF%D9%88%DB%8C%DA%86.jpg"
+    ]
+    paths = [ "I cannøt belîév∑ it wors! 😱", "ساندویچ.jpg"]
+    result = true
+    message = "URLs Encoded Incorrectly: "
 
-    assert_equal "https://demo.imgix.net/I%20cann%C3%B8t%20bel%C3%AE%C3%A9v%E2%88%91%20it%20wor%EF%A3%BFs%21%20%F0%9F%98%B1", ix_url
+    urls.each_with_index do |url, idx|
+      current_url = unsigned_client.path(paths[idx]).to_url
+      if (url != current_url)
+        result = false
+        message += "\n #{current_url} != \n #{url}"
+      end
+    end
+
+    assert(result, message)
   end
+
   def test_base64_param_variants_are_base64_encoded
     ix_url = unsigned_client.path("~text").to_url({txt64: "I cannøt belîév∑ it wors! 😱"})
 
