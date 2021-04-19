@@ -15,7 +15,7 @@ module Imgix
     end
 
     def to_url(opts = {})
-      sanitized_path ||= sanitize_path(@path)
+      sanitized_path = sanitize_path(@path)
       prev_options = @options.dup
       @options.merge!(opts)
 
