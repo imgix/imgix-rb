@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2](https://github.com/imgix/imgix-rb/compare/4.0.1...4.0.2) - April 22, 2021
+
+* fix(path): correctly encode reserved chars ([#108](https://github.com/imgix/imgix-rb/pull/108))
+* test: add benchmark script for Imgix::Path#to_url ([4b00c4b](https://github.com/imgix/imgix-rb/commit/4b00c4b6d27b87787464438b36954b9c166096eb))
+* perf: avoid calculating path_and_params twice ([#109](https://github.com/imgix/imgix-rb/pull/109))
+* ci: use major version only for Rubinius 3 ([921e41a](https://github.com/imgix/imgix-rb/commit/921e41ac7789a55c78b42d60ac99cc0b641a69fd))
+* ci: use optimistic versioning ([#107](https://github.com/imgix/imgix-rb/pull/107))
+* ci: remove support for ruby version <2.5 ([#106](https://github.com/imgix/imgix-rb/pull/106))
+* perf: precompute DEFAULT_TARGET_WIDTHS to avoid repeating on Path.new ([#105](https://github.com/imgix/imgix-rb/pull/105))
+
 ## [4.0.1](https://github.com/imgix/imgix-rb/compare/4.0.0...4.0.1) - March 24, 2021
 
 * fix: dpr srcset when only h param ([#101](https://github.com/imgix/imgix-rb/pull/101))
