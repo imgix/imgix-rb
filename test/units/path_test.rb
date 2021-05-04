@@ -155,7 +155,7 @@ class PathTest < Imgix::Test
 
   def test_full_url_with_a_space
     path = "https://my-demo-site.com/files/133467012/avatar icon.png"
-    assert_equal "https://demo.imgix.net/#{CGI.escape(path)}?s=35ca40e2e7b6bd208be2c4f7073f658e", client.path(path).to_url
+    assert_equal "https://demo.imgix.net/https%3A%2F%2Fmy-demo-site.com%2Ffiles%2F133467012%2Favatar%20icon.png?s=0698b87ab279364977e93f0e6baee41b", client.path(path).to_url
   end
 
   def test_include_library_param
