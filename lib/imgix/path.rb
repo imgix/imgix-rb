@@ -146,7 +146,7 @@ module Imgix
 
     # URL encode the entire path
     def encode_URI_Component(path)
-      return "/" + CGI.escape(path)
+      return "/" + ERB::Util.url_encode(path)
     end
 
     # URL encode every character in the path, including
