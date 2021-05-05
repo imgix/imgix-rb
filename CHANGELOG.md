@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.3](https://github.com/imgix/imgix-rb/compare/4.0.2...4.0.3) - May 05, 2021
+
+* fix: encode web proxy paths using url_encode ([#111](https://github.com/imgix/imgix-rb/pull/111))
+
 ## [4.0.2](https://github.com/imgix/imgix-rb/compare/4.0.1...4.0.2) - April 22, 2021
 
 * fix(path): correctly encode reserved chars ([#108](https://github.com/imgix/imgix-rb/pull/108))
