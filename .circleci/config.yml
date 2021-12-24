@@ -1,0 +1,135 @@
+version: 2.1 # Use 2.1 to enable using orbs and other features.
+ 
+orbs:
+  ruby: circleci/ruby@1.2.0
+  node: circleci/node@2
+
+commands:
+  rake-test:
+    steps:
+      - run:
+          name: Run Ruby Tests
+          command: bundle exec rake
+  # Have to override the command from the ruby orb, since it doesn't support the --add-platform command
+  install-deps:
+    description: Install gems with Bundler.
+    parameters:
+      app-dir:
+        default: .
+        description: >
+          Path to the directory containing your Gemfile file. Not needed if Gemfile
+          lives in the root.
+        type: string
+      bundler-version:
+        default: ''
+        description: >
+          Configure which version of bundler to install and utilize. By default, it
+          gets the bundler version from Gemfile.lock, but if it is not working use
+          this to override.
+        type: string
+      key:
+        default: gems-v1
+        description: The cache key to use. The key is immutable.
+        type: string
+      path:
+        default: ./vendor/bundle
+        description: >
+          Installation path. By default, it will run bundle with `--deployment` flag
+          and installs gems to the vendor/bundle directory.
+        type: string
+      with-cache:
+        default: true
+        description: Enable automatic caching of your gemfile dependencies for increased speed.
+        type: boolean
+      platform:
+        default: 'x86_64-linux'
+        type: string
+    steps:
+      - when:
+          condition: <<parameters.with-cache>>
+          steps:
+            - restore_cache:
+                keys:
+                  - >-
+                    << parameters.key >>-{{ checksum
+                    "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+                  - >-
+                    << parameters.key >>-{{ checksum
+                    "<<parameters.app-dir>>/Gemfile.lock"  }}
+                  - << parameters.key >>
+      - run:
+          command: |
+            if test -f "Gemfile.lock"; then
+              APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+              if [ -z "$APP_BUNDLER_VERSION" ]; then
+                echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
+              else
+                echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
+              fi
+            fi
+
+            if ! [ -z <<parameters.bundler-version>> ]; then
+              echo "Found bundler-version parameter to override"
+              APP_BUNDLER_VERSION=<<parameters.bundler-version>>
+            fi
+
+            if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
+              echo "Installing bundler $APP_BUNDLER_VERSION"
+              gem install bundler:$APP_BUNDLER_VERSION
+            else
+              echo "bundler $APP_BUNDLER_VERSION is already installed."
+            fi
+
+            # here is where we add the platform command to allow CircleCI to bundle
+            bundle lock --add-platform <<parameters.platform>> 
+            if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
+              bundle config set deployment 'true'
+            fi
+            bundle config set path << parameters.path >>
+            bundle check || bundle install
+          name: >-
+            Bundle Install <<^parameters.with-cache>>(No
+            Cache)<</parameters.with-cache>>
+          working_directory: <<parameters.app-dir>>
+      - when:
+          condition: <<parameters.with-cache>>
+          steps:
+            - save_cache:
+                key: >-
+                  << parameters.key >>-{{ checksum
+                  "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+                paths:
+                  - <<parameters.app-dir>>/<< parameters.path >>
+  checkout-and-install-deps-and-test:
+    steps:
+      - checkout
+      - install-deps
+      - rake-test
+ 
+jobs:
+  ruby-v2-7:
+    docker:
+      - image: cimg/ruby:2.7-node 
+    steps:
+      - checkout-and-install-deps-and-test
+ 
+  ruby-v2-6:
+    docker:
+      - image: cimg/ruby:2.6-node 
+    steps:
+      - checkout-and-install-deps-and-test
+
+  ruby-vjruby:
+    docker:
+      - image: circleci/jruby:9.2.11.0-node
+    steps:
+      - checkout-and-install-deps-and-test
+
+ 
+workflows:
+  version: 2
+  build_and_test:     
+    jobs:             
+      - ruby-v2-7
+      - ruby-v2-6
+      - ruby-vjruby
