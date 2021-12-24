@@ -107,9 +107,9 @@ commands:
       - rake-test
  
 jobs:
-  ruby-v3:
+  ruby-v3-0:
     docker:
-      - image: cimg/ruby:3-node 
+      - image: cimg/ruby:3.0-node 
     steps:
       - checkout-and-install-deps-and-test
 
@@ -136,7 +136,7 @@ workflows:
   version: 2
   build_and_test:     
     jobs:
-      - ruby-v3             
+      - ruby-v3-0             
       - ruby-v2-7
       - ruby-v2-6
       - ruby-vjruby
