@@ -112,7 +112,8 @@ jobs:
       - image: <<parameters.version>>
     steps:
       - checkout
-      - install-deps
+      - install-deps:
+          key: <<parameters.version>>
       - rake-test
 
 workflows:
