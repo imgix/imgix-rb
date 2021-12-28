@@ -100,43 +100,30 @@ commands:
                   "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
                 paths:
                   - <<parameters.app-dir>>/<< parameters.path >>
-  checkout-and-install-deps-and-test:
+  
+jobs:  
+  test:
+    parameters:
+      version: 
+        default: "cimg/ruby:3.0-node"
+        description: Ruby image to use
+        type: string
+    docker:
+      - image: <<parameters.version>>
     steps:
       - checkout
       - install-deps
       - rake-test
- 
-jobs:
-  ruby-v3-0:
-    docker:
-      - image: cimg/ruby:3.0-node 
-    steps:
-      - checkout-and-install-deps-and-test
 
-  ruby-v2-7:
-    docker:
-      - image: cimg/ruby:2.7-node 
-    steps:
-      - checkout-and-install-deps-and-test
- 
-  ruby-v2-6:
-    docker:
-      - image: cimg/ruby:2.6-node 
-    steps:
-      - checkout-and-install-deps-and-test
-
-  ruby-vjruby:
-    docker:
-      - image: circleci/jruby:9.2.11.0-node
-    steps:
-      - checkout-and-install-deps-and-test
-
- 
 workflows:
   version: 2
-  build_and_test:     
+  test:     
     jobs:
-      - ruby-v3-0             
-      - ruby-v2-7
-      - ruby-v2-6
-      - ruby-vjruby
+      - test:
+          matrix:
+            parameters:
+              version:
+                - "cimg/ruby:3.0-node"
+                - "cimg/ruby:2.7-node"
+                - "cimg/ruby:2.6-node"
+                - "circleci/jruby:9.2.11.0-node"
