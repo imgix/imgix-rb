@@ -6,11 +6,13 @@ orbs:
 
 commands:
   rake-test:
+    description: Run tests with Rake
     steps:
       - run:
           name: Run Ruby Tests
           command: bundle exec rake
   # Have to override the command from the ruby orb, since it doesn't support the --add-platform command
+  # Since this command wholly comes from the ruby orb, the best documentation can be found at: https://circleci.com/developer/orbs/orb/circleci/ruby
   install-deps:
     description: Install gems with Bundler.
     parameters:
@@ -80,7 +82,8 @@ commands:
               echo "bundler $APP_BUNDLER_VERSION is already installed."
             fi
 
-            # here is where we add the platform command to allow CircleCI to bundle
+            # here is only part that is changed from the orb command,
+            # where we add the platform command to allow CircleCI to bundle
             bundle lock --add-platform <<parameters.platform>> 
             if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
               bundle config set deployment 'true'
