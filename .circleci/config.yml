@@ -54,37 +54,15 @@ commands:
                 keys:
                   - >-
                     << parameters.key >>-{{ checksum
-                    "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+                    "<<parameters.app-dir>>/Gemfile"  }}-{{ .Branch }}
                   - >-
                     << parameters.key >>-{{ checksum
-                    "<<parameters.app-dir>>/Gemfile.lock"  }}
+                    "<<parameters.app-dir>>/Gemfile"  }}
                   - << parameters.key >>
       - run:
           command: |
-            if test -f "Gemfile.lock"; then
-              APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
-              if [ -z "$APP_BUNDLER_VERSION" ]; then
-                echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
-              else
-                echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
-              fi
-            fi
-
-            if ! [ -z <<parameters.bundler-version>> ]; then
-              echo "Found bundler-version parameter to override"
-              APP_BUNDLER_VERSION=<<parameters.bundler-version>>
-            fi
-
-            if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
-              echo "Installing bundler $APP_BUNDLER_VERSION"
-              gem install bundler:$APP_BUNDLER_VERSION
-            else
-              echo "bundler $APP_BUNDLER_VERSION is already installed."
-            fi
-
-            # here is only part that is changed from the orb command,
-            # where we add the platform command to allow CircleCI to bundle
-            bundle lock --add-platform <<parameters.platform>> 
+            gem install bundler
+            
             if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
               bundle config set deployment 'true'
             fi
@@ -100,7 +78,7 @@ commands:
             - save_cache:
                 key: >-
                   << parameters.key >>-{{ checksum
-                  "<<parameters.app-dir>>/Gemfile.lock"  }}-{{ .Branch }}
+                  "<<parameters.app-dir>>/Gemfile"  }}-{{ .Branch }}
                 paths:
                   - <<parameters.app-dir>>/<< parameters.path >>
   
