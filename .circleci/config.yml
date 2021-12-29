@@ -63,6 +63,9 @@ commands:
           command: |
             gem install bundler
             
+            # here is only part that is changed from the orb command,
+            # where we add the platform command to allow CircleCI to bundle
+            bundle lock --add-platform <<parameters.platform>> 
             if [ "<< parameters.path >>" == "./vendor/bundle" ]; then
               bundle config set deployment 'true'
             fi
