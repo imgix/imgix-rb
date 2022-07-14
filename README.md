@@ -61,7 +61,7 @@ client.path('/images/demo.png').to_url(w: 200)
 The imgix gem allows for generation of custom `srcset` attributes, which can be invoked through `Imgix::Path#to_srcset`. By default, the `srcset` generated will allow for responsive size switching by building a list of image-width mappings.
 
 ```rb
-client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
+client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
 path = client.path('/images/demo.png')
 
 srcset = path.to_srcset
@@ -83,7 +83,7 @@ https://your-subdomain.imgix.net/images/demo.png?w=8192&s=9fbd257c53e770e345ce34
 In cases where enough information is provided about an image's dimensions, `to_srcset` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w` or `h`. By invoking `to_srcset` with either a width **or** height provided, a different `srcset` will be generated for a fixed-size image instead.
 
 ```rb
-client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token', include_library_param: false)
+client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
 path = client.path('/images/demo.png')
 
 srcset = path.to_srcset(h:800, ar:'3:2', fit:'crop')
@@ -106,7 +106,7 @@ For more information to better understand `srcset`, we highly recommend [Eric Po
 In situations where specific widths are desired when generating `srcset` pairs, a user can specify them by passing an array of integers via `widths` to the `options` keyword argument.
 
 ```rb
-@client ||= Imgix::Client.new(domain: 'testing.imgix.net', include_library_param: false)
+@client ||= Imgix::Client.new(domain: 'testing.imgix.net')
 .path('image.jpg')
 .to_srcset(options: { widths: [100, 500, 1000, 1800] })
 ```
@@ -129,7 +129,7 @@ The `srcset` width tolerance dictates the maximum tolerated size difference betw
 By default this rate is set to 8 percent, which we consider to be the ideal rate for maximizing cache hits without sacrificing visual quality. Users can specify their own width tolerance by passing a positive numeric value to `width_tolerance` within the `options` keyword argument:
 
 ```rb
-client = Imgix::Client.new(domain: 'testing.imgix.net', secure_url_token: 'MYT0KEN', include_library_param: false)
+client = Imgix::Client.new(domain: 'testing.imgix.net', secure_url_token: 'MYT0KEN')
 client.path('image.jpg').to_srcset(options: { width_tolerance: 0.20 })
 ```
 
@@ -148,7 +148,7 @@ https://testing.imgix.net/image.jpg?w=8192 8192w
 If the exact number of minimum/maximum physical pixels that an image will need to be rendered at is known, a user can specify them by passing an integer via `min_width` and/or `max_width` to the `options` keyword parameters:
 
 ```rb
-client = Imgix::Client.new(domain: 'testing.imgix.net', include_library_param: false)
+client = Imgix::Client.new(domain: 'testing.imgix.net')
 client.path('image.jpg').to_srcset(options: { min_width: 500, max_width: 2000 })
 ```
 
@@ -181,7 +181,7 @@ This behavior will respect any overriding `q` value passed in as a parameter. Ad
 This behavior specifically occurs when a [fixed-size image](https://github.com/imgix/imgix-rb#fixed-image-rendering) is rendered, for example:
 
 ```rb
-srcset = Imgix::Client.new(domain: 'testing.imgix.net', include_library_param: false)
+srcset = Imgix::Client.new(domain: 'testing.imgix.net')
 .path('image.jpg')
 .to_srcset(w:100)
 ```
