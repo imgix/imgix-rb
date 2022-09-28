@@ -223,7 +223,7 @@ client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', include_library_p
 
 ## Contributing
 
-See the [contributing guide](Contributing.markdown).
+See the [contributing guide](CONTRIBUTING.md).
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fimgix-rb?ref=badge_large)
