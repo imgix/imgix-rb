@@ -14,10 +14,10 @@ module Imgix
       @options = {}
     end
 
-    def to_url(opts = {})
-      sanitized_path = sanitize_path(@path)
+    def to_url(params = {}, options = {})
+      sanitized_path = sanitize_path(@path, options)
       prev_options = @options.dup
-      @options.merge!(opts)
+      @options.merge!(params)
 
       current_path_and_params = path_and_params(sanitized_path)
       url = @prefix + current_path_and_params
@@ -132,16 +132,19 @@ module Imgix
     # This includes " +?:#" characters. If a path is being used as a proxy, utf8
     # encode everything. If it is not being used as proxy, leave certain chars, like
     # "/", alone. Method assumes path is not already encoded.
-    def sanitize_path(path)
+    def sanitize_path(path, options = {})
       # remove the leading "/", we'll add it back after encoding
       path = path.slice(1, path.length) if Regexp.new('^/') =~ path
-      # if path is being used as a proxy, encode the entire thing
-      if /^https?/ =~ path
-        return encode_URI_Component(path)
-      else
-        # otherwise, encode only specific characters
-        return encode_URI(path)
+      if !options[:disable_path_encoding]
+        # if path is being used as a proxy, encode the entire thing
+        if /^https?/ =~ path
+          return encode_URI_Component(path)
+        else
+          # otherwise, encode only specific characters
+          return encode_URI(path)
+        end
       end
+      return "/" + path
     end
 
     # URL encode the entire path
@@ -207,7 +210,7 @@ module Imgix
 
       srcset_widths.each do |width|
         params[:w] = width
-        srcset += "#{to_url(params)} #{width}w,\n"
+        srcset += "#{to_url(params, options)} #{width}w,\n"
       end
 
       srcset[0..-3]
@@ -227,7 +230,7 @@ module Imgix
 
         params[:q] = quality || DPR_QUALITY[ratio] unless disable_variable_quality
 
-        srcset += "#{to_url(params)} #{ratio}x,\n"
+        srcset += "#{to_url(params, options)} #{ratio}x,\n"
       end
 
       srcset[0..-3]
