@@ -760,4 +760,29 @@ module SrcsetTest
       )
     end
   end
+
+  class SrcsetDisablePathEncoding < Imgix::Test
+    include SrcsetTest
+
+    def test_enable_path_encoding
+      srcset = mock_client.to_srcset
+      src = srcset.split(" ")[0]
+      assert_equal(src, "https://testing.imgix.net/%5Bimage%5D.jpg?w=100")
+    end
+
+    def test_disable_path_encoding
+      srcset = mock_client.to_srcset(options: { disable_path_encoding: true })
+      src = srcset.split(" ")[0]
+      assert_equal(src, "https://testing.imgix.net/[image].jpg?w=100")
+    end
+
+    private
+
+    def mock_client
+      Imgix::Client.new(
+        domain: DOMAIN,
+        include_library_param: false
+      ).path("[image].jpg")
+    end
+  end
 end

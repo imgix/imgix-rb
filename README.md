@@ -56,6 +56,15 @@ client.path('/images/demo.png').to_url(w: 200)
 #=> https://your-subdomain.imgix.net/images/demo.png?w=200&s=2eadddacaa9bba4b88900d245f03f51e
 ```
 
+To disable path encoding, pass `{disable_path_encoding: true}` as the second argument to the `Imgix#Path#to_url` function.
+
+```rb
+client = Imgix::Client.new(domain: 'your-subdomain.imgix.net', secure_url_token: 'your-token')
+client.path('/[images]/demo.png').to_url
+#=> https://your-subdomain.imgix.net/%5Bimages%5D/demo.png?s=270832685733a36ba02bd8ab9fd72df5
+client.path('/[images]/demo.png').to_url({},{disable_path_encoding: true})
+#=> https://your-subdomain.imgix.net/[images]/demo.png?s=ed6eb07e9eff3f6c8bbcc83fc4f63198
+
 ## Srcset Generation
 
 The imgix gem allows for generation of custom `srcset` attributes, which can be invoked through `Imgix::Path#to_srcset`. By default, the `srcset` generated will allow for responsive size switching by building a list of image-width mappings.

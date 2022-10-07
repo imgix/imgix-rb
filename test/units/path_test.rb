@@ -11,6 +11,12 @@ class PathTest < Imgix::Test
     assert_equal "https://demo.imgix.net/images/demo.png?s=2c7c157eaf23b06a0deb2f60b81938c4", path.to_url
   end
 
+  def test_disable_path_encoding
+    path = client.path("[images]/demo.png")
+    assert_equal "https://demo.imgix.net/%5Bimages%5D/demo.png?s=270832685733a36ba02bd8ab9fd72df5", path.to_url
+    assert_equal "https://demo.imgix.net/[images]/demo.png?s=ed6eb07e9eff3f6c8bbcc83fc4f63198", path.to_url({},{disable_path_encoding: true})
+  end
+
   def test_signing_path_with_param
     url = "https://demo.imgix.net/images/demo.png?w=200&s=da421114ca238d1f4a927b889f67c34e"
     path = client.path("/images/demo.png").w(200)
