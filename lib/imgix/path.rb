@@ -135,16 +135,15 @@ module Imgix
     def sanitize_path(path, options = {})
       # remove the leading "/", we'll add it back after encoding
       path = path.slice(1, path.length) if Regexp.new('^/') =~ path
-      if !options[:disable_path_encoding]
-        # if path is being used as a proxy, encode the entire thing
-        if /^https?/ =~ path
-          return encode_URI_Component(path)
-        else
-          # otherwise, encode only specific characters
-          return encode_URI(path)
-        end
+      if options[:disable_path_encoding]
+        return "/" + path
+      # if path is being used as a proxy, encode the entire thing
+      elsif /^https?/ =~ path
+        return encode_URI_Component(path)
+      else
+        # otherwise, encode only specific characters
+        return encode_URI(path)
       end
-      return "/" + path
     end
 
     # URL encode the entire path
