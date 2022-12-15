@@ -112,5 +112,3 @@ workflows:
                 - "cimg/ruby:3.0-node"
                 - "cimg/ruby:2.7-node"
                 - "circleci/jruby:9.2.11.0-node"
-
-# VS Code Extension Version: 1.4.0
