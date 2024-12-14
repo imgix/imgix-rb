@@ -1,5 +1,5 @@
 <!-- ix-docs-ignore -->
-![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
+![imgix logo](https://assets.imgix.net/sdk-imgix-logo-new.svg)
 
 `imgix-rb` is a client library for generating image URLs with [imgix](https://www.imgix.com/). It is tested under Ruby versions `3.1`, `3.0`, `2.7`, and `jruby-9.2.11.0`.
 
