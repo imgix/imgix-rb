@@ -20,6 +20,8 @@ module Imgix
       @options.merge!(params)
 
       current_path_and_params = path_and_params(sanitized_path)
+      current_path_and_params.gsub!(/=&/, "&") # Removes instances of `param=&`
+      current_path_and_params.gsub!(/=$/, "")  # Removes `=` at the end of the string
       url = @prefix + current_path_and_params
 
       if @secure_url_token
