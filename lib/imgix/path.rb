@@ -20,8 +20,6 @@ module Imgix
       @options.merge!(params)
 
       current_path_and_params = path_and_params(sanitized_path)
-      current_path_and_params.gsub!(/=&/, "&") # Removes instances of `param=&`
-      current_path_and_params.gsub!(/=$/, "")  # Removes `=` at the end of the string
       url = @prefix + current_path_and_params
 
       if @secure_url_token
@@ -178,7 +176,9 @@ module Imgix
       @options.map do |key, val|
         escaped_key = ERB::Util.url_encode(key.to_s)
 
-        if escaped_key.end_with? '64'
+        if val.to_s.empty?
+          escaped_key
+        elsif escaped_key.end_with? '64'
           escaped_key << "=" << Base64.urlsafe_encode64(val.to_s).delete('=')
         else
           escaped_key << "=" << ERB::Util.url_encode(val.to_s)
