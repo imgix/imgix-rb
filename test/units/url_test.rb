@@ -25,6 +25,20 @@ class UrlTest < Imgix::Test
 
     assert_equal expected, path.to_url(h: 200, w: 200)
   end
+  
+  def test_signing_with_nil_param
+    path = client.path(DEMO_IMAGE_PATH)
+    expected = "https://demo.imgix.net/images/demo.png?mark&s=6ca2720a15de7ec9862650cca69ad96d"
+
+    assert_equal expected, path.to_url(mark: "")
+  end
+
+  def test_signing_with_multiple_params_and_nil_param
+    path = client.path(DEMO_IMAGE_PATH)
+    expected = "https://demo.imgix.net/images/demo.png?mark&h=200&w=200&s=70e6fd73fad79125c3596c0575a6e4cf"
+
+    assert_equal expected, path.to_url(mark: "", h: 200, w: 200)
+  end
 
   def test_calling_to_url_many_times
     path = client.path(DEMO_IMAGE_PATH)

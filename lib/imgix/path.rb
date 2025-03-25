@@ -177,7 +177,9 @@ module Imgix
       @options.map do |key, val|
         escaped_key = ERB::Util.url_encode(key.to_s)
 
-        if escaped_key.end_with? '64'
+        if val.to_s.empty?
+          escaped_key
+        elsif escaped_key.end_with? '64'
           escaped_key << "=" << Base64.urlsafe_encode64(val.to_s).delete('=')
         else
           escaped_key << "=" << ERB::Util.url_encode(val.to_s)
