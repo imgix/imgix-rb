@@ -92,7 +92,6 @@ module Imgix
     # and acts as a getter, setter, and deleter. If there are no args,
     # e.g. `path.width`, then this method acts like a getter.
     #
-    # adding a random line to test circle CI
     # Likewise, if the first argument is nil and the method name exists
     # as a key in @options, e.g. `path.param_name = nil`, then this
     # method acts like a deleter and the `param_name` is removed from
