@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.1](https://github.com/imgix/imgix-rb/compare/4.1.1...4.1.1) - April 8, 2025
+
 ## [4.1.0](https://github.com/imgix/imgix-rb/compare/4.0.3...4.1.0) - December 14, 2022
 
 - feat: add parameter to disable path encoding ([#124](https://github.com/imgix/imgix-rb/pull/124))

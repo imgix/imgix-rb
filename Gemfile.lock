@@ -1,0 +1,48 @@
+PATH
+  remote: .
+  specs:
+    imgix (4.1.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
+    ansi (1.5.0)
+    benchmark-ips (2.14.0)
+    bigdecimal (3.1.9)
+    builder (3.3.0)
+    crack (1.0.0)
+      bigdecimal
+      rexml
+    hashdiff (1.1.2)
+    json (2.10.2)
+    minitest (5.25.5)
+    minitest-reporters (1.7.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    public_suffix (5.1.1)
+    rake (13.2.1)
+    rexml (3.4.1)
+    ruby-progressbar (1.13.0)
+    webmock (3.25.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  benchmark-ips
+  imgix!
+  json
+  minitest
+  minitest-reporters
+  rake
+  webmock
+
+BUNDLED WITH
+   2.4.22
